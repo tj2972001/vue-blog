@@ -1,11 +1,12 @@
+require('dotenv').config({ path: './config.env' })
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const mongoose = require('mongoose')
-const dotenv = require('dotenv')
-dotenv.config({ path: './config.env' })
 const cookieParser = require('cookie-parser')
-const questionRouter = require('./router/questionRouter')
+const blogRouter = require('./router/blogRouter')
+const userRouter = require('./router/userRouter')
+
 const app = express()
 app.use(cors())
 app.use(express.json())
@@ -20,17 +21,22 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
+    useUnifiedTopology: true,
   })
   .then((con) => console.log('DB connection successful!'))
   .catch((e) => {
     console.log(e)
   })
+
 if (process.env.NODE_ENV === 'development') {
   console.log('In dev')
   app.use(morgan('dev'))
 }
-app.use('/v1/questions', questionRouter)
+app.use('/blog', blogRouter)
+app.use('/user', userRouter)
+
+/** Exporting root **/
 module.exports = {
-  path: '/api',
+  path: '/api/v1/',
   handler: app,
 }
