@@ -12,7 +12,7 @@ const blogSchema = new mongoose.Schema(
     },
     dateCreated: {
       type: Date,
-      required: true,
+      // required: true,
     },
     saveAsDraft: {
       type: Boolean,
@@ -29,7 +29,7 @@ const blogSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      required: true,
+      // required: true,
       unique: true,
     },
   },

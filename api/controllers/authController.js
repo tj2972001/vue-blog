@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const AppError = require('./../utils/appError')
 const userModel = require('./../model/userModel')
 const catchAsync = require('./../utils/catchAsync')
-// const sendEmail = require('./../utils/email')
+const sendEmail = require('./../utils/email')
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET + '', {
     // expiresIn: process.env.JWT_EXPIRES_IN + '',
@@ -66,7 +66,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(' ')[1]
   } else if (req.cookies.jwt) {
-    console.log('IN else id')
     token = req.cookies.jwt
   }
   if (!token) {
@@ -87,8 +86,52 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError('No user found', 401))
   }
   req.user = freshUser
-
   next()
+})
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  const email = req.body.email
+  console.log('email is' + email)
+  if (!email) {
+    return next(new AppError('Please provide your email address', 400))
+  }
+  const user = await userModel.findOne({ email })
+  if (!user) {
+    return next(
+      new AppError(
+        'No account found with this email. Please provide correct email',
+        404
+      )
+    )
+  }
+  console.log('user is ' + JSON.stringify(user))
+  const resetToken = user.createResetPasswordToken()
+  await user.save({ validateBeforeSave: false })
+  const resetURL = `${req.protocol}://${req.get(
+    'host'
+  )}/api/v1/users/resetPassword/${resetToken}`
+  const message = `To reset password . click the link ${resetURL}. Valid for 10 minutes only`
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'About reseting the password',
+      message,
+    })
+    res.status(200).json({
+      status: 'success',
+      message: 'mail send to user successfully',
+    })
+  } catch (err) {
+    user.passwordResetToken = undefined
+    user.passwordResetExpires = undefined
+    await user.save({ validateBeforeSave: false })
+    return next(
+      new AppError(
+        'Error while sending email. Please try after some time.',
+        500
+      )
+    )
+  }
 })
 
 exports.restrictTo = (...roles) => {
@@ -100,4 +143,12 @@ exports.restrictTo = (...roles) => {
     }
     next()
   }
+}
+
+exports.logout = (req, res) => {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  })
+  res.status(200).json({ status: 'success' })
 }

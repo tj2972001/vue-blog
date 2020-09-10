@@ -87,15 +87,17 @@ userSchema.methods.correctPassword = async (
 ) => {
   return await bcrypt.compare(userTypedPassword, databasePassword)
 }
-userSchema.methods.createResetPasswordToken = async () => {
-  const resetToken = await crypto.randomBytes(32).toString('hex')
-  this.passwordResetToken = await crypto
+userSchema.methods.createResetPasswordToken = function (next) {
+  const resetToken = crypto.randomBytes(32).toString('hex')
+  this.passwordResetToken = crypto
     .createHash('sha256')
     .update(resetToken)
     .digest('hex')
   // HACK: token will expire after 10 minutes
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000
+  // HACK: We store encrypted reset token to our database but sends normal token to user
   return resetToken
 }
+
 const userModel = mongoose.model('User', userSchema)
 module.exports = userModel

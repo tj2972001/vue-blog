@@ -72,17 +72,15 @@ exports.getBlog = catchAsync(async (req, res, next) => {
 exports.updateBlog = catchAsync(async (req, res, next) => {
   try {
     const filterBody = filterObj(req.body, 'content', 'title', 'categories')
-    const blog = await blogModel.findOneAndUpdate(
-      { _id: req.params.slug },
-      filterBody,
-      {
-        new: true,
-        runValidators: true,
-      }
-    )
+    let blog = await blogModel.findById(req.params.slug)
     if (!blog) {
       return next(new AppError('Cant find the article you requested', 404))
     }
+    blog = await blogModel.findByIdAndUpdate(req.params.slug, filterBody, {
+      new: true,
+      runValidators: true,
+    })
+
     res.status(200).json({
       status: 'success',
       data: {
@@ -97,10 +95,11 @@ exports.updateBlog = catchAsync(async (req, res, next) => {
 })
 exports.deleteBlog = catchAsync(async (req, res, next) => {
   try {
-    const blog = await blogModel.findOneAndRemove({ _id: req.params.slug })
+    const blog = await blogModel.findById(req.params.slug)
     if (!blog) {
       return next(new AppError('Cant find the article you requested', 404))
     }
+    blog.remove()
     res.status(200).json({
       status: 'success',
       data: null,

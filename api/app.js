@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './config.env' })
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const blogRouter = require('./router/blogRouter')
 const userRouter = require('./router/userRouter')
+const globalErrorHandler = require('./controllers/errorController')
 
 const app = express()
 app.use(cors())
@@ -34,6 +35,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 app.use('/blog', blogRouter)
 app.use('/user', userRouter)
+app.use(globalErrorHandler)
 
 /** Exporting root **/
 module.exports = {
