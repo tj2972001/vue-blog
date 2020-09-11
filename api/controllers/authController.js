@@ -1,4 +1,4 @@
-// const crypto = require('crypto')
+const crypto = require('crypto')
 // const { promisify } = require('util')
 const jwt = require('jsonwebtoken')
 
@@ -144,6 +144,29 @@ exports.restrictTo = (...roles) => {
     next()
   }
 }
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  /// /1. get token from req.params.token
+  /// /2. hash it and compare it with one from db
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex')
+  const user = await userModel.findOne({
+    passwordResetExpires: { $gt: Date.now() },
+    passwordResetToken: hashedToken,
+  })
+  console.log('IN reset pass')
+  if (!user) {
+    return next(new AppError('Cant found user with that token'), 404)
+  }
+  user.password = req.body.password
+  user.passwordConfirm = req.body.passwordConfirm
+  user.passwordResetToken = undefined
+  user.passwordResetExpires = undefined
+  await user.save()
+  createSendToken(user, 200, res)
+})
 
 exports.logout = (req, res) => {
   res.cookie('jwt', 'loggedout', {
