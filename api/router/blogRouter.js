@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router({ mergeParams: true })
 const authController = require('./../controllers/authController')
 const blogController = require('./../controllers/blogController')
-
+// xdc
 router
   .route('/')
   .get(blogController.getAllBlogs)
