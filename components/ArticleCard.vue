@@ -5,22 +5,16 @@
         <v-img src="https://randomuser.me/api/portraits/women/70.jpg"></v-img>
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="headline"
-          >Our Changing Planet</v-list-item-title
+        <v-list-item-title class="headline">{{
+          article.title
+        }}</v-list-item-title>
+        <v-list-item-subtitle
+          >by Tejas Jadhav On {{ article.createdAt }}</v-list-item-subtitle
         >
-        <v-list-item-subtitle>by Kurt Wagner</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
-    <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
-      height="194"
-    ></v-img>
-
-    <v-card-text>
-      Visit ten places on our planet that are undergoing the biggest changes
-      today.
-    </v-card-text>
+    <v-card-text v-html="article.content"> </v-card-text>
 
     <v-card-actions>
       <v-btn text color="deep-purple accent-4"> Read </v-btn>
@@ -35,3 +29,13 @@
     </v-card-actions>
   </v-card>
 </template>
+<script>
+export default {
+  props: {
+    article: {
+      type: Object,
+      required: true,
+    },
+  },
+}
+</script>
