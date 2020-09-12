@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto mt-15 pa-4" width="600">
+  <v-card class="mx-auto mt-15 pa-4" max-width="600" width="80%">
     <v-card-title><h2>Signup</h2></v-card-title>
     <v-text-field
       label="Enter username"
@@ -31,9 +31,13 @@
     <v-checkbox label="subscribe for newsletter"></v-checkbox>
     <v-divider></v-divider>
     <v-btn class="mt-4" color="primary">Signup</v-btn>
-    <p class="text-lg-right" :class="{ redColor: checkLight }">
-      *You will be automatically logged in after signup
-    </p>
+    <v-card-subtitle class="text-sm-right red--text text--lighten-1"
+      >You will be logged in after successfull Signup</v-card-subtitle
+    >
+    <v-card-text
+      >Already have account ?
+      <nuxt-link to="/login">Login</nuxt-link></v-card-text
+    >
   </v-card>
 </template>
 

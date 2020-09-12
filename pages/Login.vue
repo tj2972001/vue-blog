@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto mt-15 pa-4" width="600">
+  <v-card class="mx-auto mt-15 pa-4" max-width="600" width="80%">
     <v-card-title><h2>Login</h2></v-card-title>
     <v-text-field
       label="Enter username"
@@ -14,6 +14,9 @@
     ></v-text-field>
     <v-divider></v-divider>
     <v-btn class="mt-4" color="primary">Login</v-btn>
+    <v-card-text
+      >New to my blog ? <nuxt-link to="/signup">Signup</nuxt-link></v-card-text
+    >
   </v-card>
 </template>
 

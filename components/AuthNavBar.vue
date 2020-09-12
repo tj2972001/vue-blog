@@ -92,24 +92,14 @@ export default {
     title: "Tejas's Blog",
     links: [
       {
-        label: 'Home',
-        url: '/',
-        icon: 'mdi-home',
-      },
-      {
-        label: 'Blog',
-        url: '/blog',
-        icon: 'mdi-blogger',
-      },
-      {
-        label: 'About Me',
-        url: '/about-me',
-        icon: 'mdi-face',
-      },
-      {
         label: 'Login',
         url: '/login',
         icon: 'mdi-login',
+      },
+      {
+        label: 'Signup',
+        url: '/signup',
+        icon: 'mdi-account-plus',
       },
     ],
   }),

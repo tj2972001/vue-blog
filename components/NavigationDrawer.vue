@@ -1,26 +1,36 @@
 <template>
-  <v-sheet height="100vh" class="overflow-hidden" style="position: relative">
+  <div>
     <v-btn
-      outlined
+      color="primary"
       fab
-      color="indigo"
+      outlined
       class="ma-2"
+      :x-small="$vuetify.breakpoint.xsOnly"
+      :small="$vuetify.breakpoint.mdAndUp"
+      :large="$vuetify.breakpoint.lgAndUp"
       @click.stop="drawer = !drawer"
     >
       <v-icon>mdi-filter</v-icon>
     </v-btn>
     <v-navigation-drawer
       v-model="drawer"
-      width="60vw"
+      width="80vw"
       app
       right
       absolute
       temporary
     >
       <v-list dense nav class="py-0">
-        <v-list-item class="my-5 filter"> Filter </v-list-item>
+        <v-list-item class="my-5 px-5">
+          <v-list-item-content>
+            <v-list-item-title class="title"> Filter </v-list-item-title>
+            <v-list-item-subtitle>
+              Apply desired filters and then press Search button
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
         <v-divider></v-divider>
-        <v-list-item v-for="item in items" :key="item.title" link>
+        <v-list-item v-for="item in items" :key="item.title" class="pa-2" link>
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -28,25 +38,20 @@
             <v-select :items="item.sortList" :label="item.title"></v-select>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item>
+        <v-divider></v-divider>
+        <v-list-item class="pa-2">
           <v-list-item-icon>
             <v-icon>mdi-filter-plus</v-icon>
           </v-list-item-icon>
           <Multiselect />
         </v-list-item>
-        <v-list-item class="px-0 text-h6 my-5">
-          Press search to get results
-        </v-list-item>
+        <v-divider></v-divider>
         <v-list-item>
-          <v-btn> Search </v-btn>
+          <v-btn color="primary" class="mt-5"> Search </v-btn>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-btn outlined fab color="indigo" class="ma-2" to="/blog/create/">
-      <v-icon>mdi-grease-pencil</v-icon>
-    </v-btn>
-    <h2>Welcome to my blog</h2>
-  </v-sheet>
+  </div>
 </template>
 <script>
 import Multiselect from '@/components/Multiselect.vue'

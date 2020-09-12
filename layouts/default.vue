@@ -2,7 +2,7 @@
   <v-app>
     <NavBar />
     <v-content>
-      <router-view></router-view>
+      <nuxt />
     </v-content>
   </v-app>
 </template>
@@ -19,5 +19,6 @@ export default {
 <style>
 h2 {
   text-align: center;
+  margin: 10px 0;
 }
 </style>
