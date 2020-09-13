@@ -19,4 +19,25 @@ export default {
       url: APIClent.baseURL + '/blog/:' + id,
     })
   },
+  login(formData) {
+    return axios({
+      method: 'POST',
+      url: `${APIClent.baseURL}/user/login`,
+      data: formData,
+    })
+  },
+  signup(formData) {
+    return axios({
+      method: 'POST',
+      url: `${APIClent.baseURL}/user/signup`,
+      data: formData,
+    })
+  },
+  postArticle(formData) {
+    return axios({
+      method: 'POST',
+      url: `${APIClent.baseURL}/blog`,
+      data: formData,
+    })
+  },
 }

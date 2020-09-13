@@ -111,6 +111,11 @@ export default {
         url: '/login',
         icon: 'mdi-login',
       },
+      {
+        label: 'Signup',
+        url: '/signup',
+        icon: 'mdi-fountain-pen-tip',
+      },
     ],
   }),
   watch: {

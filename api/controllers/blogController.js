@@ -48,6 +48,7 @@ exports.createBlog = catchAsync(async (req, res) => {
   } catch (e) {
     res.status(400).json({
       status: 'fail',
+      message: e.message,
     })
   }
 })

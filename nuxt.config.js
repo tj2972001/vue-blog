@@ -60,6 +60,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/toast',
   ],
   /*
    ** Axios module configuration
@@ -93,4 +94,12 @@ export default {
    */
   build: { vendor: ['@johmun/vue-tags-input'] },
   serverMiddleware: ['~/api/app.js'],
+  toast: {
+    position: 'bottom-right',
+    theme: 'bubble',
+    duration: 3000,
+    register: [
+      // Register custom toasts
+    ],
+  },
 }

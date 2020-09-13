@@ -20,5 +20,10 @@ export const actions = {
     const article = await EventService.getArticle(id)
     ctx.commit('SET_ARTICLE', article)
   },
+  async createArticle(ctx, formData) {
+    await EventService.postArticle(formData)
+    // console.log()
+    // ctx.commit('SET_ARTICLE', article.data.data.blog)
+  },
 }
 export const getters = {}

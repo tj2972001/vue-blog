@@ -12,11 +12,11 @@ const blogSchema = new mongoose.Schema(
     },
     dateCreated: {
       type: Date,
-      // required: true,
+      required: true,
     },
     saveAsDraft: {
       type: Boolean,
-      default: false,
+      required: true,
     },
     categories: {
       type: [
@@ -26,11 +26,6 @@ const blogSchema = new mongoose.Schema(
         },
       ],
       validate: [arrayLimit, 'Categories exceeds the limit of 10'],
-    },
-    slug: {
-      type: String,
-      // required: true,
-      unique: true,
     },
   },
   {

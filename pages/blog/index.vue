@@ -13,7 +13,7 @@
     >
       <v-icon>mdi-grease-pencil</v-icon>
     </v-btn>
-    <h2>Welcome to my blog {{ allBlogs }}</h2>
+    <h2>Welcome to my blog</h2>
     <ArticleCard
       v-for="article in allBlogs"
       :key="article._id"
