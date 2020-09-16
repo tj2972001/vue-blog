@@ -61,6 +61,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/toast',
+    'vue-social-sharing/nuxt',
   ],
   /*
    ** Axios module configuration

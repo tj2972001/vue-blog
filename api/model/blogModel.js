@@ -5,6 +5,10 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    discription: {
+      type: String,
+      minlength: [50, 'Discription must be atleast 50 characters long'],
+    },
     title: {
       type: String,
       required: true,

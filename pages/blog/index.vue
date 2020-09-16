@@ -1,5 +1,5 @@
 <template>
-  <v-sheet height="100vh" class="overflow-hidden" style="position: relative">
+  <v-sheet class="overflow-hidden" style="position: relative">
     <NavigationDrawer />
     <v-btn
       outlined
@@ -19,12 +19,29 @@
       :key="article._id"
       :article="article"
     />
+    <div class="text-center">
+      <v-container>
+        <v-row justify="center">
+          <v-col cols="8">
+            <v-container class="max-width">
+              <v-pagination
+                v-model="curPage"
+                class="my-4"
+                :length="pageCount"
+                @input="onPageChange"
+              ></v-pagination>
+            </v-container>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
   </v-sheet>
 </template>
 <script>
 import NavigationDrawer from '@/components/NavigationDrawer.vue'
 import ArticleCard from '@/components/ArticleCard'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+
 export default {
   components: {
     NavigationDrawer,
@@ -33,8 +50,9 @@ export default {
   fetch(ctx) {
     try {
       return ctx.store.dispatch('events/fetchArticles', {
-        page: 1,
-        limit: 10,
+        page: ctx.route.query.page || 1,
+        limit: ctx.route.query.limit || 3,
+        sort: ctx.route.query.sort || '-dateCreated',
       })
     } catch (e) {
       ctx.error({
@@ -43,8 +61,26 @@ export default {
       })
     }
   },
+  methods: {
+    ...mapActions('events', ['fetchArticles']),
+    async onPageChange(e) {
+      this.curPage = e
+      await this.fetchArticles({
+        page: e,
+        limit: this.curLim,
+        sort: this.$route.query.sort || '-dateCreated',
+      })
+    },
+  },
   computed: mapState({
     allBlogs: (state) => state.events.articles,
+    allBlogsCount: (state) => state.events.totalArticlesCount,
+    curPage: (state) => state.events.curPage,
+    curLim: (state) => state.events.curLim,
+    pageCount() {
+      const x = this.allBlogsCount / this.curLim
+      return Math.ceil(x)
+    },
   }),
 }
 </script>

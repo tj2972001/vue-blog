@@ -17,8 +17,10 @@ exports.getAllBlogs = catchAsync(async (req, res) => {
       .limitFields()
       .paginate()
     const blogs = await features.query
+    const totalBlogsCount = await blogModel.count({})
     res.status(200).json({
       status: 'success',
+      totalBlogsCount,
       data: {
         blogs,
       },
@@ -37,6 +39,7 @@ exports.createBlog = catchAsync(async (req, res) => {
       categories: req.body.categories,
       saveAsDraft: req.body.saveAsDraft,
       content: req.body.content,
+      discription: req.body.discription,
       dateCreated: req.body.dateCreated,
     })
     res.status(200).json({

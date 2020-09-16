@@ -11,13 +11,13 @@ const APIClent = {
 }
 
 export default {
-  getArticles(page, limit) {
-    return axios.get(`${APIClent.baseURL}/blog/?page=${page}/?limit=${limit}`)
+  getArticles(page, limit, sort) {
+    return axios.get(
+      `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}`
+    )
   },
   getArticle(id) {
-    return axios.get({
-      url: APIClent.baseURL + '/blog/:' + id,
-    })
+    return axios.get(`${APIClent.baseURL}/blog/${id}`)
   },
   login(formData) {
     return axios({

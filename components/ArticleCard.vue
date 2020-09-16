@@ -13,13 +13,29 @@
         >
       </v-list-item-content>
     </v-list-item>
-
+    <v-list-item>
+      <v-row>
+        <v-col cols="12" sm="12" md="12" lg="12">
+          <v-sheet>
+            <v-chip-group column>
+              <v-chip v-for="tag in article.categories" :key="tag">
+                {{ tag }}
+              </v-chip>
+            </v-chip-group>
+          </v-sheet>
+        </v-col>
+      </v-row>
+    </v-list-item>
     <v-card-text v-html="article.content"> </v-card-text>
 
     <v-card-actions>
-      <v-btn text color="deep-purple accent-4" :to="`/blog/${article._id}`">
-        Read
-      </v-btn>
+      <nuxt-link
+        :to="{
+          name: 'blog-article',
+          params: { index: article._id },
+        }"
+        ><v-btn text color="deep-purple accent-4"> Read </v-btn></nuxt-link
+      >
       <v-btn text color="deep-purple accent-4"> Bookmark </v-btn>
       <v-spacer></v-spacer>
       <v-btn icon>

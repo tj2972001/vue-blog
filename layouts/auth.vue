@@ -5,14 +5,18 @@
       <nuxt />
       <h2>Or <nuxt-link to="/">Go home</nuxt-link></h2>
     </v-content>
+    <Footer></Footer>
   </v-app>
 </template>
 
 <script>
 import AuthNavBar from '@/components/AuthNavBar'
+import Footer from '@/components/Footer'
+
 export default {
   components: {
     AuthNavBar,
+    Footer,
   },
 }
 </script>

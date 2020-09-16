@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar class="hidden-xs-and-down" app color="primary accent-4" dark>
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
+      <v-toolbar-title class="text-h5">{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
         v-for="link in links"
@@ -11,47 +11,21 @@
         rounded
         >{{ link.label }}</v-btn
       >
-      <v-menu left bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item>
-            <v-list-item-title @click="switchMode">
-              Switch to
-              {{ $vuetify.theme.dark ? 'light' : 'dark' }}
-              mode
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
     </v-app-bar>
     <v-app-bar app dark color="primary" class="hidden-sm-and-up">
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"
+        ><v-icon>mdi-apps</v-icon></v-app-bar-nav-icon
+      >
+      <v-toolbar-title class="text-h5">{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-menu left bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item>
-            <v-list-item-title @click="switchMode">
-              Switch to
-              {{ $vuetify.theme.dark ? 'light' : 'dark' }}
-              mode
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" width="80vw" absolute temporary>
+    <v-navigation-drawer
+      v-model="drawer"
+      undefined
+      width="80vw"
+      absolute
+      temporary
+    >
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title"> {{ title }} </v-list-item-title>
