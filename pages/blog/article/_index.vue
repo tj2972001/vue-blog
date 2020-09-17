@@ -3,12 +3,24 @@
     <v-card width="1000" max-width="85%" class="mx-auto pa-5">
       <v-card-title> {{ article.title }} </v-card-title>
       <v-card-subtitle>By Tejas Jadhav on {{ dateCreated }} </v-card-subtitle>
+
       <v-card-text style="font-family: sans-serif">
         {{ article.description }}
       </v-card-text>
       <v-divider> </v-divider>
       <v-card-text style="font-family: sans-serif" v-html="article.content">
       </v-card-text>
+      <ShareNetwork
+        v-for="network in networks"
+        :key="network.network"
+        :network="network.network"
+        :url="`http://localhost:3000/blog/${article._id}`"
+        :title="`${article.title}`"
+      >
+        <v-btn icon>
+          <v-icon :color="network.color"> {{ network.icon }} </v-icon>
+        </v-btn>
+      </ShareNetwork>
     </v-card>
   </v-container>
 </template>

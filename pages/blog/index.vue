@@ -49,10 +49,16 @@ export default {
   },
   fetch(ctx) {
     try {
+      const categories = []
+      if (ctx.route.query.category) {
+        categories.push('"' + ctx.route.query.category + '"')
+        console.log(categories)
+      }
       return ctx.store.dispatch('events/fetchArticles', {
         page: ctx.route.query.page || 1,
         limit: ctx.route.query.limit || 3,
         sort: ctx.route.query.sort || '-dateCreated',
+        categories,
       })
     } catch (e) {
       ctx.error({
@@ -65,20 +71,28 @@ export default {
     ...mapActions('events', ['fetchArticles']),
     async onPageChange(e) {
       this.curPage = e
+      const categories = []
+      if (this.$route.query.category) {
+        categories.push('"' + this.$route.query.category + '"')
+        console.log(categories)
+      }
       await this.fetchArticles({
         page: e,
         limit: this.curLim,
         sort: this.$route.query.sort || '-dateCreated',
+        categories,
       })
     },
   },
   computed: mapState({
     allBlogs: (state) => state.events.articles,
-    allBlogsCount: (state) => state.events.totalArticlesCount,
+    // allBlogsCount: (state) => state.events.totalArticlesCount,
+    allBlogsCountAfterFilter: (state) =>
+      state.events.totalArticlesCountAfterFilter,
     curPage: (state) => state.events.curPage,
     curLim: (state) => state.events.curLim,
     pageCount() {
-      const x = this.allBlogsCount / this.curLim
+      const x = this.allBlogsCountAfterFilter / this.curLim
       return Math.ceil(x)
     },
   }),

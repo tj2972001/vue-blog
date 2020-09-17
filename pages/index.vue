@@ -21,6 +21,7 @@
           :key="chip.label"
           class="ma-2"
           :color="chip.color"
+          :to="'/blog/?category=' + chip.category"
         >
           {{ chip.label }}
           <v-icon right>{{ chip.icon }}</v-icon>
@@ -62,20 +63,24 @@ export default {
           label: 'Node.js',
           icon: 'mdi-nodejs',
           color: '#6cf065',
+          category: 'Node.js',
         },
         {
           label: 'Vue',
           icon: 'mdi-vuejs',
           color: '#b6c9b5',
+          category: 'first',
         },
         {
           label: 'Databases',
           icon: 'mdi-database',
+          category: 'Databases',
         },
         {
           label: 'Vuetify',
           icon: 'mdi-vuetify',
           color: '#34b8e0',
+          category: 'Vuetify',
         },
       ],
       popularCourses: [

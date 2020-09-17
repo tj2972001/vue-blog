@@ -11,10 +11,16 @@ const APIClent = {
 }
 
 export default {
-  getArticles(page, limit, sort) {
-    return axios.get(
-      `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}`
-    )
+  getArticles(page, limit, sort, categories) {
+    if (categories.length > 0) {
+      return axios.get(
+        `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}&categories=[${categories}]`
+      )
+    } else {
+      return axios.get(
+        `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}`
+      )
+    }
   },
   getArticle(id) {
     return axios.get(`${APIClent.baseURL}/blog/${id}`)

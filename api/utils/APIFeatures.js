@@ -6,15 +6,13 @@ class APIFeatures {
 
   filter() {
     const queryObj = { ...this.queryString }
-    const excludedFields = ['page', 'sort', 'limit', 'fields']
+    const excludedFields = ['page', 'sort', 'limit', 'fields', 'categories']
     excludedFields.forEach((el) => delete queryObj[el])
 
     // 1B) Advanced filtering
     let queryStr = JSON.stringify(queryObj)
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`)
-
     this.query = this.query.find(JSON.parse(queryStr))
-
     return this
   }
 
@@ -47,6 +45,16 @@ class APIFeatures {
 
     this.query = this.query.skip(skip).limit(limit)
 
+    return this
+  }
+
+  categories() {
+    if (this.queryString.categories) {
+      const categories = this.queryString.categories
+      const catObject = JSON.parse(categories)
+      const catArr = Array.from(catObject)
+      this.query = this.query.find({ categories: { $in: catArr } })
+    }
     return this
   }
 }

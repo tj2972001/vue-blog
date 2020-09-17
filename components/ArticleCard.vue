@@ -38,12 +38,28 @@
       >
       <v-btn text color="deep-purple accent-4"> Bookmark </v-btn>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-share-variant</v-icon>
-      </v-btn>
+      <div class="text-center">
+        <v-btn icon @click="overlay = !overlay">
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        <v-overlay :value="overlay">
+          This feature will be available soon
+          <v-btn icon @click="overlay = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-overlay>
+      </div>
+      <div class="text-center">
+        <v-btn icon @click="overlay = !overlay">
+          <v-icon>mdi-share-variant</v-icon>
+        </v-btn>
+        <v-overlay :value="overlay">
+          This feature will be available soon
+          <v-btn icon @click="overlay = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-overlay>
+      </div>
     </v-card-actions>
   </v-card>
 </template>
@@ -55,6 +71,9 @@ export default {
       required: true,
     },
   },
+  data: () => ({
+    overlay: false,
+  }),
   computed: {
     dateCreated() {
       return this.article.dateCreated.split('T')[0]
