@@ -151,31 +151,47 @@ exports.restrictTo = (...roles) => {
   }
 }
 
-exports.resetPassword = catchAsync(async (req, res, next) => {
-  /// /1. get token from req.params.token
-  /// /2. hash it and compare it with one from db
-  const hashedToken = crypto
-    .createHash('sha256')
-    .update(req.params.token)
-    .digest('hex')
-  const user = await userModel.findOne({
-    passwordResetExpires: { $gt: Date.now() },
-    passwordResetToken: hashedToken,
-  })
-  console.log('IN reset pass')
-  if (!user) {
-    return next(new AppError('Cant found user with that token'), 404)
-  }
-  user.password = req.body.password
-  user.passwordConfirm = req.body.passwordConfirm
-  user.passwordResetToken = undefined
-  user.passwordResetExpires = undefined
-  await user.save()
-  createSendToken(user, 200, res)
-})
+// exports.resetPassword = catchAsync(async (req, res, next) => {
+//   /// /1. get token from req.params.token
+//   /// /2. hash it and compare it with one from db
+//   const hashedToken = crypto
+//     .createHash('sha256')
+//     .update(req.params.token)
+//     .digest('hex')
+//   const user = await userModel.findOne({
+//     passwordResetExpires: { $gt: Date.now() },
+//     passwordResetToken: hashedToken,
+//   })
+//   if (!user) {
+//     return next(new AppError('Cant found user with that token'), 404)
+//   }
+//   user.password = req.body.password
+//   user.passwordConfirm = req.body.passwordConfirm
+//   user.passwordResetToken = undefined
+//   user.passwordResetExpires = undefined
+//   await user.save()
+//   // createSendToken(user, 200, res)
+//   res.status(200).json({
+//     status: 'success',
+//     message:
+//       'Password Updated Successfully And Logged You Out. Now login again',
+//   })
+// })
+
+// exports.updatePassword = catchAsync(async (req, res, next) => {
+//   const user = await userModel.findById(req.user.id).select('+password')
+//   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+//     return next(new AppError('Your current password is wrong.', 401))
+//   }
+//
+//   user.password = req.body.password
+//   user.passwordConfirm = req.body.passwordConfirm
+//   await user.save()
+//   // createSendToken(user, 200, res);
+// })
 
 exports.logout = (req, res) => {
-  res.cookie('jwt', 'loggedout', {
+  res.cookie('jwt', 'loggedouthahahhahahhahhaha', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   })

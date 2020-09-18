@@ -8,4 +8,12 @@ export const actions = {
     const user = await EventService.updateUserInfo(formData)
     return user
   },
+  async logOutUser() {
+    const user = await EventService.logOut()
+    return user
+  },
+  // async updatePassword(formData) {
+  //   const response = await EventService.updatePassword(formData)
+  //   return response
+  // },
 }

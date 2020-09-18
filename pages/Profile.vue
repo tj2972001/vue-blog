@@ -8,6 +8,7 @@
           :small="$vuetify.breakpoint.xsOnly"
           dark
           rounded
+          @click="logOut"
           >Logout</v-btn
         >
       </v-col>
@@ -45,6 +46,47 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-row>
+      <!--      <v-col cols="12" align="center">-->
+      <!--        <v-card class="pa-4">-->
+      <!--          <v-card-title> Password Reset </v-card-title>-->
+      <!--          <v-form @submit.prevent="updatePassword">-->
+      <!--            <v-text-field-->
+      <!--              v-model="passwordData.passwordCurrent"-->
+      <!--              label="Enter current password"-->
+      <!--              prepend-icon="mdi-key-variant"-->
+      <!--              :append-icon="passwordShowCurPassword ? 'mdi-eye' : 'mdi-eye-off'"-->
+      <!--              :type="passwordShowCurPassword ? 'text' : 'password'"-->
+      <!--              required-->
+      <!--              @click:append="passwordShowCurPassword = !passwordShowCurPassword"-->
+      <!--            ></v-text-field>-->
+      <!--            <v-text-field-->
+      <!--              v-model="passwordData.password"-->
+      <!--              label="Select new password"-->
+      <!--              prepend-icon="mdi-key-variant"-->
+      <!--              :append-icon="passwordShowNewPassword ? 'mdi-eye' : 'mdi-eye-off'"-->
+      <!--              :type="passwordShowNewPassword ? 'text' : 'password'"-->
+      <!--              required-->
+      <!--              @click:append="passwordShowNewPassword = !passwordShowNewPassword"-->
+      <!--            ></v-text-field>-->
+      <!--            <v-text-field-->
+      <!--              v-model="passwordData.passwordConfirm"-->
+      <!--              label="Confirm new password"-->
+      <!--              prepend-icon="mdi-lock-question"-->
+      <!--              :append-icon="-->
+      <!--                passwordShowConfirmNewPassword ? 'mdi-eye' : 'mdi-eye-off'-->
+      <!--              "-->
+      <!--              :type="passwordShowConfirmNewPassword ? 'text' : 'password'"-->
+      <!--              required-->
+      <!--              @click:append="-->
+      <!--                passwordShowConfirmNewPassword = !passwordShowConfirmNewPassword-->
+      <!--              "-->
+      <!--            ></v-text-field>-->
+      <!--            <v-btn type="submit" color="primary">Update Password</v-btn>-->
+      <!--          </v-form>-->
+      <!--        </v-card>-->
+      <!--      </v-col>-->
+    </v-row>
   </v-container>
 </template>
 <script>
@@ -55,10 +97,21 @@ export default {
     const user = { ...this.$auth.user }
     return {
       user,
+      // passwordShowCurPassword: false,
+      // passwordShowNewPassword: false,
+      // passwordShowConfirmNewPassword: false,
+      // passwordData: {
+      //   passwordCurrent: '',
+      //   password: '',
+      //   passwordConfirm: '',
+      // },
     }
   },
   methods: {
     ...mapActions('user', ['updateUserInfo']),
+    ...mapActions('user', ['logOutUser']),
+    // ...mapActions('user', ['updatePassword']),
+
     async updateInfo() {
       try {
         const userInfo = {
@@ -75,6 +128,30 @@ export default {
         this.$toast.error(e.response.data.message)
       }
     },
+    async logOut() {
+      try {
+        this.$toast.info('Logging you out')
+        const response = await this.logOutUser()
+        if (response.data.status === 'success') {
+          await this.$auth.logout()
+          this.$toast.success('Successfully logged you out')
+        }
+      } catch (e) {
+        this.$toast.error(e.response.data.message)
+      }
+    },
+    // async updatePassword() {
+    //   try {
+    //     const formData = { ...this.passwordData }
+    //     this.$toast.info('Updating password')
+    //     const response = await this.updatePassword(formData)
+    //     if (response.data.status === 'success') {
+    //       this.$toast.info('Successfully updated password')
+    //     }
+    //   } catch (e) {
+    //     this.$toast.error(e.response.data.message)
+    //   }
+    // },
   },
 }
 </script>

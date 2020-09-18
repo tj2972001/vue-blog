@@ -32,6 +32,12 @@ export default {
       data: formData,
     })
   },
+  logOut() {
+    return axios({
+      method: 'GET',
+      url: `${APIClent.baseURL}/user/logout`,
+    })
+  },
   signup(formData) {
     return axios({
       method: 'POST',
@@ -53,4 +59,11 @@ export default {
       data: formData,
     })
   },
+  // updatePassword(formData) {
+  //   return axios({
+  //     method: 'PATCH',
+  //     url: `${APIClent.baseURL}/user/updatePassword`,
+  //     data: formData,
+  //   })
+  // },
 }
