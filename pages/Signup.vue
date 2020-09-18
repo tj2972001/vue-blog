@@ -63,7 +63,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('user', ['fetchUserBySignup']),
+    ...mapActions('user', ['signUp']),
     async signup() {
       const formData = {
         name: this.name,
@@ -73,12 +73,12 @@ export default {
       }
       try {
         this.$toast.info('Hold on ! Signing you up')
-        await this.fetchUserBySignup(formData)
+        await this.signUp(formData)
         this.$toast.success('Successfully Created account ')
         this.$toast.info('Now you can Login', {
           duration: 10000,
         })
-        this.$router.push({ name: 'Login' })
+        await this.$router.push({ name: 'Login' })
       } catch (e) {
         this.$toast.error(e.response.data.message)
       }

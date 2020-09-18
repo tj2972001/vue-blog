@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 export default {
   layout: 'auth',
   data: () => ({
@@ -32,23 +31,24 @@ export default {
     email: '',
     password: '',
   }),
-  computed: {
-    user: (state) => state.user.user,
-  },
   methods: {
-    ...mapActions('user', ['fetchUserByLogin']),
-
     async login() {
       const formData = {}
       formData.email = this.email
       formData.password = this.password
       try {
         this.$toast.info('Logging in ')
-        await this.fetchUserByLogin(formData)
-        this.$toast.success('Login successfully')
-        this.$router.push({
-          name: 'index',
+        const userResponse = await this.$auth.loginWith('local', {
+          data: formData,
         })
+        const userStatus = userResponse.data.status
+        console.log('USERSTATUS: ', userStatus)
+        if (userStatus === 'success') {
+          this.$toast.success('Login successfully')
+          this.$router.push({
+            name: 'index',
+          })
+        }
       } catch (e) {
         this.$toast.error(e.response.data.message)
       }

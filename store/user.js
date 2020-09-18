@@ -1,18 +1,11 @@
 import EventService from '@/services/EventService'
-export const state = () => ({
-  user: {},
-})
-export const mutations = {
-  SET_USER(state, user) {
-    state.user = user
-  },
-}
+
 export const actions = {
-  async fetchUserByLogin({ commit, error }, formData) {
-    const user = await EventService.login(formData)
-    commit('SET_USER', user.data.data.user)
-  },
-  async fetchUserBySignup({ commit, error }, formData) {
+  async signUp(ctx, formData) {
     await EventService.signup(formData)
+  },
+  async updateUserInfo({ commit }, formData) {
+    const user = await EventService.updateUserInfo(formData)
+    return user
   },
 }

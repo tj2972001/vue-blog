@@ -23,5 +23,6 @@ router
 router
   .route('/profile/delete')
   .patch(authController.protect, userController.deleteMe)
+router.route('/profile/me').get(authController.protect, userController.getMe)
 
 module.exports = router

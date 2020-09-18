@@ -67,23 +67,6 @@ export default {
       })
     }
   },
-  methods: {
-    ...mapActions('events', ['fetchArticles']),
-    async onPageChange(e) {
-      this.curPage = e
-      const categories = []
-      if (this.$route.query.category) {
-        categories.push('"' + this.$route.query.category + '"')
-        console.log(categories)
-      }
-      await this.fetchArticles({
-        page: e,
-        limit: this.curLim,
-        sort: this.$route.query.sort || '-dateCreated',
-        categories,
-      })
-    },
-  },
   computed: mapState({
     allBlogs: (state) => state.events.articles,
     // allBlogsCount: (state) => state.events.totalArticlesCount,
@@ -96,5 +79,21 @@ export default {
       return Math.ceil(x)
     },
   }),
+  methods: {
+    ...mapActions('events', ['fetchArticles']),
+    async onPageChange(e) {
+      this.curPage = e
+      const categories = []
+      if (this.$route.query.category) {
+        categories.push('"' + this.$route.query.category + '"')
+      }
+      await this.fetchArticles({
+        page: e,
+        limit: this.curLim,
+        sort: this.$route.query.sort || '-dateCreated',
+        categories,
+      })
+    },
+  },
 }
 </script>

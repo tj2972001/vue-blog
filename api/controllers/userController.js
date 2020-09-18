@@ -84,7 +84,18 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     },
   })
 })
-
+exports.getMe = catchAsync(async (req, res, next) => {
+  const user = await userModel.findById(req.user._id)
+  if (!user) {
+    return next(new AppError('Sorry No user found', 404))
+  }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  })
+})
 const filterObj = (obj, ...allowdedFields) => {
   const newObj = {}
   Object.keys(obj).forEach((el) => {

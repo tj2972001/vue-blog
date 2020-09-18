@@ -46,4 +46,11 @@ export default {
       data: formData,
     })
   },
+  updateUserInfo(formData) {
+    return axios({
+      method: 'PATCH',
+      url: `${APIClent.baseURL}/user/profile/update`,
+      data: formData,
+    })
+  },
 }

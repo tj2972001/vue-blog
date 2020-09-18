@@ -11,6 +11,22 @@
         rounded
         >{{ link.label }}</v-btn
       >
+      <template v-if="!$auth.loggedIn">
+        <v-btn
+          v-for="link in authLinks"
+          :key="`${link.label}-header-link`"
+          text
+          :to="link.url"
+          rounded
+          >{{ link.label }}</v-btn
+        >
+      </template>
+      <template v-else>
+        <nuxt-link to="/profile"
+          ><v-avatar size="30">
+            <v-img :src="this.$auth.user.photo"></v-img> </v-avatar
+        ></nuxt-link>
+      </template>
     </v-app-bar>
     <v-app-bar app dark color="primary" class="hidden-sm-and-up">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"
@@ -52,6 +68,32 @@
               <v-list-item-title>{{ link.label }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <template v-if="!$auth.loggedIn">
+            <v-list-item
+              v-for="link in authLinks"
+              :key="`${link.label}-header-link`"
+              :to="link.url"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ link.icon }}</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ link.label }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+
+          <v-list-item v-else>
+            <v-list-item-icon>
+              <v-icon>mdi-emoticon-outline</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Your profile</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -80,6 +122,8 @@ export default {
         url: '/about-me',
         icon: 'mdi-face',
       },
+    ],
+    authLinks: [
       {
         label: 'Login',
         url: '/login',
@@ -95,11 +139,6 @@ export default {
   watch: {
     group() {
       this.drawer = false
-    },
-  },
-  methods: {
-    switchMode() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
     },
   },
 }

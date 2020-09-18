@@ -62,12 +62,15 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/toast',
     'vue-social-sharing/nuxt',
+    '@nuxtjs/auth',
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:3000/api/v1',
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -102,5 +105,28 @@ export default {
     register: [
       // Register custom toasts
     ],
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/user/login',
+            method: 'post',
+            propertyName: 'token',
+          },
+          logout: false,
+          user: {
+            url: '/user/profile/me',
+            method: 'get',
+            propertyName: 'data.user',
+          },
+        },
+        // tokenRequired: true,
+        // tokenType: 'bearer',
+        // globalToken: true,
+        // autoFetchUser: true
+      },
+    },
   },
 }
