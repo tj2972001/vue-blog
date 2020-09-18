@@ -59,11 +59,11 @@ export default {
       data: formData,
     })
   },
-  // updatePassword(formData) {
-  //   return axios({
-  //     method: 'PATCH',
-  //     url: `${APIClent.baseURL}/user/updatePassword`,
-  //     data: formData,
-  //   })
-  // },
+  updatePassword(formData) {
+    return axios({
+      method: 'PATCH',
+      url: `${APIClent.baseURL}/user/updatePassword`,
+      data: formData,
+    })
+  },
 }

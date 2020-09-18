@@ -7,9 +7,9 @@ router.route('/login').post(authController.login)
 router.route('/signup').post(authController.signUp)
 router.route('/forgot-password').post(authController.forgotPassword)
 // router.route('/reset-password/:token').post(authController.resetPassword)
-// router
-//   .route('/updatePassword')
-//   .patch(authController.protect, authController.updatePassword)
+router
+  .route('/updatePassword')
+  .patch(authController.protect, authController.updatePassword)
 router.route('/logout').get(authController.protect, authController.logout)
 
 router.route('/all').get(userController.getAllUsers)

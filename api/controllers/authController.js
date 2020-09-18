@@ -1,4 +1,4 @@
-const crypto = require('crypto')
+// const crypto = require('crypto')
 // const { promisify } = require('util')
 const jwt = require('jsonwebtoken')
 
@@ -178,17 +178,20 @@ exports.restrictTo = (...roles) => {
 //   })
 // })
 
-// exports.updatePassword = catchAsync(async (req, res, next) => {
-//   const user = await userModel.findById(req.user.id).select('+password')
-//   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
-//     return next(new AppError('Your current password is wrong.', 401))
-//   }
-//
-//   user.password = req.body.password
-//   user.passwordConfirm = req.body.passwordConfirm
-//   await user.save()
-//   // createSendToken(user, 200, res);
-// })
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  const user = await userModel.findById(req.user.id).select('+password')
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+    return next(new AppError('Your current password is wrong.', 401))
+  }
+  user.password = req.body.password
+  user.passwordConfirm = req.body.passwordConfirm
+  await user.save()
+  res.status(200).json({
+    status: 'success',
+    message: 'Successfully changed password',
+  })
+  // createSendToken(user, 200, res);
+})
 
 exports.logout = (req, res) => {
   res.cookie('jwt', 'loggedouthahahhahahhahhaha', {

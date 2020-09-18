@@ -81,11 +81,11 @@ userSchema.pre(/Update$/, function (next) {
   this.lastEdited = Date.now()
   next()
 })
-userSchema.methods.correctPassword = async (
-  userTypedPassword,
-  databasePassword
-) => {
-  return await bcrypt.compare(userTypedPassword, databasePassword)
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword)
 }
 userSchema.methods.createResetPasswordToken = function (next) {
   const resetToken = crypto.randomBytes(32).toString('hex')

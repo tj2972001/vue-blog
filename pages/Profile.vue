@@ -47,45 +47,45 @@
       </v-col>
     </v-row>
     <v-row>
-      <!--      <v-col cols="12" align="center">-->
-      <!--        <v-card class="pa-4">-->
-      <!--          <v-card-title> Password Reset </v-card-title>-->
-      <!--          <v-form @submit.prevent="updatePassword">-->
-      <!--            <v-text-field-->
-      <!--              v-model="passwordData.passwordCurrent"-->
-      <!--              label="Enter current password"-->
-      <!--              prepend-icon="mdi-key-variant"-->
-      <!--              :append-icon="passwordShowCurPassword ? 'mdi-eye' : 'mdi-eye-off'"-->
-      <!--              :type="passwordShowCurPassword ? 'text' : 'password'"-->
-      <!--              required-->
-      <!--              @click:append="passwordShowCurPassword = !passwordShowCurPassword"-->
-      <!--            ></v-text-field>-->
-      <!--            <v-text-field-->
-      <!--              v-model="passwordData.password"-->
-      <!--              label="Select new password"-->
-      <!--              prepend-icon="mdi-key-variant"-->
-      <!--              :append-icon="passwordShowNewPassword ? 'mdi-eye' : 'mdi-eye-off'"-->
-      <!--              :type="passwordShowNewPassword ? 'text' : 'password'"-->
-      <!--              required-->
-      <!--              @click:append="passwordShowNewPassword = !passwordShowNewPassword"-->
-      <!--            ></v-text-field>-->
-      <!--            <v-text-field-->
-      <!--              v-model="passwordData.passwordConfirm"-->
-      <!--              label="Confirm new password"-->
-      <!--              prepend-icon="mdi-lock-question"-->
-      <!--              :append-icon="-->
-      <!--                passwordShowConfirmNewPassword ? 'mdi-eye' : 'mdi-eye-off'-->
-      <!--              "-->
-      <!--              :type="passwordShowConfirmNewPassword ? 'text' : 'password'"-->
-      <!--              required-->
-      <!--              @click:append="-->
-      <!--                passwordShowConfirmNewPassword = !passwordShowConfirmNewPassword-->
-      <!--              "-->
-      <!--            ></v-text-field>-->
-      <!--            <v-btn type="submit" color="primary">Update Password</v-btn>-->
-      <!--          </v-form>-->
-      <!--        </v-card>-->
-      <!--      </v-col>-->
+      <v-col cols="12" align="center">
+        <v-card class="pa-4">
+          <v-card-title> Password Reset </v-card-title>
+          <v-form @submit.prevent="updateMyPassword">
+            <v-text-field
+              v-model="passwordData.passwordCurrent"
+              label="Enter current password"
+              prepend-icon="mdi-key-variant"
+              :append-icon="passwordShowCurPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="passwordShowCurPassword ? 'text' : 'password'"
+              required
+              @click:append="passwordShowCurPassword = !passwordShowCurPassword"
+            ></v-text-field>
+            <v-text-field
+              v-model="passwordData.password"
+              label="Select new password"
+              prepend-icon="mdi-key-variant"
+              :append-icon="passwordShowNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="passwordShowNewPassword ? 'text' : 'password'"
+              required
+              @click:append="passwordShowNewPassword = !passwordShowNewPassword"
+            ></v-text-field>
+            <v-text-field
+              v-model="passwordData.passwordConfirm"
+              label="Confirm new password"
+              prepend-icon="mdi-lock-question"
+              :append-icon="
+                passwordShowConfirmNewPassword ? 'mdi-eye' : 'mdi-eye-off'
+              "
+              :type="passwordShowConfirmNewPassword ? 'text' : 'password'"
+              required
+              @click:append="
+                passwordShowConfirmNewPassword = !passwordShowConfirmNewPassword
+              "
+            ></v-text-field>
+            <v-btn type="submit" color="primary">Update Password</v-btn>
+          </v-form>
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -97,20 +97,20 @@ export default {
     const user = { ...this.$auth.user }
     return {
       user,
-      // passwordShowCurPassword: false,
-      // passwordShowNewPassword: false,
-      // passwordShowConfirmNewPassword: false,
-      // passwordData: {
-      //   passwordCurrent: '',
-      //   password: '',
-      //   passwordConfirm: '',
-      // },
+      passwordShowCurPassword: false,
+      passwordShowNewPassword: false,
+      passwordShowConfirmNewPassword: false,
+      passwordData: {
+        passwordCurrent: '',
+        password: '',
+        passwordConfirm: '',
+      },
     }
   },
   methods: {
     ...mapActions('user', ['updateUserInfo']),
     ...mapActions('user', ['logOutUser']),
-    // ...mapActions('user', ['updatePassword']),
+    ...mapActions('user', ['updatePassword']),
 
     async updateInfo() {
       try {
@@ -140,18 +140,19 @@ export default {
         this.$toast.error(e.response.data.message)
       }
     },
-    // async updatePassword() {
-    //   try {
-    //     const formData = { ...this.passwordData }
-    //     this.$toast.info('Updating password')
-    //     const response = await this.updatePassword(formData)
-    //     if (response.data.status === 'success') {
-    //       this.$toast.info('Successfully updated password')
-    //     }
-    //   } catch (e) {
-    //     this.$toast.error(e.response.data.message)
-    //   }
-    // },
+    async updateMyPassword() {
+      try {
+        const formData = { ...this.passwordData }
+        this.$toast.info('Updating password')
+        const response = await this.updatePassword(formData)
+        if (response.data.status === 'success') {
+          this.$toast.info('Successfully updated password')
+          await this.logOut()
+        }
+      } catch (e) {
+        this.$toast.error(e.response.data.message)
+      }
+    },
   },
 }
 </script>
