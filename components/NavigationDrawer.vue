@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-btn
+      style="float: left"
       color="primary"
       fab
       outlined
       class="ma-2"
       :x-small="$vuetify.breakpoint.xsOnly"
       :small="$vuetify.breakpoint.mdAndUp"
-      :large="$vuetify.breakpoint.lgAndUp"
       @click.stop="drawer = !drawer"
     >
       <v-icon>mdi-filter</v-icon>
@@ -35,9 +35,16 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-select :items="item.sortList" :label="item.title"></v-select>
+            <v-select
+              v-model="selectedItem"
+              item-text="name"
+              item-value="value"
+              :items="item.sortList"
+              :label="item.title"
+            ></v-select>
           </v-list-item-content>
         </v-list-item>
+        <p>{{ selectedItem.value }}</p>
         <v-divider></v-divider>
         <v-list-item class="pa-2">
           <v-list-item-icon>
@@ -47,7 +54,9 @@
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item>
-          <v-btn color="primary" class="mt-5"> Search </v-btn>
+          <nuxt-link :to="`/blog/?sort=${selectedItem}`">
+            <v-btn color="primary" class="mt-5"> Apply </v-btn>
+          </nuxt-link>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -67,13 +76,18 @@ export default {
           title: 'Sort By',
           icon: 'mdi-sort',
           sortList: [
-            'stars : less to high',
-            'stars: hight to less',
-            'date: oldest first',
-            'date: newest first',
+            {
+              name: 'Date : Newest First',
+              value: '-dateCreated',
+            },
+            {
+              name: 'Date : Oldest First',
+              value: 'dateCreated',
+            },
           ],
         },
       ],
+      selectedItem: this.$route.query.sort || '-dateCreated',
     }
   },
 }

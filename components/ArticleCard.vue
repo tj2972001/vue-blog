@@ -18,7 +18,11 @@
         <v-col cols="12" sm="12" md="12" lg="12">
           <v-sheet>
             <v-chip-group column>
-              <v-chip v-for="tag in article.categories" :key="tag">
+              <v-chip
+                v-for="tag in article.categories"
+                :key="tag"
+                :to="`/blog/?category=${tag}`"
+              >
                 {{ tag }}
               </v-chip>
             </v-chip-group>
@@ -39,23 +43,23 @@
       <v-btn text color="deep-purple accent-4"> Bookmark </v-btn>
       <v-spacer></v-spacer>
       <div class="text-center">
-        <v-btn icon @click="overlay = !overlay">
+        <v-btn icon @click="overlay1 = !overlay1">
           <v-icon>mdi-heart</v-icon>
         </v-btn>
-        <v-overlay :value="overlay">
+        <v-overlay :value="overlay1">
           This feature will be available soon
-          <v-btn icon @click="overlay = false">
+          <v-btn icon @click="overlay1 = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-overlay>
       </div>
       <div class="text-center">
-        <v-btn icon @click="overlay = !overlay">
+        <v-btn icon @click="overlay2 = !overlay2">
           <v-icon>mdi-share-variant</v-icon>
         </v-btn>
-        <v-overlay :value="overlay">
-          This feature will be available soon
-          <v-btn icon @click="overlay = false">
+        <v-overlay :value="overlay2">
+          This will be available soon
+          <v-btn icon @click="overlay2 = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-overlay>
@@ -65,6 +69,7 @@
 </template>
 <script>
 export default {
+  watchQuery: true,
   props: {
     article: {
       type: Object,
@@ -72,7 +77,8 @@ export default {
     },
   },
   data: () => ({
-    overlay: false,
+    overlay1: false,
+    overlay2: false,
   }),
   computed: {
     dateCreated() {

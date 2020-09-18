@@ -8,7 +8,6 @@
       class="ma-2"
       :x-small="$vuetify.breakpoint.xsOnly"
       :small="$vuetify.breakpoint.mdAndUp"
-      :large="$vuetify.breakpoint.lgAndUp"
       to="/blog/create/"
     >
       <v-icon>mdi-grease-pencil</v-icon>
@@ -43,6 +42,7 @@ import ArticleCard from '@/components/ArticleCard'
 import { mapState, mapActions } from 'vuex'
 
 export default {
+  watchQuery: true,
   components: {
     NavigationDrawer,
     ArticleCard,

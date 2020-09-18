@@ -34,13 +34,17 @@ const createSendToken = (user, code, res) => {
 }
 
 exports.signUp = catchAsync(async (req, res) => {
-  const user = await userModel.create({
+  await userModel.create({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
   })
-  createSendToken(user, 200, res)
+  // createSendToken(user, 200, res)
+  res.status(200).json({
+    status: 'success',
+    message: 'Your account has been successfully created. You can login now',
+  })
 })
 
 exports.login = catchAsync(async (req, res, next) => {

@@ -74,8 +74,11 @@ export default {
       try {
         this.$toast.info('Hold on ! Signing you up')
         await this.fetchUserBySignup(formData)
-        this.$toast.success('Successfully Created account and Logged in')
-        this.$router.push({ name: 'index' })
+        this.$toast.success('Successfully Created account ')
+        this.$toast.info('Now you can Login', {
+          duration: 10000,
+        })
+        this.$router.push({ name: 'Login' })
       } catch (e) {
         this.$toast.error(e.response.data.message)
       }

@@ -14,7 +14,7 @@
     </v-app-bar>
     <v-app-bar app dark color="primary" class="hidden-sm-and-up">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"
-        ><v-icon>mdi-apps</v-icon></v-app-bar-nav-icon
+        ><v-icon>mdi-menu</v-icon></v-app-bar-nav-icon
       >
       <v-toolbar-title class="text-h5">{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>

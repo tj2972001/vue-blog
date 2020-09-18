@@ -13,7 +13,6 @@ export const actions = {
     commit('SET_USER', user.data.data.user)
   },
   async fetchUserBySignup({ commit, error }, formData) {
-    const user = await EventService.signup(formData)
-    commit('SET_USER', user.data.data.user)
+    await EventService.signup(formData)
   },
 }
