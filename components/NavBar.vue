@@ -85,7 +85,7 @@
             </v-list-item>
           </template>
 
-          <v-list-item v-else>
+          <v-list-item v-else to="/profile">
             <v-list-item-icon>
               <v-icon>mdi-emoticon-outline</v-icon>
             </v-list-item-icon>

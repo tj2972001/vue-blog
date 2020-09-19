@@ -49,10 +49,14 @@ export default {
   },
   fetch(ctx) {
     try {
-      const categories = []
-      if (ctx.route.query.category) {
-        categories.push('"' + ctx.route.query.category + '"')
-        console.log(categories)
+      let categories = []
+      const queryStr = ctx.route.query.category
+      if (queryStr) {
+        if (typeof queryStr === 'string') {
+          categories.push(queryStr)
+        } else {
+          categories = [...queryStr]
+        }
       }
       return ctx.store.dispatch('events/fetchArticles', {
         page: ctx.route.query.page || 1,

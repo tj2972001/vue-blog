@@ -52,8 +52,7 @@ class APIFeatures {
     if (this.queryString.categories) {
       const categories = this.queryString.categories
       const catObject = JSON.parse(categories)
-      const catArr = Array.from(catObject)
-      this.query = this.query.find({ categories: { $in: catArr } })
+      this.query = this.query.find({ categories: { $in: catObject } })
     }
     return this
   }

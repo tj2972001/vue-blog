@@ -12,9 +12,11 @@ const APIClent = {
 
 export default {
   getArticles(page, limit, sort, categories) {
+    const catArr = Array.from(categories)
+    const catNeetArr = catArr.map((e) => '"' + e + '"')
     if (categories.length > 0) {
       return axios.get(
-        `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}&categories=[${categories}]`
+        `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}&categories=[${catNeetArr}]`
       )
     } else {
       return axios.get(
