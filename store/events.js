@@ -52,5 +52,15 @@ export const actions = {
   async createArticle(ctx, formData) {
     await EventService.postArticle(formData)
   },
+  async clapArticle(ctx, articleId) {
+    const article = await EventService.clap(articleId)
+    ctx.commit('SET_ARTICLE', article.data.data.post)
+    return article
+  },
+  async unClapArticle(ctx, articleId) {
+    const article = await EventService.unclap(articleId)
+    ctx.commit('SET_ARTICLE', article.data.data.post)
+    return article
+  },
 }
 export const getters = {}

@@ -43,11 +43,11 @@
       <v-btn text color="deep-purple accent-4"> Bookmark </v-btn>
       <v-spacer></v-spacer>
       <div class="text-center">
-        <v-btn icon @click="overlay1 = !overlay1">
-          <v-icon>mdi-heart</v-icon>
+        <v-btn icon @click="likeArticle">
+          <v-icon :color="isLiked ? 'red' : '#585656'">mdi-heart</v-icon>
         </v-btn>
         <v-overlay :value="overlay1">
-          This feature will be available soon
+          {{ overlay1msg }}
           <v-btn icon @click="overlay1 = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -58,7 +58,7 @@
           <v-icon>mdi-share-variant</v-icon>
         </v-btn>
         <v-overlay :value="overlay2">
-          This will be available soon
+          First read this article then share XD
           <v-btn icon @click="overlay2 = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -68,6 +68,8 @@
   </v-card>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   watchQuery: true,
   props: {
@@ -79,10 +81,25 @@ export default {
   data: () => ({
     overlay1: false,
     overlay2: false,
+    overlay1msg: 'You need to have account to like this article',
   }),
   computed: {
+    ...mapState('auth', ['user']),
     dateCreated() {
       return this.article.dateCreated.split('T')[0]
+    },
+    isLiked() {
+      return this.article.claps.includes(this.user._id)
+    },
+  },
+  methods: {
+    likeArticle() {
+      if (!this.$auth.loggedIn) {
+        this.overlay1 = !this.overlay1
+      } else {
+        this.overlay1msg = 'First read article XD'
+        this.overlay1 = !this.overlay1
+      }
     },
   },
 }

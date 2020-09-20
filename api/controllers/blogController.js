@@ -117,3 +117,49 @@ exports.deleteBlog = catchAsync(async (req, res, next) => {
     })
   }
 })
+exports.postClap = catchAsync(async (req, res, next) => {
+  let post = await blogModel.findById(req.params.slug)
+  if (!post) {
+    return next(new AppError('No blog article found with that id', 404))
+  }
+  post = await blogModel.findByIdAndUpdate(
+    req.params.slug,
+    {
+      $addToSet: { claps: req.user._id },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+  res.status(200).json({
+    status: 'success',
+    message: 'You liked article',
+    data: {
+      post,
+    },
+  })
+})
+exports.unPostClap = catchAsync(async (req, res, next) => {
+  let post = await blogModel.findById(req.params.slug)
+  if (!post) {
+    return next(new AppError('No blog article found with that id', 404))
+  }
+  post = await blogModel.findByIdAndUpdate(
+    req.params.slug,
+    {
+      $pull: { claps: req.user._id },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+  res.status(200).json({
+    status: 'success',
+    message: 'You Unliked article',
+    data: {
+      post,
+    },
+  })
+})

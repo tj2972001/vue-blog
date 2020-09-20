@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router({ mergeParams: true })
 const authController = require('./../controllers/authController')
 const blogController = require('./../controllers/blogController')
-// xdcfef
+
 router
   .route('/')
   .get(blogController.getAllBlogs)
@@ -24,4 +24,12 @@ router
     authController.restrictTo('admin'),
     blogController.deleteBlog
   )
+
+router
+  .route('/article/:slug/clap')
+  .patch(authController.protect, blogController.postClap)
+router
+  .route('/article/:slug/unClap')
+  .patch(authController.protect, blogController.unPostClap)
+
 module.exports = router

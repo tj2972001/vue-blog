@@ -68,4 +68,16 @@ export default {
       data: formData,
     })
   },
+  clap(articleId) {
+    return axios({
+      method: 'PATCH',
+      url: `${APIClent.baseURL}/blog/article/${articleId}/clap`,
+    })
+  },
+  unclap(articleId) {
+    return axios({
+      method: 'PATCH',
+      url: `${APIClent.baseURL}/blog/article/${articleId}/unClap`,
+    })
+  },
 }

@@ -31,6 +31,15 @@ const blogSchema = new mongoose.Schema(
       ],
       validate: [arrayLimit, 'Categories exceeds the limit of 10'],
     },
+    claps: {
+      type: [
+        {
+          type: mongoose.Schema.ObjectId,
+          ref: 'User',
+        },
+      ],
+      validate: [arrayLimit, 'Claps exceeds the limit of 10'],
+    },
   },
   {
     toJSON: { virtuals: true },

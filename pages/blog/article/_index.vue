@@ -10,6 +10,11 @@
       <v-divider> </v-divider>
       <v-card-text style="font-family: sans-serif" v-html="article.content">
       </v-card-text>
+      <v-card-actions>
+        <v-btn icon @click="likeArticle">
+          <v-icon :color="isLiked ? 'red' : '#a09a9a'"> mdi-heart </v-icon>
+        </v-btn>
+      </v-card-actions>
       <ShareNetwork
         v-for="network in networks"
         :key="network.network"
@@ -25,7 +30,7 @@
   </v-container>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   async fetch(ctx) {
     try {
@@ -41,6 +46,14 @@ export default {
     article: (state) => state.events.article,
     dateCreated() {
       return this.article.dateCreated.split('T')[0]
+    },
+    isLiked() {
+      if (!this.$auth.loggedIn) {
+        return false
+      } else if (this.article.claps.includes(this.$auth.user._id)) {
+        return true
+      }
+      return false
     },
   }),
   data() {
@@ -68,6 +81,27 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    ...mapActions('events', ['clapArticle']),
+    ...mapActions('events', ['unClapArticle']),
+    async likeArticle() {
+      try {
+        if (!this.$auth.loggedIn) {
+          this.$toast.info('You need to have account to like an article')
+        } else if (this.article.claps.includes(this.$auth.user._id)) {
+          await this.unClapArticle(this.article._id)
+          this.$toast.success('You unliked an article')
+        } else {
+          await this.clapArticle(this.article._id)
+          this.$toast.success('You liked an article')
+        }
+      } catch (e) {
+        this.$toast.error(
+          'Cannot perform this action . Please try after some time'
+        )
+      }
+    },
   },
 }
 </script>
