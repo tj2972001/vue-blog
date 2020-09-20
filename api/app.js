@@ -18,7 +18,7 @@ app.use((req, res, next) => {
   next()
 })
 mongoose
-  .connect('mongodb://localhost:27017/test', {
+  .connect(process.env.DATABASE_REMOTE, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
