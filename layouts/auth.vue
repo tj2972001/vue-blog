@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <AuthNavBar />
-    <v-content>
+    <v-main>
       <nuxt />
       <h2>Or <nuxt-link to="/">Go home</nuxt-link></h2>
-    </v-content>
+    </v-main>
     <Footer></Footer>
   </v-app>
 </template>

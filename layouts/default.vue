@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <NavBar />
-    <v-content>
+    <v-main>
       <nuxt :key="$route.fullPath" />
-    </v-content>
+    </v-main>
     <Footer />
   </v-app>
 </template>

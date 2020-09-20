@@ -90,6 +90,9 @@ export default {
       return this.article.dateCreated.split('T')[0]
     },
     isLiked() {
+      if (!this.$auth.loggedIn) {
+        return false
+      }
       return this.article.claps.includes(this.user._id)
     },
   },

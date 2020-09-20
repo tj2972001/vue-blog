@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-app-bar class="hidden-xs-and-down" app color="primary accent-4" dark>
+    <v-app-bar
+      v-show="$vuetify.breakpoint.smAndUp"
+      app
+      color="primary accent-4"
+      dark
+    >
       <v-toolbar-title class="text-h5">{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
@@ -28,19 +33,16 @@
         ></nuxt-link>
       </template>
     </v-app-bar>
-    <v-app-bar app dark color="primary" class="hidden-sm-and-up">
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"
-        ><v-icon>mdi-menu</v-icon></v-app-bar-nav-icon
-      >
-      <v-toolbar-title class="text-h5">{{ title }}</v-toolbar-title>
-      <v-spacer></v-spacer>
-    </v-app-bar>
+    <v-toolbar v-show="$vuetify.breakpoint.xsOnly" dark color="primary">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>Tejas's Blog</v-toolbar-title>
+    </v-toolbar>
     <v-navigation-drawer
+      id="drawer"
       v-model="drawer"
-      undefined
-      width="80vw"
-      absolute
       temporary
+      absolute
+      width="200"
     >
       <v-list-item>
         <v-list-item-content>
