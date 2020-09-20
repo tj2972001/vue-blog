@@ -30,7 +30,6 @@ mongoose
   })
 
 if (process.env.NODE_ENV === 'development') {
-  console.log('In dev')
   app.use(morgan('dev'))
 }
 app.use('/blog', blogRouter)

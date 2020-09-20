@@ -42,7 +42,6 @@ export default {
           data: formData,
         })
         const userStatus = userResponse.data.status
-        console.log('USERSTATUS: ', userStatus)
         if (userStatus === 'success') {
           this.$toast.success('Login successfully')
           this.$router.push({

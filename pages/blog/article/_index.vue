@@ -32,7 +32,7 @@
         v-for="network in networks"
         :key="network.network"
         :network="network.network"
-        :url="`http://localhost:3000/blog/${article._id}`"
+        :url="`${url}/blog/${article._id}`"
         :title="`${article.title}`"
       >
         <v-btn icon>
@@ -71,6 +71,7 @@ export default {
   }),
   data() {
     return {
+      url: process.env.mainUrl,
       networks: [
         {
           network: 'facebook',

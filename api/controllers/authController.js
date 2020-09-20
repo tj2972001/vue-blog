@@ -97,7 +97,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   const email = req.body.email
-  console.log('email is' + email)
+
   if (!email) {
     return next(new AppError('Please provide your email address', 400))
   }
@@ -110,7 +110,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       )
     )
   }
-  console.log('user is ' + JSON.stringify(user))
+
   const resetToken = user.createResetPasswordToken()
   await user.save({ validateBeforeSave: false })
   const resetURL = `${req.protocol}://${req.get(

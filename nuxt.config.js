@@ -69,7 +69,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://localhost:3000/api/v1',
+    baseURL: process.env.BASE_URL,
   },
   /*
    ** vuetify module configuration
@@ -128,5 +128,9 @@ export default {
         // autoFetchUser: true
       },
     },
+  },
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000/api/v1',
+    mainUrl: process.env.MAIN_URL || 'http://localhost:3000',
   },
 }
