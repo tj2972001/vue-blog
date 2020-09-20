@@ -12,7 +12,9 @@
     >
       <v-icon>mdi-grease-pencil</v-icon>
     </v-btn>
-    <h2>Welcome to my blog</h2>
+    <h2 class="text-xs-h4 text-md-h3 text-center textGrd">
+      Welcome to my blog
+    </h2>
     <ArticleCard
       v-for="article in allBlogs"
       :key="article._id"
@@ -101,3 +103,10 @@ export default {
   },
 }
 </script>
+<style>
+.textGrd {
+  background: -webkit-linear-gradient(135deg, #324dd2, #21f6ce);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+</style>

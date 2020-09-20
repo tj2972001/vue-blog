@@ -1,20 +1,33 @@
 <template>
   <v-container>
-    <v-card width="1000" max-width="85%" class="mx-auto pa-5">
-      <v-card-title> {{ article.title }} </v-card-title>
+    <v-card
+      width="1000"
+      max-width="85%"
+      class="mx-auto mt-10 mt-sm-15 pa-2 pa-sm-5"
+    >
+      <v-card-title class="text-h4 text-sm-h3 textGrd">
+        {{ article.title }}
+      </v-card-title>
       <v-card-subtitle>By Tejas Jadhav on {{ dateCreated }} </v-card-subtitle>
 
       <v-card-text style="font-family: sans-serif">
         {{ article.description }}
       </v-card-text>
       <v-divider> </v-divider>
-      <v-card-text style="font-family: sans-serif" v-html="article.content">
+      <v-card-text
+        class="text-xs-body-2 text-md-body-1"
+        v-html="article.content"
+      >
       </v-card-text>
       <v-card-actions>
         <v-btn icon @click="likeArticle">
           <v-icon :color="isLiked ? 'red' : '#a09a9a'"> mdi-heart </v-icon>
         </v-btn>
+        <span v-if="!isLiked">Like</span>
+        <span v-else>Unlike</span>
       </v-card-actions>
+      <v-divider></v-divider>
+      <v-card-subtitle> Share this article on social media</v-card-subtitle>
       <ShareNetwork
         v-for="network in networks"
         :key="network.network"

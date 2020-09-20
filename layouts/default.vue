@@ -19,9 +19,4 @@ export default {
 }
 </script>
 
-<style>
-h2 {
-  text-align: center;
-  margin: 10px 0;
-}
-</style>
+<style></style>

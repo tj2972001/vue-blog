@@ -13,9 +13,9 @@
         >
       </v-list-item-content>
     </v-list-item>
-    <v-list-item>
+    <v-list-item v-show="article.categories.length > 0">
       <v-row>
-        <v-col cols="12" sm="12" md="12" lg="12">
+        <v-col cols="12">
           <v-sheet>
             <v-chip-group column>
               <v-chip
@@ -30,7 +30,8 @@
         </v-col>
       </v-row>
     </v-list-item>
-    <v-card-text v-html="article.content"> </v-card-text>
+    <v-card-text class="text-xs-h6 text-md-h5" v-html="article.content">
+    </v-card-text>
 
     <v-card-actions>
       <nuxt-link
