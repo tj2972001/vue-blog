@@ -1,5 +1,10 @@
 <template>
-  <v-card width="85%" max-width="700" class="mx-auto mt-5">
+  <v-card
+    width="85%"
+    max-width="700"
+    class="mx-auto mt-5"
+    style="overflow-x: scroll"
+  >
     <v-list-item>
       <v-list-item-avatar color="grey">
         <v-img src="/tejas.jpg"></v-img>

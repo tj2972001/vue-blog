@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="overflow-hidden" style="position: relative">
+  <v-sheet style="position: relative">
     <NavigationDrawer />
     <v-btn
       outlined
@@ -105,6 +105,7 @@ export default {
 </script>
 <style>
 .textGrd {
+  text-align: center;
   background: -webkit-linear-gradient(135deg, #324dd2, #21f6ce);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

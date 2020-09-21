@@ -2,8 +2,9 @@
   <v-container>
     <v-card
       width="1000"
-      max-width="85%"
-      class="mx-auto mt-10 mt-sm-15 pa-2 pa-sm-5"
+      max-width="95%"
+      class="mx-auto"
+      style="overflow-x: scroll"
     >
       <v-card-title class="text-h4 text-sm-h3 textGrd">
         {{ article.title }}

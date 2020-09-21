@@ -3,7 +3,7 @@
     <AuthNavBar />
     <v-main>
       <nuxt />
-      <h2>Or <nuxt-link to="/">Go home</nuxt-link></h2>
+      <h2 class="textGrd">Or <nuxt-link to="/">Go home</nuxt-link></h2>
     </v-main>
     <Footer></Footer>
   </v-app>
@@ -20,10 +20,3 @@ export default {
   },
 }
 </script>
-
-<style>
-h2 {
-  text-align: center;
-  margin: 10px 0;
-}
-</style>

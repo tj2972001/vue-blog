@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto mt-15 pa-4" max-width="600" width="80%">
-    <v-card-title><h2>Login</h2></v-card-title>
+    <v-card-title class="textGrd"><h2>Login</h2></v-card-title>
     <v-text-field
       v-model="email"
       label="Enter email"
