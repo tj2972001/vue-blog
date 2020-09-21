@@ -3,13 +3,18 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const helmet = require('helmet')
 const cookieParser = require('cookie-parser')
 const blogRouter = require('./router/blogRouter')
 const userRouter = require('./router/userRouter')
 const globalErrorHandler = require('./controllers/errorController')
 // dvdededds
 const app = express()
+
+app.enable('trust proxy')
 app.use(cors())
+app.options('*', cors())
+app.use(helmet())
 app.use(express.json())
 app.use(cookieParser())
 
