@@ -3,10 +3,7 @@
     <v-row>
       <v-col class="mx-auto" cols="12" md="6">
         <blockquote class="blockquote">
-          <strong
-            >&quot; Anything that happens in your life was meant to happen. It
-            is your destiny. It was my destiny to have the life I have now, and
-            I can’t have any regrets. &quot; </strong
+          <strong>&quot; Giving up is not an option. &quot; </strong
           ><em>- Zlatan Ibrahimovic </em>
         </blockquote></v-col
       >
@@ -62,25 +59,37 @@ export default {
         {
           label: 'Node.js',
           icon: 'mdi-nodejs',
-          color: '#6cf065',
-          category: 'Node.js',
+          color: '#308730',
+          category: 'node',
         },
         {
           label: 'Vue',
           icon: 'mdi-vuejs',
-          color: '#b6c9b5',
-          category: 'first',
+          color: '#61dc5a',
+          category: 'vue',
         },
         {
-          label: 'Databases',
-          icon: 'mdi-database',
-          category: 'Databases',
+          label: 'MongoDB',
+          icon: 'mdi-leaf',
+          color: '#07ff02',
+          category: 'mongodb',
         },
         {
           label: 'Vuetify',
           icon: 'mdi-vuetify',
           color: '#34b8e0',
-          category: 'Vuetify',
+          category: 'vuetify',
+        },
+        {
+          label: 'Football Space (mainly Tottenham)',
+          icon: 'mdi-soccer',
+          color: '#e5ac4f',
+          category: 'football',
+        },
+        {
+          label: 'Personal Experiences',
+          icon: 'mdi-cube-outline',
+          category: 'personal',
         },
       ],
       popularCourses: [
@@ -88,7 +97,10 @@ export default {
           label: 'CS101',
         },
         {
-          label: 'Introduction to programming through game design',
+          label: 'The Complete SQL Bootcamp 2020: Go from Zero to Hero',
+        },
+        {
+          label: 'Introduction to Vuetify',
         },
         {
           label: 'Database schema design paterns',

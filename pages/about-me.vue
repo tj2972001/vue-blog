@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="6" align="center">
-        <v-img
+        <img
           src="/tejas.jpg"
           alt=""
           style="border-radius: 50%"

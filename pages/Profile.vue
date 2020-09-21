@@ -15,14 +15,13 @@
     </v-row>
     <v-row class="mt-5">
       <v-col align="center" cols="12" sm="6">
-        <v-img
+        <img
           :src="$auth.user.photo"
           max-width="70%"
           width="200"
           height="200"
           style="border-radius: 50%"
-        >
-        </v-img>
+        />
       </v-col>
       <v-col cols="12" sm="6">
         <v-card class="pa-4">

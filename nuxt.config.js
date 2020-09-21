@@ -27,7 +27,19 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        href:
+          'https://fonts.googleapis.com/css2?family=Cormorant:wght@500&display=swap',
+        rel: 'stylesheet',
+      },
+      {
+        href:
+          'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap',
+        rel: 'stylesheet',
+      },
+    ],
   },
   /*
    ** Global CSS
@@ -91,6 +103,7 @@ export default {
         },
       },
     },
+    treeShake: true,
   },
   /*
    ** Build configuration
@@ -132,5 +145,8 @@ export default {
   env: {
     baseUrl: process.env.BASE_URL || 'https://tejas-blog.herokuapp.com/api/v1',
     mainUrl: process.env.MAIN_URL || 'https://tejas-blog.herokuapp.com/',
+  },
+  loading: {
+    color: '#7dff09',
   },
 }

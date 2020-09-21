@@ -3,7 +3,9 @@
     <AuthNavBar />
     <v-main>
       <nuxt />
-      <h2 class="textGrd">Or <nuxt-link to="/">Go home</nuxt-link></h2>
+      <h2 style="text-align: center">
+        Or <nuxt-link to="/">Go home</nuxt-link>
+      </h2>
     </v-main>
     <Footer></Footer>
   </v-app>

@@ -49,6 +49,7 @@ const userSchema = mongoose.Schema(
     lastEdited: Date,
     photo: {
       type: String,
+      default: 'v.png',
     },
   },
   {

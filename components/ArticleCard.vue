@@ -7,7 +7,7 @@
   >
     <v-list-item>
       <v-list-item-avatar color="grey">
-        <v-img src="/tejas.jpg"></v-img>
+        <img src="/tejas.jpg" />
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title class="headline">{{
