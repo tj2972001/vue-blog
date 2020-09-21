@@ -1,9 +1,9 @@
 <template>
-  <v-container>
+  <v-container style="width: auto; white-space: nowrap">
     <v-card
       width="1000"
       max-width="95%"
-      class="mx-auto"
+      class="mx-auto pa-1"
       style="overflow-x: scroll"
     >
       <v-card-title class="text-h4 text-sm-h3 textGrd">

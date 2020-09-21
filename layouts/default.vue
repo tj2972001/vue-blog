@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <NavBar />
-    <v-main>
+    <v-main style="overflow-x: auto">
       <nuxt :key="$route.fullPath" />
     </v-main>
     <Footer />

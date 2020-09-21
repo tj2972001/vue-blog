@@ -1,5 +1,5 @@
 <template>
-  <v-sheet style="position: relative">
+  <v-sheet style="position: relative; width: auto; white-space: nowrap">
     <NavigationDrawer />
     <v-btn
       outlined
