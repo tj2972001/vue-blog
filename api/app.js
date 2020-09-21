@@ -7,10 +7,10 @@ const cookieParser = require('cookie-parser')
 const blogRouter = require('./router/blogRouter')
 const userRouter = require('./router/userRouter')
 const globalErrorHandler = require('./controllers/errorController')
-// dvdededds
+
 const app = express()
 
-app.use(cors())
+app.use(cors({ origin: /example\.com$/, credentials: true }))
 app.use(express.json())
 app.use(cookieParser())
 
