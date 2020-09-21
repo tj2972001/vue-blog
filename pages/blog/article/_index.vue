@@ -6,7 +6,7 @@
       class="mx-auto pa-1"
       style="overflow-x: scroll"
     >
-      <v-card-title class="text-h5 text-sm-h3 textGrd" style="text-wrap: avoid">
+      <v-card-title class="text-h5 text-sm-h3 textGrd">
         {{ article.title }}
       </v-card-title>
       <v-card-subtitle>By Tejas Jadhav on {{ dateCreated }} </v-card-subtitle>

@@ -1,5 +1,5 @@
 <template>
-  <v-sheet style="width: auto; white-space: nowrap">
+  <v-sheet>
     <NavigationDrawer />
     <v-btn
       outlined
@@ -19,6 +19,7 @@
       v-for="article in allBlogs"
       :key="article._id"
       :article="article"
+      style="overflow-x: scroll"
     />
     <div class="text-center">
       <v-container>
