@@ -143,8 +143,9 @@ export default {
     },
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'https://tejas-blog.herokuapp.com/api/v1',
-    mainUrl: process.env.MAIN_URL || 'https://tejas-blog.herokuapp.com/',
+    baseUrl:
+      process.env.BASE_URL || 'https://tejas-blog-2.herokuapp.com/api/v1',
+    mainUrl: process.env.MAIN_URL || 'https://tejas-blog-2.herokuapp.com/',
   },
   loading: {
     color: '#7dff09',
