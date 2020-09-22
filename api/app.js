@@ -10,7 +10,7 @@ const globalErrorHandler = require('./controllers/errorController')
 
 const app = express()
 
-app.use(cors({ origin: /example\.com$/, credentials: true }))
+app.use(cors())
 app.use(express.json())
 app.use(cookieParser())
 

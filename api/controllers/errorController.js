@@ -33,7 +33,7 @@ const sendErrorProd = (res, err) => {
   } else {
     res.status(err.statusCode).json({
       status: 'error',
-      message: 'Something went wrong' + err,
+      message: 'Something went wrong' + err.message,
     })
   }
 }
