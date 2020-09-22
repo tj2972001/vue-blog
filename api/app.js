@@ -45,3 +45,21 @@ module.exports = {
   path: '/api/v1/',
   handler: app,
 }
+//   - The following errors were reported by the server:
+//
+//   Domain: tejasjadhav2907.xyz
+// Type:   unauthorized
+// Detail: Invalid response from
+// http://tejasjadhav2907.xyz/.well-known/acme-challenge/cCqy9CoaSWrpQKnz4in8QLRBCJ8VkSfx_iC96i2udP4
+//   [2.57.90.16]: "<!DOCTYPE html>\n<html>\n\n<head>\n    <title>Parked
+// Domain name on Hostinger DNS system</title>\n    <meta
+// charset=\"utf-8\">\n    <met"
+//
+// To fix these errors, please make sure that your domain name was
+// entered correctly and the DNS A/AAAA record(s) for that domain
+// contain(s) the right IP address.
+// - Your account credentials have been saved in your Certbot
+// configuration directory at /etc/letsencrypt. You should make a
+// secure backup of this folder now. This configuration directory will
+// also contain certificates and private keys obtained by Certbot so
+// making regular backups of this folder is ideal.
