@@ -13,6 +13,11 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(cookieParser())
+app.use((req, res, next) => {
+  console.log('request.cookies')
+  console.log(JSON.stringify(req.cookies))
+  next()
+})
 
 app.use((req, res, next) => {
   console.log('Our express application has been started')
