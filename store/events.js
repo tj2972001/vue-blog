@@ -6,6 +6,7 @@ export const state = () => ({
   article: '',
   curPage: 1,
   curLim: 3,
+  likes: [],
 })
 export const mutations = {
   SET_ARTICLES(state, articles) {
@@ -25,6 +26,9 @@ export const mutations = {
   },
   SET_BLOG_COUNT_AFTER_FILTER(state, count) {
     state.totalArticlesCountAfterFilter = count
+  },
+  SET_CUR_LIKES(state, usersWhoLiked) {
+    state.likes = usersWhoLiked
   },
 }
 export const actions = {
@@ -61,6 +65,15 @@ export const actions = {
     const article = await EventService.unclap(articleId)
     ctx.commit('SET_ARTICLE', article.data.data.post)
     return article
+  },
+  async fetchLikers(ctx, articleId) {
+    const likes = await EventService.fetchLikesOnPost(articleId)
+    ctx.commit('SET_CUR_LIKES', likes.data.data.blog.claps)
+    return likes
+  },
+  async deletePost(ctx, articleId) {
+    const post = await EventService.deleteArticle(articleId)
+    return post
   },
 }
 export const getters = {}

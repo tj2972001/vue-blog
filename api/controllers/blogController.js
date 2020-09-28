@@ -9,9 +9,9 @@ const filterObj = (obj, ...allowdedFields) => {
   })
   return newObj
 }
-exports.getAllBlogs = catchAsync(async (req, res) => {
+exports.getAllBlogs = catchAsync(async (req, res, next) => {
   try {
-    const features = new APIFeatures(blogModel.find({}), req.query)
+    const features = new APIFeatures(blogModel.find({}), req)
       .filter()
       .sort()
       .limitFields()
@@ -19,7 +19,12 @@ exports.getAllBlogs = catchAsync(async (req, res) => {
       .categories()
     const blogs = await features.query
     const totalBlogsCount = await blogModel.count({})
-    const totalBlogs = blogs.length
+    let totalBlogs
+    if (blogs) {
+      totalBlogs = blogs.length
+    } else {
+      totalBlogs = 0
+    }
     res.status(200).json({
       status: 'success',
       totalBlogsCount,
@@ -44,6 +49,7 @@ exports.createBlog = catchAsync(async (req, res) => {
       content: req.body.content,
       discription: req.body.discription,
       dateCreated: req.body.dateCreated,
+      author: req.body.author,
     })
     res.status(200).json({
       status: 'success',
@@ -162,4 +168,29 @@ exports.unPostClap = catchAsync(async (req, res, next) => {
       post,
     },
   })
+})
+exports.getLikesListOnBlog = catchAsync(async (req, res, next) => {
+  try {
+    const blog = await blogModel
+      .findById(req.params.slug)
+      .populate('claps', 'name photo')
+      .select('claps')
+    if (!blog) {
+      return next(
+        new AppError(`There were no likes on post ${req.params.slug}`, 404)
+      )
+    }
+    res.status(200).json({
+      status: 'success',
+      message: 'Successfully fetched likes',
+      data: {
+        blog,
+      },
+    })
+  } catch (e) {
+    res.status(400).json({
+      status: 'fail',
+      message: `sorry ${e.message}`,
+    })
+  }
 })

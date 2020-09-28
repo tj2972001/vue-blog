@@ -51,6 +51,21 @@ const userSchema = mongoose.Schema(
       type: String,
       default: 'v.png',
     },
+    bookmarks: {
+      type: [
+        {
+          type: mongoose.Schema.ObjectId,
+          ref: 'Blog',
+        },
+      ],
+      validate: {
+        validator(val) {
+          return val.length < 200
+        },
+        message:
+          'You can only bookmarks maximum 200 articles.Please remove few bookmarks to add more',
+      },
+    },
   },
   {
     toJSON: { virtuals: true },

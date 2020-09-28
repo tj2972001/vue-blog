@@ -9,7 +9,9 @@
       <v-card-title class="text-h5 text-sm-h3 textGrd">
         {{ article.title }}
       </v-card-title>
-      <v-card-subtitle>By Tejas Jadhav on {{ dateCreated }} </v-card-subtitle>
+      <v-card-subtitle
+        >By {{ article.author.name }} on {{ dateCreated }}
+      </v-card-subtitle>
 
       <v-card-text>
         {{ article.description }}
@@ -26,6 +28,77 @@
         </v-btn>
         <span v-if="!isLiked">Like</span>
         <span v-else>Unlike</span>
+        <v-btn rounded text color="secondary" @click="fetchLikesOnArticle"
+          ><v-card-subtitle>
+            {{ article.claps.length }} likes</v-card-subtitle
+          ></v-btn
+        >
+        <v-overlay :value="showLikesBtn">
+          <v-card
+            class="mx-auto"
+            width="400"
+            max-height="400"
+            max-width="70%"
+            style="overflow-y: scroll; scroll-behavior: smooth"
+            rounded="rounded-0"
+            color="#fff"
+          >
+            <v-list color="blue lighten-5">
+              <v-list-item
+                v-for="liker in likersList"
+                :key="liker._id"
+                :to="`/profile/${liker._id}`"
+              >
+                <v-list-item-icon>
+                  <v-btn
+                    v-if="1 < 2"
+                    small
+                    text
+                    rounded
+                    color="purple lighten-1"
+                  >
+                    Follow
+                  </v-btn>
+                  <v-btn v-else icon>Unfollow</v-btn>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title
+                    class="black--text font-weight-thin"
+                    v-text="liker.name"
+                  ></v-list-item-title
+                ></v-list-item-content>
+                <v-list-item-avatar
+                  ><v-img :src="`/${liker.photo}`"></v-img
+                ></v-list-item-avatar>
+              </v-list-item>
+            </v-list>
+          </v-card>
+          <v-btn
+            icon
+            style="position: fixed; left: 5%; top: 5%"
+            @click="showLikesBtn = !showLikesBtn"
+            ><v-icon>mdi-close</v-icon></v-btn
+          >
+        </v-overlay>
+        <v-btn icon @click="dialogDelete = !dialogDelete"
+          ><v-icon> mdi-trash-can </v-icon></v-btn
+        >
+        <v-dialog v-model="dialogDelete" max-width="400">
+          <v-card>
+            <v-card-title class="text-body"
+              >Are you sure about deleting article?</v-card-title
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="green darken-1" text @click="dialogDelete = false">
+                NO
+              </v-btn>
+              <v-btn color="red darken-1" text @click="deleteArticle">
+                YES
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-card-actions>
       <v-divider></v-divider>
       <v-card-subtitle> Share this article on social media</v-card-subtitle>
@@ -52,24 +125,10 @@ export default {
     } catch (e) {
       ctx.error({
         statusCode: 503,
-        message: 'Unable to fetch articles at this time. Please try again.',
+        message: 'Unable to fetch article at this time. Please try again.',
       })
     }
   },
-  computed: mapState({
-    article: (state) => state.events.article,
-    dateCreated() {
-      return this.article.dateCreated.split('T')[0]
-    },
-    isLiked() {
-      if (!this.$auth.loggedIn) {
-        return false
-      } else if (this.article.claps.includes(this.$auth.user._id)) {
-        return true
-      }
-      return false
-    },
-  }),
   data() {
     return {
       url: process.env.mainUrl,
@@ -82,7 +141,7 @@ export default {
         {
           network: 'twitter',
           icon: 'mdi-twitter',
-          color: '#1DA1F2',
+          color: '#1da1f2',
         },
         {
           network: 'email',
@@ -95,11 +154,32 @@ export default {
           color: '#e0dd1f',
         },
       ],
+      showLikesBtn: false,
+      dialogDelete: false,
     }
   },
+  computed: mapState({
+    article: (state) => state.events.article,
+    likersList: (state) => state.events.likes,
+    dateCreated() {
+      return this.article.dateCreated.split('T')[0]
+    },
+    isLiked() {
+      if (!this.$auth.loggedIn) {
+        return false
+      } else if (this.article.claps.includes(this.$auth.user._id)) {
+        return true
+      }
+      return false
+    },
+  }),
   methods: {
-    ...mapActions('events', ['clapArticle']),
-    ...mapActions('events', ['unClapArticle']),
+    ...mapActions('events', [
+      'clapArticle',
+      'unClapArticle',
+      'fetchLikers',
+      'deletePost',
+    ]),
     async likeArticle() {
       try {
         if (!this.$auth.loggedIn) {
@@ -117,6 +197,28 @@ export default {
         )
       }
     },
+    async fetchLikesOnArticle() {
+      try {
+        this.showLikesBtn = true
+        this.$toast.info('Loading likes on article')
+        await this.fetchLikers(this.article._id)
+        this.$toast.success('Likes loaded successfully')
+      } catch (e) {
+        this.$toast.error(e.message)
+      }
+    },
+    async deleteArticle() {
+      try {
+        this.dialogDelete = false
+        this.$toast.info('Deleteing post')
+        await this.deletePost(this.article._id)
+        this.$toast.success('Post deleted successfully')
+        this.$router.push('/blog')
+      } catch (e) {
+        this.$toast.error(e.response.data.message)
+      }
+    },
   },
 }
+// v-if="$auth.user.following.contains(liker._id)"
 </script>

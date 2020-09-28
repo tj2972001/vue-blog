@@ -3,14 +3,17 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const fileUpload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
 const blogRouter = require('./router/blogRouter')
 const userRouter = require('./router/userRouter')
+const imageRouter = require('./router/imageRouter')
 const globalErrorHandler = require('./controllers/errorController')
 
 const app = express()
 
 app.use(cors())
+app.use(fileUpload())
 app.use(express.json())
 app.use(cookieParser())
 app.use((req, res, next) => {
@@ -24,7 +27,7 @@ app.use((req, res, next) => {
   next()
 })
 mongoose
-  .connect(process.env.DATABASE_REMOTE, {
+  .connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
@@ -40,6 +43,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 app.use('/blog', blogRouter)
 app.use('/user', userRouter)
+app.use('/upload', imageRouter)
 app.use(globalErrorHandler)
 
 /** Exporting root **/

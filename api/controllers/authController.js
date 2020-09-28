@@ -75,6 +75,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.headers.authorization.split(' ')[1]
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt
+  } else if (req.cookies['auth._token.local']) {
+    token = req.cookies['auth._token.local'].split(' ')[1]
   }
   if (!token) {
     return next(

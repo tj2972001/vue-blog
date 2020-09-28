@@ -14,7 +14,8 @@
           article.title
         }}</v-list-item-title>
         <v-list-item-subtitle
-          >by Tejas Jadhav On {{ dateCreated }}</v-list-item-subtitle
+          >by {{ article.author.name }} On
+          {{ dateCreated }}</v-list-item-subtitle
         >
       </v-list-item-content>
     </v-list-item>

@@ -27,7 +27,7 @@
       </v-col>
       <v-col class="primary lighten-1 py-4 text-center white--text" cols="12"
         >Checkout source code
-        <v-btn icon to="https://github.com/tj2972001/vue-blog/tree/21-sept"
+        <v-btn icon href="https://github.com/tj2972001/vue-blog/tree/21-sept"
           ><v-icon>mdi-github</v-icon></v-btn
         ></v-col
       >

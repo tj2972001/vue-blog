@@ -80,4 +80,16 @@ export default {
       url: `${APIClent.baseURL}/blog/article/${articleId}/unClap`,
     })
   },
+  fetchLikesOnPost(articleId) {
+    return axios({
+      method: 'GET',
+      url: `${APIClent.baseURL}/blog/article/${articleId}/likes`,
+    })
+  },
+  deleteArticle(articleId) {
+    return axios({
+      method: 'DELETE',
+      url: `${APIClent.baseURL}/blog/${articleId}`,
+    })
+  },
 }

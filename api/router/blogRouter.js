@@ -31,5 +31,6 @@ router
 router
   .route('/article/:slug/unClap')
   .patch(authController.protect, blogController.unPostClap)
+router.route('/article/:slug/likes').get(blogController.getLikesListOnBlog)
 
 module.exports = router
