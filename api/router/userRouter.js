@@ -23,7 +23,12 @@ router
   )
 router
   .route('/profile/update')
-  .patch(authController.protect, userController.updateMe)
+  .patch(
+    authController.protect,
+    userController.uploadUserPhoto,
+    userController.resizeUserPhoto,
+    userController.updateMe
+  )
 router
   .route('/profile/delete')
   .patch(authController.protect, userController.deleteMe)

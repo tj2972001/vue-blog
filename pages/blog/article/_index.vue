@@ -37,48 +37,58 @@
           <v-card
             class="mx-auto"
             width="400"
-            max-height="400"
-            max-width="70%"
+            max-width="70vw"
+            max-height="700"
             style="overflow-y: scroll; scroll-behavior: smooth"
             rounded="rounded-0"
             color="#fff"
           >
-            <v-list color="blue lighten-5">
-              <v-list-item
-                v-for="liker in likersList"
-                :key="liker._id"
-                :to="`/profile/${liker._id}`"
-              >
+            <v-card-title
+              class="black--text font-weight-medium purple--text justify-center"
+              >Likes</v-card-title
+            >
+            <p
+              style="
+                height: 1px;
+                width: 90%;
+                margin-right: auto;
+                margin-left: auto;
+                background-color: rebeccapurple;
+              "
+            ></p>
+            <v-list color="#fff">
+              <v-list-item v-for="liker in likersList" :key="liker._id">
                 <v-list-item-icon>
                   <v-btn
                     v-if="1 < 2"
-                    small
+                    x-small
                     text
                     rounded
                     color="purple lighten-1"
                   >
                     Follow
                   </v-btn>
-                  <v-btn v-else icon>Unfollow</v-btn>
+                  <v-btn x-small v-else icon>Unfollow</v-btn>
                 </v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title
-                    class="black--text font-weight-thin"
+                    class="black--text text-body-2"
                     v-text="liker.name"
                   ></v-list-item-title
                 ></v-list-item-content>
-                <v-list-item-avatar
+                <v-list-item-avatar size="30"
                   ><v-img :src="`/${liker.photo}`"></v-img
                 ></v-list-item-avatar>
               </v-list-item>
             </v-list>
+            <v-btn
+              icon
+              style="position: absolute; right: 5%; top: 5%"
+              color="purple"
+              @click="showLikesBtn = !showLikesBtn"
+              ><v-icon>mdi-close</v-icon></v-btn
+            >
           </v-card>
-          <v-btn
-            icon
-            style="position: fixed; left: 5%; top: 5%"
-            @click="showLikesBtn = !showLikesBtn"
-            ><v-icon>mdi-close</v-icon></v-btn
-          >
         </v-overlay>
         <v-btn icon @click="dialogDelete = !dialogDelete"
           ><v-icon> mdi-trash-can </v-icon></v-btn
