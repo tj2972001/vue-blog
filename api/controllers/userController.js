@@ -1,5 +1,6 @@
 const multer = require('multer')
 const sharp = require('sharp')
+const cloudinary = require('cloudinary').v2
 
 const catchAsync = require('./../utils/catchAsync')
 const APIFeatures = require('./../utils/APIFeatures')
@@ -71,6 +72,12 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   })
 })
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+})
+
 const multerStorage = multer.memoryStorage()
 
 const multerFilter = (req, file, cb) => {
@@ -89,22 +96,26 @@ const upload = multer({
 exports.uploadUserPhoto = upload.single('photo')
 
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
-  if (!req.file) return next()
-
-  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`
-
-  await sharp(req.file.buffer)
-    .resize(500, 500)
-    .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toFile(`uploads/users/${req.file.filename}`)
-
-  next()
+  try {
+    if (!req.file) return next()
+    const str = `uploads/users/${req.file.filename}`
+    await sharp(req.file.buffer)
+      .resize(500, 500)
+      .toFormat('jpeg')
+      .jpeg({ quality: 90 })
+      .toFile(str)
+    const image = await cloudinary.uploader.upload(str)
+    req.file.filename = image.url
+    next()
+  } catch (e) {
+    res.status(400).json({
+      status: 'fail',
+      message: e.message,
+    })
+  }
 })
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-  console.log('req.body', req.body)
-  console.log('req.file', req.file)
   let user = await userModel.findById(req.user._id)
   if (!user) {
     return next(new AppError('No user exist', 404))

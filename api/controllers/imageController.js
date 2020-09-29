@@ -29,13 +29,12 @@ const upload = multer({
 exports.uploadBlogPhoto = upload.single('photo')
 
 exports.resizeBlogPhoto = catchAsync(async (req, res, next) => {
-  console.log('IN RESIZE BLOG IMAGE')
   if (!req.file) return next()
 
   req.file.filename = `blog-${uniqid()}.jpeg`
 
   await sharp(req.file.buffer)
-    .resize(500, 500, {
+    .resize(300, 300, {
       fit: 'contain',
     })
     .toFormat('jpeg')

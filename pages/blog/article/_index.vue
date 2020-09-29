@@ -37,7 +37,7 @@
           <v-card
             class="mx-auto"
             width="400"
-            max-width="70vw"
+            max-width="90vw"
             max-height="700"
             style="overflow-y: scroll; scroll-behavior: smooth"
             rounded="rounded-0"
@@ -59,13 +59,7 @@
             <v-list color="#fff">
               <v-list-item v-for="liker in likersList" :key="liker._id">
                 <v-list-item-icon>
-                  <v-btn
-                    v-if="1 < 2"
-                    x-small
-                    text
-                    rounded
-                    color="purple lighten-1"
-                  >
+                  <v-btn v-if="1 < 2" x-small color="purple lighten-1">
                     Follow
                   </v-btn>
                   <v-btn x-small v-else icon>Unfollow</v-btn>
@@ -77,7 +71,7 @@
                   ></v-list-item-title
                 ></v-list-item-content>
                 <v-list-item-avatar size="30"
-                  ><v-img :src="`/${liker.photo}`"></v-img
+                  ><v-img :src="`${liker.photo}`"></v-img
                 ></v-list-item-avatar>
               </v-list-item>
             </v-list>

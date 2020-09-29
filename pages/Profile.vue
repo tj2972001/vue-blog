@@ -40,6 +40,14 @@
               required
               type="email"
             ></v-text-field>
+            <v-file-input
+              id="photo"
+              accept="image/*"
+              label="Profile picture"
+              prepend-icon="mdi-face"
+              show-size
+              placeholder="Select profile photo"
+            />
             <v-btn type="submit" color="primary">Update Info</v-btn>
           </v-form>
         </v-card>
@@ -113,12 +121,12 @@ export default {
 
     async updateInfo() {
       try {
-        const userInfo = {
-          name: this.user.name,
-          email: this.user.email,
-        }
+        const formData = new FormData()
+        formData.append('name', this.user.name)
+        formData.append('email', this.user.email)
+        formData.append('photo', document.getElementById('photo').files[0])
         this.$toast.info('Updating Info')
-        const user = await this.updateUserInfo(userInfo)
+        const user = await this.updateUserInfo(formData)
         if (user.data.status) {
           await this.$auth.setUser(user.data.data.user)
           this.$toast.success('Info Updated Successfully')

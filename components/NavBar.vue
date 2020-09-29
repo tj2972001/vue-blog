@@ -29,7 +29,7 @@
       <template v-else>
         <nuxt-link to="/profile"
           ><v-avatar size="30">
-            <img :src="`/${this.$auth.user.photo}`" /> </v-avatar
+            <img :src="`${this.$auth.user.photo}`" /> </v-avatar
         ></nuxt-link>
       </template>
     </v-app-bar>
