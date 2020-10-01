@@ -1,0 +1,10 @@
+.textGrd {
+  text-align: center;
+  background: -webkit-linear-gradient(135deg, #324dd2, #21f6ce);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+h2{
+  margin-top: 10px;
+}
+

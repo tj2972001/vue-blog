@@ -1,7 +1,8 @@
 const cloudinary = require('cloudinary').v2
 const sharp = require('sharp')
 const multer = require('multer')
-const uniqid = require('uniqid')
+import path from 'path'
+const DatauriParser = require('datauri/parser')
 
 const catchAsync = require('./../utils/catchAsync')
 
@@ -29,25 +30,18 @@ const upload = multer({
 exports.uploadBlogPhoto = upload.single('photo')
 
 exports.resizeBlogPhoto = catchAsync(async (req, res, next) => {
-  if (!req.file) return next()
-
-  req.file.filename = `blog-${uniqid()}.jpeg`
-
-  await sharp(req.file.buffer)
-    .resize(300, 300, {
-      fit: 'contain',
-    })
-    .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toFile(`uploads/blog/${req.file.filename}`)
-
-  next()
-})
-
-exports.blogImage = catchAsync(async (req, res, next) => {
   try {
-    const str = `uploads/blog/${req.file.filename}`
-    const image = await cloudinary.uploader.upload(str)
+    if (!req.file) return next()
+    const dUri = new DatauriParser()
+    const dataUri = (req) =>
+      dUri.format(
+        path.extname(req.file.originalname).toString(),
+        req.file.buffer
+      )
+    const file = dataUri(req).content
+    const image = await cloudinary.uploader.upload(file, {
+      transformation: [{ width: 300, crop: 'pad', quality: 40 }],
+    })
     return res.status(200).json({
       status: 'success',
       data: {
@@ -55,7 +49,7 @@ exports.blogImage = catchAsync(async (req, res, next) => {
       },
     })
   } catch (e) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 'fail',
       message: e.message,
     })

@@ -15,8 +15,9 @@ app.use(cors())
 app.use(express.json())
 app.use(cookieParser())
 app.use((req, res, next) => {
-  console.log('request.cookies')
-  console.log(JSON.stringify(req.cookies))
+  console.log('IN APP.JS')
+  console.log(JSON.stringify(req.cookies), 'req.cookies')
+  console.log(JSON.stringify(req.headers), 'req.headers')
   next()
 })
 

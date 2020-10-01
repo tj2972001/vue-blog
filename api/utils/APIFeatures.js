@@ -1,3 +1,4 @@
+const mongoid = require('mongoose').Types.ObjectId
 class APIFeatures {
   constructor(query, queryString) {
     this.query = query
@@ -54,20 +55,6 @@ class APIFeatures {
       const categories = this.queryString.categories
       const catObject = JSON.parse(categories)
       this.query = this.query.find({ categories: { $in: catObject } })
-    }
-    return this
-  }
-
-  showByLikes() {
-    if (this.queryString.showByLikes()) {
-      this.query = this.query.find({ claps: this.user._id })
-    }
-    return this
-  }
-
-  showByBookmarks() {
-    if (this.queryString.showByBookmarks) {
-      this.query = this.query.find({ _id: { $in: this.user.bookmarks } })
     }
     return this
   }

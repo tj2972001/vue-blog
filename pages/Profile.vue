@@ -5,9 +5,8 @@
         <v-btn
           class="hidden-xs-and-down"
           color="red"
-          :small="$vuetify.breakpoint.xsOnly"
           dark
-          rounded
+          :small="$vuetify.breakpoint.xsOnly"
           @click="logOut"
           >Logout</v-btn
         >
@@ -25,7 +24,7 @@
       </v-col>
       <v-col cols="12" sm="6">
         <v-card class="pa-4">
-          <v-card-title> Your Info </v-card-title>
+          <v-card-title class="textGrd"> Your Info </v-card-title>
           <v-form @submit.prevent="updateInfo">
             <v-text-field
               v-model="user.name"
@@ -56,7 +55,7 @@
     <v-row>
       <v-col cols="12" align="center">
         <v-card class="pa-4">
-          <v-card-title> Password Reset </v-card-title>
+          <v-card-title class="textGrd"> Password Reset </v-card-title>
           <v-form @submit.prevent="updateMyPassword">
             <v-text-field
               v-model="passwordData.passwordCurrent"
@@ -93,6 +92,32 @@
           </v-form>
         </v-card>
       </v-col>
+    </v-row>
+    <v-row>
+      <v-btn
+        :small="$vuetify.breakpoint.xsOnly"
+        :large="$vuetify.breakpoint.mdAndUp"
+        class="ma-4"
+        text
+        outlined
+        color="blue"
+        to="/blog/article/liked"
+      >
+        Show liked articles <v-icon color="red" class="pa-2">mdi-heart</v-icon>
+      </v-btn>
+    </v-row>
+    <v-row>
+      <v-btn
+        :small="$vuetify.breakpoint.xsOnly"
+        :large="$vuetify.breakpoint.mdAndUp"
+        class="ma-4"
+        outlined
+        text
+        color="green"
+        title="this feature is not yet available"
+      >
+        Show bookmarked articles <v-icon class="pa-2">mdi-bookmark</v-icon>
+      </v-btn>
     </v-row>
   </v-container>
 </template>

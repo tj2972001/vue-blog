@@ -11,6 +11,7 @@ const filterObj = (obj, ...allowdedFields) => {
 }
 exports.getAllBlogs = catchAsync(async (req, res, next) => {
   try {
+    console.log('IN GET ALL BLOGS')
     const features = new APIFeatures(blogModel.find({}), req)
       .filter()
       .sort()
@@ -18,7 +19,7 @@ exports.getAllBlogs = catchAsync(async (req, res, next) => {
       .paginate()
       .categories()
     const blogs = await features.query
-    const totalBlogsCount = await blogModel.count({})
+    const totalBlogsCount = await blogModel.countDocuments({})
     let totalBlogs
     if (blogs) {
       totalBlogs = blogs.length
@@ -194,3 +195,71 @@ exports.getLikesListOnBlog = catchAsync(async (req, res, next) => {
     })
   }
 })
+exports.getLikedBlogs = catchAsync(async (req, res, next) => {
+  try {
+    console.log('req', req.query)
+    let blogs
+    let features
+    features = new APIFeatures(blogModel.find({ claps: req.user.id }), req)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate()
+      .categories()
+    blogs = await features.query
+    const totalBlogsCount = await blogModel.countDocuments({})
+    let totalBlogs
+    if (blogs) {
+      totalBlogs = blogs.length
+    } else {
+      totalBlogs = 0
+    }
+    res.status(200).json({
+      status: 'success',
+      totalBlogs,
+      totalBlogsCount,
+      data: {
+        blogs,
+      },
+    })
+  } catch (e) {
+    res.status(400).json({
+      status: 'fail',
+      message: e.message,
+    })
+  }
+})
+// exports.getBookmarkedBlogs = catchAsync(async (req, res, next) => {
+//   try {
+//     const features = new APIFeatures(
+//       blogModel.find({ _id: { $in: req.user.bookmarks } }),
+//       req
+//     )
+//       .filter()
+//       .sort()
+//       .limitFields()
+//       .paginate()
+//       .categories()
+//     const blogs = await features.query
+//     const totalBlogsCount = await blogModel.countDocuments({})
+//     let totalBlogs
+//     if (blogs) {
+//       totalBlogs = blogs.length
+//     } else {
+//       totalBlogs = 0
+//     }
+//     res.status(200).json({
+//       status: 'success',
+//       totalBlogs,
+//       totalBlogsCount,
+//       data: {
+//         blogs,
+//       },
+//     })
+//   } catch (e) {
+//     res.status(400).json({
+//       status: 'fail',
+//       message: e.message,
+//     })
+//   }
+// })

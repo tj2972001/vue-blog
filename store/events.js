@@ -30,6 +30,21 @@ export const mutations = {
   SET_CUR_LIKES(state, usersWhoLiked) {
     state.likes = usersWhoLiked
   },
+  SET_LIKED_ARTICLES(state, articles) {
+    state.articles = articles
+  },
+  SET_BLOG_LIKED_COUNT(state, count) {
+    state.totalArticlesCount = count
+  },
+  SET_CUR_LIKED_PAGE(state, page) {
+    state.curPage = page
+  },
+  SET_CUR_LIKED_LIM(state, limit) {
+    state.curLim = limit
+  },
+  SET_BLOG_COUNT_LIKED_AFTER_FILTER(state, count) {
+    state.totalArticlesCountAfterFilter = count
+  },
 }
 export const actions = {
   async fetchArticles(ctx, { page, limit, sort, categories }) {
@@ -74,6 +89,24 @@ export const actions = {
   async deletePost(ctx, articleId) {
     const post = await EventService.deleteArticle(articleId)
     return post
+  },
+  async fetchLikedArticles(ctx, { page, limit, sort, categories }) {
+    const articles = await EventService.getLikedArticles(
+      page,
+      limit,
+      sort,
+      categories
+    )
+    console.log('IN FETCHLIKED ARTICLES', page, limit, sort, categories)
+    ctx.commit('SET_LIKED_ARTICLES', articles.data.data.blogs)
+    ctx.commit('SET_BLOG_LIKED_COUNT', articles.data.totalBlogsCount)
+    ctx.commit('SET_CUR_LIKED_PAGE', parseInt(page))
+    ctx.commit('SET_CUR_LIKED_LIM', parseInt(limit))
+    const count =
+      categories.length > 0
+        ? articles.data.totalBlogs
+        : articles.data.totalBlogsCount
+    ctx.commit('SET_BLOG_COUNT_LIKED_AFTER_FILTER', count)
   },
 }
 export const getters = {}

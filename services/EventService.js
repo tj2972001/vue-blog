@@ -92,4 +92,17 @@ export default {
       url: `${APIClent.baseURL}/blog/${articleId}`,
     })
   },
+  getLikedArticles(page, limit, sort, categories) {
+    const catArr = Array.from(categories)
+    const catNeetArr = catArr.map((e) => '"' + e + '"')
+    if (categories.length > 0) {
+      return axios.get(
+        `${APIClent.baseURL}/blog/articles/liked?page=${page}&limit=${limit}&sort=${sort}&categories=[${catNeetArr}]`
+      )
+    } else {
+      return axios.get(
+        `${APIClent.baseURL}/blog/articles/liked?page=${page}&limit=${limit}&sort=${sort}`
+      )
+    }
+  },
 }

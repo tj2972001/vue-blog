@@ -5,10 +5,6 @@ const router = express.Router()
 
 router
   .route('/blog')
-  .post(
-    imageController.uploadBlogPhoto,
-    imageController.resizeBlogPhoto,
-    imageController.blogImage
-  )
+  .post(imageController.uploadBlogPhoto, imageController.resizeBlogPhoto)
 
 module.exports = router

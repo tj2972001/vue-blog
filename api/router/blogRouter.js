@@ -33,4 +33,11 @@ router
   .patch(authController.protect, blogController.unPostClap)
 router.route('/article/:slug/likes').get(blogController.getLikesListOnBlog)
 
+router
+  .route('/articles/liked')
+  .get(authController.protect, blogController.getLikedBlogs)
+// router
+//   .route('/articles/bookmarked')
+//   .get(authController.protect, blogController.getBookmarkedBlogs)
+
 module.exports = router

@@ -1,6 +1,8 @@
+import path from 'path'
+
 const multer = require('multer')
-const sharp = require('sharp')
 const cloudinary = require('cloudinary').v2
+const DatauriParser = require('datauri/parser')
 
 const catchAsync = require('./../utils/catchAsync')
 const APIFeatures = require('./../utils/APIFeatures')
@@ -98,13 +100,14 @@ exports.uploadUserPhoto = upload.single('photo')
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   try {
     if (!req.file) return next()
-    const str = `uploads/users/${req.file.filename}`
-    await sharp(req.file.buffer)
-      .resize(500, 500)
-      .toFormat('jpeg')
-      .jpeg({ quality: 90 })
-      .toFile(str)
-    const image = await cloudinary.uploader.upload(str)
+    const dUri = new DatauriParser()
+    const dataUri = (req) =>
+      dUri.format(
+        path.extname(req.file.originalname).toString(),
+        req.file.buffer
+      )
+    const file = dataUri(req).content
+    const image = await cloudinary.uploader.upload(file)
     req.file.filename = image.url
     next()
   } catch (e) {

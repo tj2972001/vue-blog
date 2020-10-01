@@ -49,7 +49,7 @@ const userSchema = mongoose.Schema(
     lastEdited: Date,
     photo: {
       type: String,
-      default: 'v.png',
+      default: 'https://tejasjadhav2907.xyz/v.png',
     },
     bookmarks: {
       type: [

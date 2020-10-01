@@ -65,8 +65,7 @@ exports.login = catchAsync(async (req, res, next) => {
 })
 
 exports.protect = catchAsync(async (req, res, next) => {
-  console.log('req.cookies')
-  console.log(JSON.stringify(req.cookies))
+  console.log(JSON.stringify(req.headers), 'req.cookies')
   let token
   if (
     req.headers.authorization &&
@@ -81,10 +80,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!token) {
     return next(
       // eslint-disable-next-line new-cap
-      new AppError(
-        'No token found. Please send token in order to get access the protected route',
-        401
-      )
+      new AppError(' Please login ', 401)
     )
   }
 

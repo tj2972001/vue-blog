@@ -29,10 +29,7 @@
         rounded
         @click="showPreview = !showPreview"
       >
-        {{ showPreview ? 'hide preview' : 'show preview' }} |
-        <v-icon>
-          {{ showPreview ? 'mdi-eye' : 'mdi-eye-off' }}
-        </v-icon>
+        {{ showPreview ? 'hide preview' : 'show preview' }}
       </v-btn>
     </v-card-actions>
     <v-divider></v-divider>
@@ -65,7 +62,7 @@ export default {
       title: '',
       saveAsDraft: false,
       showPreview: false,
-      author: this.$auth.user._id,
+      author: this.$auth.user._id || 'defce',
     }
   },
   computed: {
