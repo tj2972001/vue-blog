@@ -1,0 +1,32 @@
+/*
+font-family: 'Roboto', sans-serif;
+font-family: 'Roboto Slab', serif;
+font-family: 'Train One', cursive;
+ */
+
+.blueishLinearGrad {
+  color: $color-skyblue-medium;
+}
+h1{
+  font-size: 3rem;
+}
+
+h2{
+  margin:1rem 0;
+  font-weight: 400;
+  font-size: 2rem;
+}
+h3{
+
+}
+h4{
+
+}
+.paragraph {
+  font-size: 1rem;
+  font-family: 'Roboto', serif;
+  line-height: 1.7;
+  padding-left: 1rem;
+  padding-bottom: 1.3rem;
+  color: $color-grey-dark;
+}

@@ -1,82 +1,33 @@
 <template>
-  <v-card
-    width="85%"
-    max-width="700"
-    class="mx-auto mt-5"
-    style="overflow-x: scroll"
-  >
-    <v-list-item>
-      <v-list-item-avatar color="grey">
-        <img src="/tejas.jpg" />
-      </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title class="headline">{{
-          article.title
-        }}</v-list-item-title>
-        <v-list-item-subtitle
-          >by {{ article.author.name }} On
-          {{ dateCreated }}</v-list-item-subtitle
-        >
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item v-show="article.categories.length > 0">
-      <v-row>
-        <v-col cols="12">
-          <v-sheet>
-            <v-chip-group column>
-              <v-chip
-                v-for="tag in article.categories"
-                :key="tag"
-                :to="`/blog/?category=${tag}`"
-              >
-                {{ tag }}
-              </v-chip>
-            </v-chip-group>
-          </v-sheet>
-        </v-col>
-      </v-row>
-    </v-list-item>
-    <v-card-text class="text-xs-h6 text-md-h5" v-html="article.content">
-    </v-card-text>
-
-    <v-card-actions>
-      <nuxt-link
-        :to="{
-          name: 'blog-article',
-          params: { index: article._id },
-        }"
-        ><v-btn text color="deep-purple accent-4"> Read </v-btn></nuxt-link
+  <div class="app-row article">
+    <div class="article__card">
+      <h2 class="article__card--title">{{ article.title }}</h2>
+      <div class="article__card--author">
+        <div class="article__card--author__name">
+          <fa-icon name="user-circle" scale="2.5"></fa-icon>
+          <span>{{ article.author.name }}</span>
+        </div>
+        <div class="article__card--author__date">{{ time }}</div>
+      </div>
+      <hr />
+      <article
+        class="paragraph article__card--content"
+        v-html="article.content"
+      ></article>
+      <nuxt-link :to="articleLink">
+        <button class="article__card--read btn-medium btn-teal">
+          Read full article
+        </button></nuxt-link
       >
-      <v-btn text color="deep-purple accent-4"> Bookmark </v-btn>
-      <v-spacer></v-spacer>
-      <div class="text-center">
-        <v-btn icon @click="likeArticle">
-          <v-icon :color="isLiked ? 'red' : '#585656'">mdi-heart</v-icon>
-        </v-btn>
-        <v-overlay :value="overlay1">
-          {{ overlay1msg }}
-          <v-btn icon @click="overlay1 = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-overlay>
-      </div>
-      <div class="text-center">
-        <v-btn icon @click="overlay2 = !overlay2">
-          <v-icon>mdi-share-variant</v-icon>
-        </v-btn>
-        <v-overlay :value="overlay2">
-          First read this article then share XD
-          <v-btn icon @click="overlay2 = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-overlay>
-      </div>
-    </v-card-actions>
-  </v-card>
+    </div>
+  </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+TimeAgo.addLocale(en)
+const timeAgo = new TimeAgo('en-US')
 export default {
   watchQuery: true,
   props: {
@@ -85,32 +36,56 @@ export default {
       required: true,
     },
   },
-  data: () => ({
-    overlay1: false,
-    overlay2: false,
-    overlay1msg: 'You need to have account to like this article',
-  }),
   computed: {
     ...mapState('auth', ['user']),
-    dateCreated() {
-      return this.article.dateCreated.split('T')[0]
+    articleLink() {
+      return '/blog/article/' + this.article._id
     },
-    isLiked() {
-      if (!this.$auth.loggedIn) {
-        return false
-      }
-      return this.article.claps.includes(this.user._id)
-    },
-  },
-  methods: {
-    likeArticle() {
-      if (!this.$auth.loggedIn) {
-        this.overlay1 = !this.overlay1
-      } else {
-        this.overlay1msg = 'First read article XD'
-        this.overlay1 = !this.overlay1
-      }
+    time() {
+      const date = new Date(this.article.dateCreated)
+      return timeAgo.format(date)
     },
   },
 }
 </script>
+<style lang="scss" scoped>
+@import '/assets/scss/abstracts/variables';
+
+.article {
+  > * :not(hr) {
+    padding-left: 1rem;
+  }
+  &__card {
+    position: relative;
+    &--title {
+      font-weight: 600;
+    }
+    &--author {
+      color: $color-grey-dark;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      &__name {
+      }
+      &__date {
+        margin-right: 2rem;
+      }
+      svg {
+        transform: translateY(0.5rem);
+      }
+    }
+    &--content {
+      margin-top: 1rem;
+      max-height: 20rem;
+    }
+    &--read {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+    border: 2px solid $color-grey-light;
+  }
+  box-shadow: 0px -15px 30px -15px inset #111;
+}
+</style>

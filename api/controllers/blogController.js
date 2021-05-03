@@ -11,6 +11,7 @@ const filterObj = (obj, ...allowdedFields) => {
 }
 exports.getAllBlogs = catchAsync(async (req, res, next) => {
   try {
+    console.log('in get all blogs')
     const features = new APIFeatures(blogModel.find({}), req)
       .filter()
       .sort()

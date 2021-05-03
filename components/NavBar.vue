@@ -1,12 +1,11 @@
 <template>
   <div>
-    <v-app-bar
-      v-show="$vuetify.breakpoint.smAndUp"
-      app
-      color="primary accent-4"
-      dark
-    >
-      <v-toolbar-title class="text-h5">{{ title }}</v-toolbar-title>
+    <v-app-bar v-show="$vuetify.breakpoint.smAndUp" app>
+      <nuxt-link to="/"
+        ><v-toolbar-title class="text-h5">{{
+          title
+        }}</v-toolbar-title></nuxt-link
+      >
       <v-spacer></v-spacer>
       <v-btn
         v-for="link in links"
@@ -28,12 +27,11 @@
       </template>
       <template v-else>
         <nuxt-link to="/profile"
-          ><v-avatar size="30">
-            <img :src="`${this.$auth.user.photo}`" /> </v-avatar
+          ><fa-icon color="#000" name="cog"></fa-icon
         ></nuxt-link>
       </template>
     </v-app-bar>
-    <v-toolbar v-show="$vuetify.breakpoint.xsOnly" dark color="primary">
+    <v-toolbar v-show="$vuetify.breakpoint.xsOnly">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Tejas's Blog</v-toolbar-title>
     </v-toolbar>
@@ -42,7 +40,7 @@
       v-model="drawer"
       temporary
       absolute
-      width="200"
+      width="70%"
     >
       <v-list-item>
         <v-list-item-content>

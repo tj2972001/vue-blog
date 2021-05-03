@@ -1,0 +1,130 @@
+/*COLORS*/
+/*FONT*/
+/*GRID*/
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; }
+
+:root {
+  font-size: 100%; }
+
+body {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif; }
+
+::selection {
+  background-color: #009688;
+  color: #fff; }
+
+/*
+font-family: 'Roboto', sans-serif;
+font-family: 'Roboto Slab', serif;
+font-family: 'Train One', cursive;
+ */
+.blueishLinearGrad {
+  color: #42A5F5; }
+
+h1 {
+  font-size: 3rem; }
+
+h2 {
+  margin: 1rem 0;
+  font-weight: 400;
+  font-size: 2rem; }
+
+.paragraph {
+  font-size: 1rem;
+  font-family: 'Roboto', serif;
+  line-height: 1.7;
+  padding-left: 1rem;
+  padding-bottom: 1.3rem;
+  color: #424242; }
+
+/* Applly this class when its childrens are list-items and we don't want bullets*/
+.noBullets li {
+  list-style: none; }
+
+/* By default Vuetify links are styled, to apply black color to them , use this class */
+/*******************************************************************/
+.no-word-break {
+  word-break: keep-all; }
+
+.btn-medium {
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  border-radius: 2rem;
+  margin: 1rem 0.5rem; }
+
+.btn-small {
+  padding: 0.5rem;
+  margin-bottom: 0.7rem;
+  border-radius: 0.4rem;
+  font-size: 0.7rem; }
+
+.btn-pinkviolet {
+  background-color: #D500F9;
+  color: #fff; }
+  .btn-pinkviolet:hover {
+    background-color: #cc00ef; }
+
+.btn-teal {
+  background-color: #00695C;
+  color: #fff; }
+  .btn-teal:hover {
+    background-color: #005f53; }
+
+.vhl-list {
+  padding-bottom: 0.5rem !important; }
+
+.vhl-item {
+  padding: 0.7rem 0.5rem !important; }
+
+.form-icon {
+  transform: translateX(-4rem); }
+
+.v-application a {
+  text-decoration: none;
+  color: #000; }
+
+.app-row {
+  max-width: 71.25rem;
+  margin: 0 auto; }
+  .app-row:not(:last-child) {
+    margin-bottom: 5rem; }
+    @media only screen and (max-width: 56.25em) {
+      .app-row:not(:last-child) {
+        margin-bottom: 3.75rem; } }
+  @media only screen and (max-width: 56.25em) {
+    .app-row {
+      max-width: 50rem;
+      padding: 0 3rem; } }
+  .app-row::after {
+    content: '';
+    display: table;
+    clear: both; }
+  .app-row [class^="app-col-"] {
+    float: left; }
+    .app-row [class^="app-col-"]:not(:last-child) {
+      margin-right: 3.75rem; }
+      @media only screen and (max-width: 56.25em) {
+        .app-row [class^="app-col-"]:not(:last-child) {
+          margin-right: 0;
+          margin-bottom: 3.75rem; } }
+    @media only screen and (max-width: 56.25em) {
+      .app-row [class^="app-col-"] {
+        width: 100% !important; } }
+  .app-row .app-col-1-of-2 {
+    width: calc((100% - 3.75rem) / 2); }
+  .app-row .app-col-1-of-3 {
+    width: calc((100% - 2 * 3.75rem) / 3); }
+  .app-row .app-col-2-of-3 {
+    width: calc(2 * ((100% - 2 * 3.75rem) / 3) + 3.75rem); }
+  .app-row .app-col-1-of-4 {
+    width: calc((100% - 3 * 3.75rem) / 4); }
+  .app-row .app-col-2-of-4 {
+    width: calc(2 * ((100% - 3 * 3.75rem) / 4) + 3.75rem); }
+  .app-row .app-col-3-of-4 {
+    width: calc(3 * ((100% - 3 * 3.75rem) / 4) + 2 * 3.75rem); }

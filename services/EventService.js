@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const APIClent = {
-  baseURL: process.env.baseUrl,
-  withCredentials: false,
+  baseURL: 'http://127.0.0.1:5000/api/v1',
+  withCredentials: true,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -19,31 +19,44 @@ export default {
         `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}&categories=[${catNeetArr}]`
       )
     } else {
-      return axios.get(
-        `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}`
-      )
+      console.log('baseUrl is ' + APIClent.baseURL)
+      return axios({
+        method: 'GET',
+        url: `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}`,
+        withCredentials: true,
+      })
     }
   },
   getArticle(id) {
-    return axios.get(`${APIClent.baseURL}/blog/${id}`)
+    return axios({
+      method: 'GET',
+      url: `${APIClent.baseURL}/blog/${id}`,
+      withCredentials: true,
+    })
   },
   login(formData) {
+    console.log('loginn')
+    console.log(`${APIClent.baseURL}/user/login`)
     return axios({
       method: 'POST',
       url: `${APIClent.baseURL}/user/login`,
       data: formData,
+      withCredentials: true,
     })
   },
   logOut() {
     return axios({
       method: 'GET',
       url: `${APIClent.baseURL}/user/logout`,
+      withCredentials: true,
     })
   },
   signup(formData) {
     return axios({
       method: 'POST',
-      url: `${APIClent.baseURL}/user/signup`,
+      url: `${APIClent.baseURL}/api/v1/user/signup`,
+      withCredentials: true,
+
       data: formData,
     })
   },
@@ -51,6 +64,7 @@ export default {
     return axios({
       method: 'POST',
       url: `${APIClent.baseURL}/blog`,
+      withCredentials: true,
       data: formData,
     })
   },
@@ -58,6 +72,8 @@ export default {
     return axios({
       method: 'PATCH',
       url: `${APIClent.baseURL}/user/profile/update`,
+      withCredentials: true,
+
       data: formData,
     })
   },
@@ -65,6 +81,8 @@ export default {
     return axios({
       method: 'PATCH',
       url: `${APIClent.baseURL}/user/updatePassword`,
+      withCredentials: true,
+
       data: formData,
     })
   },
@@ -72,24 +90,28 @@ export default {
     return axios({
       method: 'PATCH',
       url: `${APIClent.baseURL}/blog/article/${articleId}/clap`,
+      withCredentials: true,
     })
   },
   unclap(articleId) {
     return axios({
       method: 'PATCH',
       url: `${APIClent.baseURL}/blog/article/${articleId}/unClap`,
+      withCredentials: true,
     })
   },
   fetchLikesOnPost(articleId) {
     return axios({
       method: 'GET',
       url: `${APIClent.baseURL}/blog/article/${articleId}/likes`,
+      withCredentials: true,
     })
   },
   deleteArticle(articleId) {
     return axios({
       method: 'DELETE',
       url: `${APIClent.baseURL}/blog/${articleId}`,
+      withCredentials: true,
     })
   },
 }

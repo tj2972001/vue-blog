@@ -6,19 +6,11 @@ const blogController = require('./../controllers/blogController')
 router
   .route('/')
   .get(blogController.getAllBlogs)
-  .post(
-    authController.protect,
-    authController.restrictTo('admin'),
-    blogController.createBlog
-  )
+  .post(authController.protect, blogController.createBlog)
 router
   .route('/:slug')
   .get(blogController.getBlog)
-  .patch(
-    authController.protect,
-    authController.restrictTo('admin'),
-    blogController.updateBlog
-  )
+  .patch(authController.protect, blogController.updateBlog)
   .delete(
     authController.protect,
     authController.restrictTo('admin'),

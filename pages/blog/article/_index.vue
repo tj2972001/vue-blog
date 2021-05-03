@@ -1,128 +1,128 @@
 <template>
-  <v-container style="width: auto; white-space: nowrap">
-    <v-card
-      width="1000"
-      max-width="95%"
-      class="mx-auto pa-1"
-      style="overflow-x: scroll"
-    >
-      <v-card-title class="text-h5 text-sm-h3 textGrd">
-        {{ article.title }}
-      </v-card-title>
-      <v-card-subtitle
-        >By {{ article.author.name }} on {{ dateCreated }}
-      </v-card-subtitle>
-
-      <v-card-text>
-        {{ article.description }}
-      </v-card-text>
-      <v-divider> </v-divider>
-      <v-card-text
-        class="text-xs-body-2 text-md-body-1"
+  <div class="app-row article">
+    <div class="article__card">
+      <h2 class="article__card--title">{{ article.title }}</h2>
+      <div class="article__card--author">
+        <div class="article__card--author__name">
+          <fa-icon name="user-circle" scale="1.4"></fa-icon>
+          <span>{{ article.author.name }}</span>
+        </div>
+        <div class="article__card--author__date">{{ time }}</div>
+      </div>
+      <hr />
+      <article
+        class="paragraph article__card--content"
         v-html="article.content"
-      >
-      </v-card-text>
-      <v-card-actions>
-        <v-btn icon @click="likeArticle">
-          <v-icon :color="isLiked ? 'red' : '#a09a9a'"> mdi-heart </v-icon>
-        </v-btn>
-        <span v-if="!isLiked">Like</span>
-        <span v-else>Unlike</span>
-        <v-btn rounded text color="secondary" @click="fetchLikesOnArticle"
-          ><v-card-subtitle>
-            {{ article.claps.length }} likes</v-card-subtitle
-          ></v-btn
-        >
-        <v-overlay :value="showLikesBtn">
-          <v-card
-            class="mx-auto"
-            width="400"
-            max-width="90vw"
-            max-height="700"
-            style="overflow-y: scroll; scroll-behavior: smooth"
-            rounded="rounded-0"
-            color="#fff"
+      ></article>
+      <hr />
+      <div class="article__card--social">
+        <div class="article__card--social__likes">
+          <fa-icon
+            name="regular/thumbs-up"
+            :style="likeColor"
+            class="mr-5"
+            scale="1.4"
+            :color="isLiked ? 'red' : '#000'"
+            @click="likeArticle"
+          ></fa-icon>
+          <span
+            class="article__card--social__likes--count"
+            @click="fetchLikesOnArticle"
+            >{{ article.claps.length }} likes</span
           >
-            <v-card-title
-              class="black--text font-weight-medium purple--text justify-center"
-              >Likes</v-card-title
+          <button @click="dialogDelete = !dialogDelete">
+            <fa-icon name="trash" scale="1.4"> </fa-icon>
+          </button>
+        </div>
+
+        <div class="article__card--social__share">
+          <ShareNetwork
+            v-for="network in networks"
+            :key="network.network"
+            :network="network.network"
+            :url="`${url}/blog/${article._id}`"
+            :title="`${article.title}`"
+          >
+            <v-icon class="ml-2" :color="network.color" large>
+              {{ network.icon }}
+            </v-icon>
+          </ShareNetwork>
+          <v-overlay :value="showLikesBtn">
+            <v-card
+              class="mx-auto"
+              width="400"
+              max-width="90vw"
+              max-height="700"
+              style="overflow-y: scroll; scroll-behavior: smooth"
+              rounded="rounded-0"
+              color="#fff"
             >
-            <p
-              style="
-                height: 1px;
-                width: 90%;
-                margin-right: auto;
-                margin-left: auto;
-                background-color: rebeccapurple;
-              "
-            ></p>
-            <v-list color="#fff">
-              <v-list-item v-for="liker in likersList" :key="liker._id">
-                <v-list-item-icon>
-                  <v-btn v-if="1 < 2" x-small color="purple lighten-1">
-                    Follow
-                  </v-btn>
-                  <v-btn x-small v-else icon>Unfollow</v-btn>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title
-                    class="black--text text-body-2"
-                    v-text="liker.name"
-                  ></v-list-item-title
-                ></v-list-item-content>
-                <v-list-item-avatar size="30"
-                  ><v-img :src="`${liker.photo}`"></v-img
-                ></v-list-item-avatar>
-              </v-list-item>
-            </v-list>
-            <v-btn
-              icon
-              style="position: absolute; right: 5%; top: 5%"
-              color="purple"
-              @click="showLikesBtn = !showLikesBtn"
-              ><v-icon>mdi-close</v-icon></v-btn
-            >
-          </v-card>
-        </v-overlay>
-        <v-btn icon @click="dialogDelete = !dialogDelete"
-          ><v-icon> mdi-trash-can </v-icon></v-btn
-        >
-        <v-dialog v-model="dialogDelete" max-width="400">
-          <v-card>
-            <v-card-title class="text-body"
-              >Are you sure about deleting article?</v-card-title
-            >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="green darken-1" text @click="dialogDelete = false">
-                NO
-              </v-btn>
-              <v-btn color="red darken-1" text @click="deleteArticle">
-                YES
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-card-actions>
-      <v-divider></v-divider>
-      <v-card-subtitle> Share this article on social media</v-card-subtitle>
-      <ShareNetwork
-        v-for="network in networks"
-        :key="network.network"
-        :network="network.network"
-        :url="`${url}/blog/${article._id}`"
-        :title="`${article.title}`"
-      >
-        <v-btn icon>
-          <v-icon :color="network.color"> {{ network.icon }} </v-icon>
-        </v-btn>
-      </ShareNetwork>
-    </v-card>
-  </v-container>
+              <v-card-title
+                class="black--text font-weight-medium purple--text justify-center"
+                >Likes</v-card-title
+              >
+              <p
+                style="
+                  height: 1px;
+                  width: 90%;
+                  margin-right: auto;
+                  margin-left: auto;
+                  background-color: rebeccapurple;
+                "
+              ></p>
+              <v-list color="#fff">
+                <v-list-item v-for="liker in likersList" :key="liker._id">
+                  <v-list-item-icon>
+                    <v-btn v-if="1 < 2" x-small color="purple lighten-1">
+                      Follow
+                    </v-btn>
+                    <v-btn v-else x-small icon>Unfollow</v-btn>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      class="black--text text-body-2"
+                      v-text="liker.name"
+                    ></v-list-item-title
+                  ></v-list-item-content>
+                  <v-list-item-avatar size="30"
+                    ><v-img :src="`${liker.photo}`"></v-img
+                  ></v-list-item-avatar>
+                </v-list-item>
+              </v-list>
+              <v-btn
+                style="position: absolute; right: 5%; top: 5%"
+                icon
+                color="purple"
+                @click="showLikesBtn = !showLikesBtn"
+                ><v-icon>mdi-close</v-icon></v-btn
+              >
+            </v-card>
+          </v-overlay>
+          <v-dialog v-model="dialogDelete" max-width="400">
+            <v-card>
+              <v-card-title class="text-body"
+                >Are you sure about deleting article?</v-card-title
+              >
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text rounded @click="dialogDelete = false"> NO </v-btn>
+                <v-btn text rounded @click="deleteArticle"> YES </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+TimeAgo.addLocale(en)
+const timeAgo = new TimeAgo('en-US')
 export default {
+  watchQuery: true,
   async fetch(ctx) {
     try {
       await ctx.store.dispatch('events/fetchArticle', ctx.params.index)
@@ -163,6 +163,10 @@ export default {
     }
   },
   computed: mapState({
+    time() {
+      const date = new Date(this.article.dateCreated)
+      return timeAgo.format(date)
+    },
     article: (state) => state.events.article,
     likersList: (state) => state.events.likes,
     dateCreated() {
@@ -226,3 +230,65 @@ export default {
 }
 // v-if="$auth.user.following.contains(liker._id)"
 </script>
+<style lang="scss" scoped>
+@import '/assets/scss/abstracts/variables';
+
+.article {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  svg {
+    margin: 4px;
+  }
+  &__card {
+    position: relative;
+    &--title {
+      font-weight: 600;
+      padding-left: 1rem;
+    }
+    &--author {
+      color: $color-grey-dark;
+      display: flex;
+      padding-left: 1rem;
+
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      &__name {
+      }
+      &__date {
+        margin-right: 2rem;
+      }
+      svg {
+        transform: translateY(0.6rem);
+      }
+    }
+    &--content {
+      padding-left: 1rem;
+      margin-top: 1rem;
+    }
+    &--social {
+      padding-left: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 1rem 0;
+      &__likes {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        button {
+          margin-left: 2rem;
+        }
+        &--count {
+          text-decoration: underline;
+        }
+      }
+      &__share {
+        margin-right: 2rem;
+      }
+    }
+    border: 2px solid $color-grey-light;
+  }
+  border-radius: 2px $color-grey-light;
+}
+</style>

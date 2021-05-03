@@ -39,6 +39,7 @@ export const actions = {
       sort,
       categories
     )
+    console.log(articles)
     ctx.commit('SET_ARTICLES', articles.data.data.blogs)
     ctx.commit('SET_BLOG_COUNT', articles.data.totalBlogsCount)
     ctx.commit('SET_CUR_PAGE', parseInt(page))

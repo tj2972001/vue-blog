@@ -1,31 +1,27 @@
 <template>
-  <v-card class="mx-auto mt-15 pa-4" max-width="600" width="80%">
-    <v-card-title class="textGrd"><h2>Login</h2></v-card-title>
-    <v-text-field
-      v-model="email"
-      label="Enter email"
-      prepend-icon="mdi-account-circle"
-      type="email"
-    ></v-text-field>
-    <v-text-field
-      v-model="password"
-      label="Enter password"
-      prepend-icon="mdi-key-variant"
-      :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
-      :type="passwordShow ? 'text' : 'password'"
-      @click:append="passwordShow = !passwordShow"
-    ></v-text-field>
-    <v-divider></v-divider>
-    <v-btn class="mt-4" color="primary" @click="login">Login</v-btn>
-    <v-card-text
-      >New to my blog ? <nuxt-link to="/signup">Signup</nuxt-link></v-card-text
-    >
-  </v-card>
+  <section class="login-page">
+    <div class="llcontainer">
+      <div class="box">
+        <h1>Sign In</h1>
+        <div class="row">
+          <input v-model="email" type="text" placeholder="email" />
+        </div>
+        <div class="row">
+          <input v-model="password" type="password" placeholder="Password" />
+        </div>
+        <div class="row">
+          <button id="login" class="btn-medium" @click="login">Login</button>
+        </div>
+        <div class="row">
+          <a href="#">Forget Password</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
 export default {
-  layout: 'auth',
   data: () => ({
     passwordShow: false,
     email: '',
@@ -56,4 +52,84 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+* {
+  padding: 0;
+  margin: 0;
+  font-family: 'Quicksand', sans-serif;
+}
+body {
+  background: #fff;
+}
+.llcontainer {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: url('~assets/images/home-bg.jpg');
+  background-size: 100% 100%;
+}
+.llcontainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #262626;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: hard-light;
+}
+.llcontainer .box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  min-height: 10vh;
+  background: transparent;
+  color: #fff;
+  padding: 50px 20px;
+  box-sizing: border-box;
+  transition: 0.9s;
+}
+.llcontainer .box h1 {
+  font-size: 40px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.llcontainer .box .row {
+  width: 100%;
+  margin: 25px 0;
+  text-align: center;
+}
+.llcontainer .box .row input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 13px 25px;
+  border-radius: 30px;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.4);
+  color: #fff;
+  font-size: 18px;
+}
+::placeholder {
+  color: #fff;
+  text-transform: uppercase;
+}
+.llcontainer .box .row a {
+  display: inline-block;
+  padding: 10px 0;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 18px;
+}
+.llcontainer .box .row button#login {
+  background: #00bcd4;
+  padding: 15px 0;
+  border-radius: 50px;
+  width: 100%;
+}
+</style>

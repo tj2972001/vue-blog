@@ -5,12 +5,12 @@ export default {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  mode: 'universal',
+  mode: 'spa',
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
    */
-  target: 'server',
+  // target: 'server',
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
@@ -30,6 +30,10 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+      },
+      {
         href:
           'https://fonts.googleapis.com/css2?family=Cormorant:wght@500&display=swap',
         rel: 'stylesheet',
@@ -39,12 +43,17 @@ export default {
           'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap',
         rel: 'stylesheet',
       },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;700&family=Roboto:ital,wght@0,100;0,400;0,500;0,700;1,100;1,400;1,500;1,700&family=Train+One&display=swap',
+      },
     ],
   },
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['@/assets/css/style.css'],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -52,6 +61,8 @@ export default {
   plugins: [
     { src: '~/plugins/vue2-editor', ssr: false },
     { src: '~/plugins/vue-tags-input', ssr: false },
+    { src: '~plugins/vue-awesome.js', ssr: false },
+    { src: '~plugins/pdf.js', ssr: false },
   ],
   /*
    ** Auto import components
@@ -81,14 +92,13 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: process.env.BASE_URL,
+    baseURL: 'http://localhost:5000/api/v1',
   },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: false,
       themes: {
@@ -109,8 +119,17 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: { vendor: ['@johmun/vue-tags-input'] },
-  serverMiddleware: ['~/api/app.js'],
+  build: {
+    vendor: ['@johmun/vue-tags-input'],
+    extend(config, ctx) {
+      config.output.globalObject = 'this'
+      config.module.rules.push({
+        test: /\.pdf$/,
+        loader: 'url-loader',
+      })
+    },
+  },
+  // serverMiddleware: ['~/api/app.js'],
   toast: {
     position: 'bottom-right',
     theme: 'bubble',
@@ -119,6 +138,7 @@ export default {
       // Register custom toasts
     ],
   },
+
   auth: {
     strategies: {
       local: {
@@ -147,6 +167,6 @@ export default {
     mainUrl: process.env.MAIN_URL || 'https://tejas-blog.herokuapp.com/',
   },
   loading: {
-    color: '#7dff09',
+    color: '#184d52',
   },
 }

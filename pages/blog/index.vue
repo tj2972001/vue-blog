@@ -12,14 +12,11 @@
     >
       <v-icon>mdi-grease-pencil</v-icon>
     </v-btn>
-    <h2 class="text-xs-h4 text-md-h3 text-center textGrd">
-      Welcome to my blog
-    </h2>
     <ArticleCard
       v-for="article in allBlogs"
       :key="article._id"
       :article="article"
-      style="overflow-x: scroll"
+      style="overflow-y: hidden; max-width: 50%"
     />
     <div class="text-center">
       <v-container>

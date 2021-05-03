@@ -1,18 +1,5 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col>
-        <v-btn
-          class="hidden-xs-and-down"
-          color="red"
-          :small="$vuetify.breakpoint.xsOnly"
-          dark
-          rounded
-          @click="logOut"
-          >Logout</v-btn
-        >
-      </v-col>
-    </v-row>
     <v-row class="mt-5">
       <v-col align="center" cols="12" sm="6">
         <img
@@ -48,7 +35,9 @@
               show-size
               placeholder="Select profile photo"
             />
-            <v-btn type="submit" color="primary">Update Info</v-btn>
+            <button type="submit" class="btn-medium btn-pinkviolet">
+              Update Info
+            </button>
           </v-form>
         </v-card>
       </v-col>
@@ -89,11 +78,22 @@
                 passwordShowConfirmNewPassword = !passwordShowConfirmNewPassword
               "
             ></v-text-field>
-            <v-btn type="submit" color="primary">Update Password</v-btn>
+            <button type="submit" class="btn-medium btn-pinkviolet">
+              Update Password
+            </button>
           </v-form>
         </v-card>
       </v-col>
     </v-row>
+    <div class="app-row" style="text-align: center">
+      <button
+        class="btn-medium"
+        style="background-color: red; color: #fff"
+        @click="logOut"
+      >
+        Logout
+      </button>
+    </div>
   </v-container>
 </template>
 <script>
