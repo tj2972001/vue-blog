@@ -18,11 +18,11 @@ export default {
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: process.env.npm_package_name || '',
-    script:[
-	     {
-		id:'dsq-count-scr',
-		src:'//https-tejasjadhav2907-xyz.disqus.com/count.js',
-	     }
+    script: [
+      {
+        id: 'dsq-count-scr',
+        src: '//https-tejasjadhav2907-xyz.disqus.com/count.js',
+      },
     ],
     meta: [
       { charset: 'utf-8' },
@@ -102,11 +102,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-<<<<<<< HEAD
-    baseURL: 'http://143.110.253.186:5000/api/v1',
-=======
     baseURL: 'http://143.110.253.186:8000/api/v1',
->>>>>>> 7151823da053ae4e8115115ab25d4a9e5bf3266a
   },
   /*
    ** vuetify module configuration
@@ -182,10 +178,10 @@ export default {
   },
   loading: {
     color: '#184d52',
-  },	
-   server: {
-	port: 8000, // default: 3000
-   	host: '143.110.253.186', // default: localhost,
-    	timing: false
-  }
+  },
+  server: {
+    port: 8000, // default: 3000
+    host: '143.110.253.186', // default: localhost,
+    timing: false,
+  },
 }
