@@ -18,11 +18,11 @@ export default {
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: process.env.npm_package_name || '',
-    script:[
-	     {
-		id:'dsq-count-scr',
-		src:'//https-tejasjadhav2907-xyz.disqus.com/count.js',
-	     }
+    script: [
+      {
+        id: 'dsq-count-scr',
+        src: 'https-tejasjadhav2907-xyz.disqus.com/count.js',
+      },
     ],
     meta: [
       { charset: 'utf-8' },
@@ -32,7 +32,7 @@ export default {
         name: 'description',
         content: process.env.npm_package_description || '',
       },
-	 {
+      {
         'http-equiv': 'Content-Security-Policy',
         content: 'upgrade-insecure-requests',
       },
@@ -177,10 +177,10 @@ export default {
   },
   loading: {
     color: '#184d52',
-  },	
-   server: {
-	port: 8000, // default: 3000
-   	host: '143.110.253.186', // default: localhost,
-    	timing: false
-  }
+  },
+  server: {
+    port: 8000, // default: 3000
+    host: '143.110.253.186', // default: localhostt,
+    timing: false,
+  },
 }

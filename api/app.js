@@ -25,12 +25,15 @@ app.use((req, res, next) => {
   next()
 })
 mongoose
-  .connect("mongodb+srv://tj2972001:101@Amikkr@cluster0.j75ud.mongodb.net/test-1?retryWrites=true&w=majority", {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    'mongodb+srv://tj2972001:101@Amikkr@cluster0.j75ud.mongodb.net/test-1?retryWrites=true&w=majority',
+    {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
+    }
+  )
   .then((con) => console.log('DB connection successful!'))
   .catch((e) => {
     console.log(e)
