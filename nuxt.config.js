@@ -181,7 +181,7 @@ export default {
   },
   server: {
     port: 8000, // default: 3000
-    host: '143.110.253.186', // default: localhost,
+    host: '143.110.253.186', // default: localhostt,
     timing: false,
   },
 }
