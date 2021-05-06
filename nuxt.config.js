@@ -32,6 +32,10 @@ export default {
         name: 'description',
         content: process.env.npm_package_description || '',
       },
+	 {
+        'http-equiv': 'Content-Security-Policy',
+        content: 'upgrade-insecure-requests',
+      },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -80,7 +84,6 @@ export default {
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify',
   ],
   /*
