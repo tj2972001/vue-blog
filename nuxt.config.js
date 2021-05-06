@@ -21,7 +21,7 @@ export default {
     script: [
       {
         id: 'dsq-count-scr',
-        src: '//https-tejasjadhav2907-xyz.disqus.com/count.js',
+        src: 'https-tejasjadhav2907-xyz.disqus.com/count.js',
       },
     ],
     meta: [
