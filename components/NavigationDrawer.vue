@@ -54,7 +54,7 @@
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item>
-          <nuxt-link :to="`/blog/?sort=${selectedItem}`">
+          <nuxt-link :key="`${selectedItem}`" :to="`/blog/?sort=${selectedItem}`">
             <v-btn color="primary" class="mt-5"> Apply </v-btn>
           </nuxt-link>
         </v-list-item>
