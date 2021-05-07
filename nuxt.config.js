@@ -21,7 +21,8 @@ export default {
     script: [
       {
         id: 'dsq-count-scr',
-        src: 'https-tejasjadhav2907-xyz.disqus.com/count.js',
+        src: '//https-tejasjadhav2907-xyz.disqus.com/count.js',
+        async: true,
       },
     ],
     meta: [
@@ -101,7 +102,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://143.110.253.186:8000/api/v1',
+    baseURL: 'http://tejasjadhav2907.xyz/api/v1',
   },
   /*
    ** vuetify module configuration

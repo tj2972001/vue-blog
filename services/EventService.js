@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const APIClent = {
-  baseURL: 'http://tejasjadhav2907.xyz/api/v1',
+  baseURL: 'https://tejasjadhav2907.xyz/api/v1',
   withCredentials: true,
   headers: {
     Accept: 'application/json',
