@@ -102,7 +102,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://tejasjadhav2907.xyz/api/v1',
+    baseURL: 'http://localhost:8000/api/v1',
   },
   /*
    ** vuetify module configuration
@@ -181,7 +181,7 @@ export default {
   },
   server: {
     port: 8000, // default: 3000
-    host: '143.110.253.186', // default: localhostt,
+    //host: '143.110.253.186', // default: localhostt,
     timing: false,
   },
 }
