@@ -54,7 +54,7 @@
           <span>page {{ page }} out of {{ pageCount }} </span>
           <pdf
             class="about-page__resume--pdf"
-            src="/relativity.pdf"
+            src="/resume.pdf"
             :page="page"
             @num-pages="pageCount = $event"
           ></pdf>
