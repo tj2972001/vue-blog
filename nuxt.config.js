@@ -1,4 +1,4 @@
-import colors from 'vuetify/es5/util/colors'
+import colors from "vuetify/es5/util/colors";
 
 export default {
   /*
@@ -16,64 +16,64 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: "%s - " + process.env.npm_package_name,
+    title: process.env.npm_package_name || "",
     script: [
       {
-        id: 'dsq-count-scr',
-        src: '//https-tejasjadhav2907-xyz.disqus.com/count.js',
+        id: "dsq-count-scr",
+        src: "//https-tejasjadhav2907-xyz.disqus.com/count.js",
         async: true,
       },
     ],
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
-        hid: 'description',
-        name: 'description',
-        content: process.env.npm_package_description || '',
+        hid: "description",
+        name: "description",
+        content: process.env.npm_package_description || "",
       },
       {
-        'http-equiv': 'Content-Security-Policy',
-        content: 'upgrade-insecure-requests',
+        "http-equiv": "Content-Security-Policy",
+        content: "upgrade-insecure-requests",
       },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       {
-        rel: 'preconnect',
-        href: 'https://fonts.gstatic.com',
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
       },
       {
         href:
-          'https://fonts.googleapis.com/css2?family=Cormorant:wght@500&display=swap',
-        rel: 'stylesheet',
+          "https://fonts.googleapis.com/css2?family=Cormorant:wght@500&display=swap",
+        rel: "stylesheet",
       },
       {
         href:
-          'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap',
-        rel: 'stylesheet',
+          "https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap",
+        rel: "stylesheet",
       },
       {
-        rel: 'stylesheet',
+        rel: "stylesheet",
         href:
-          'https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;700&family=Roboto:ital,wght@0,100;0,400;0,500;0,700;1,100;1,400;1,500;1,700&family=Train+One&display=swap',
+          "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;700&family=Roboto:ital,wght@0,100;0,400;0,500;0,700;1,100;1,400;1,500;1,700&family=Train+One&display=swap",
       },
     ],
   },
   /*
    ** Global CSS
    */
-  css: ['@/assets/css/style.css'],
+  css: ["@/assets/css/style.css"],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
-    { src: '~/plugins/vue2-editor', ssr: false },
-    { src: '~/plugins/vue-tags-input', ssr: false },
-    { src: '~plugins/vue-awesome.js', ssr: false },
-    { src: '~plugins/pdf.js', ssr: false },
+    { src: "~/plugins/vue2-editor", ssr: false },
+    { src: "~/plugins/vue-tags-input", ssr: false },
+    { src: "~plugins/vue-awesome.js", ssr: false },
+    { src: "~plugins/pdf.js", ssr: false },
   ],
   /*
    ** Auto import components
@@ -85,24 +85,24 @@ export default {
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/vuetify',
+    "@nuxtjs/vuetify",
   ],
   /*
    ** Nuxt.js modules
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/toast',
-    'vue-social-sharing/nuxt',
-    '@nuxtjs/auth',
+    "@nuxtjs/axios",
+    "@nuxtjs/toast",
+    "vue-social-sharing/nuxt",
+    "@nuxtjs/auth",
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://localhost:8000/api/v1',
+    baseURL: "http://167.99.48.45:8000/api/v1",
   },
   /*
    ** vuetify module configuration
@@ -130,19 +130,19 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    vendor: ['@johmun/vue-tags-input'],
+    vendor: ["@johmun/vue-tags-input"],
     extend(config, ctx) {
-      config.output.globalObject = 'this'
+      config.output.globalObject = "this";
       config.module.rules.push({
         test: /\.pdf$/,
-        loader: 'url-loader',
-      })
+        loader: "url-loader",
+      });
     },
   },
-  serverMiddleware: ['~/api/app.js'],
+  serverMiddleware: ["~/api/app.js"],
   toast: {
-    position: 'bottom-right',
-    theme: 'bubble',
+    position: "bottom-right",
+    theme: "bubble",
     duration: 3000,
     register: [
       // Register custom toasts
@@ -154,15 +154,15 @@ export default {
       local: {
         endpoints: {
           login: {
-            url: '/user/login',
-            method: 'post',
-            propertyName: 'token',
+            url: "/user/login",
+            method: "post",
+            propertyName: "token",
           },
           logout: false,
           user: {
-            url: '/user/profile/me',
-            method: 'get',
-            propertyName: 'data.user',
+            url: "/user/profile/me",
+            method: "get",
+            propertyName: "data.user",
           },
         },
         // tokenRequired: true,
@@ -173,15 +173,15 @@ export default {
     },
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'https://tejas-blog.herokuapp.com/api/v1',
-    mainUrl: process.env.MAIN_URL || 'https://tejas-blog.herokuapp.com/',
+    baseUrl: process.env.BASE_URL,
+    mainUrl: process.env.MAIN_URL,
   },
   loading: {
-    color: '#184d52',
+    color: "#184d52",
   },
   server: {
     port: 8000, // default: 3000
-    //host: '143.110.253.186', // default: localhostt,
+    host: "167.99.48.45", // default: localhostt,
     timing: false,
   },
-}
+};
