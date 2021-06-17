@@ -10,10 +10,16 @@
 
 :root {
   font-size: 100%; }
+  @media only screen and (max-width: 400px) {
+    :root {
+      font-size: 80%; } }
+
+.v-main {
+  padding-top: 0 !important; }
 
 body {
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif; }
+  font-family: "Roboto", sans-serif; }
 
 ::selection {
   background-color: #009688;
@@ -25,7 +31,7 @@ font-family: 'Roboto Slab', serif;
 font-family: 'Train One', cursive;
  */
 .blueishLinearGrad {
-  color: #42A5F5; }
+  color: #42a5f5; }
 
 h1 {
   font-size: 3rem; }
@@ -65,13 +71,13 @@ h2 {
   font-size: 0.7rem; }
 
 .btn-pinkviolet {
-  background-color: #D500F9;
+  background-color: #d500f9;
   color: #fff; }
   .btn-pinkviolet:hover {
     background-color: #cc00ef; }
 
 .btn-teal {
-  background-color: #00695C;
+  background-color: #00695c;
   color: #fff; }
   .btn-teal:hover {
     background-color: #005f53; }

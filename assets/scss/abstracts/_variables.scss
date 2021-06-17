@@ -1,32 +1,30 @@
 /*COLORS*/
-$color-white-pure : #fff;
-$color-black-pure:#000;
-$color-teal-dark:#00695C;
-$color-teal-medium:#009688;
-$color-teal-light:#80CBC4;
-$color-grey-dark:#424242;
+$color-white-pure: #fff;
+$color-black-pure: #000;
+$color-teal-dark: #00695c;
+$color-teal-medium: #009688;
+$color-teal-light: #80cbc4;
+$color-grey-dark: #424242;
 $color-grey-medium: #757575;
-$color-grey-light:#E0E0E0;
-$color-pinkviolet-dark:#D500F9;
-$color-pinkviolet-medium:#E040FB;
-$color-pinkviolet-light:#EA80FC;
-$color-violet-dark:#8E24AA;
-$color-violet-medium:#CE93D8;
-$color-violet-light:#E1BEE7;
-$color-skyblue-dark:#1E88E5;
-$color-skyblue-medium:#42A5F5;
-$color-skyblue-light:#90CAF9;
-$color-orange-dark:#EF6C00;
-$color-orange-medium:#FFA726;
-$color-orange-light:#FFCC80;
-$color-tomato-dark:#F44336;
-$color-tomato-medium:#EF5350;
-$color-tomato-light:#E57373;
+$color-grey-light: #e0e0e0;
+$color-pinkviolet-dark: #d500f9;
+$color-pinkviolet-medium: #e040fb;
+$color-pinkviolet-light: #ea80fc;
+$color-violet-dark: #8e24aa;
+$color-violet-medium: #ce93d8;
+$color-violet-light: #e1bee7;
+$color-skyblue-dark: #1e88e5;
+$color-skyblue-medium: #42a5f5;
+$color-skyblue-light: #90caf9;
+$color-orange-dark: #ef6c00;
+$color-orange-medium: #ffa726;
+$color-orange-light: #ffcc80;
+$color-tomato-dark: #f44336;
+$color-tomato-medium: #ef5350;
+$color-tomato-light: #e57373;
 
-
-  /*FONT*/
+/*FONT*/
 $default-font-size: 1rem;
-
 
 /*GRID*/
 $grid-width: 71.25rem;
@@ -34,3 +32,4 @@ $gutter-vertical: 5rem;
 $gutter-vertical-small: 3.75rem;
 $gutter-horizontal: 3.75rem;
 
+$bp-small: 400px;

@@ -1,35 +1,35 @@
-const crypto = require('crypto')
-const mongoose = require('mongoose')
-const validator = require('validator')
-const bcrypt = require('bcryptjs')
-const userSchema = mongoose.Schema(
+const crypto = require("crypto");
+const mongoose = require("mongoose");
+const validator = require("validator");
+const bcrypt = require("bcryptjs");
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'User must have name'],
-      maxlength: [30, 'Name too big. You can enter your nickname'],
-      minlength: [3, 'name too small. Enter full name'],
+      required: [true, "User must have name"],
+      maxlength: [30, "Name too big. You can enter your nickname"],
+      minlength: [3, "name too small. Enter full name"],
     },
     email: {
       type: String,
-      validate: [validator.isEmail, 'User must have email'],
-      required: [true, 'A user must have email'],
+      validate: [validator.isEmail, "User must have email"],
+      required: [true, "A user must have email"],
       unique: true,
     },
     password: {
       type: String,
-      required: [true, 'Account must have password'],
-      minlength: [8, 'Password should atleast 8 characters long'],
+      required: [true, "Account must have password"],
+      minlength: [8, "Password should atleast 8 characters long"],
       select: false,
     },
     passwordConfirm: {
       type: String,
-      required: [true, 'Account must have passwordConfirm'],
+      required: [true, "Account must have passwordConfirm"],
       validate: {
         validator(el) {
-          return el === this.password
+          return el === this.password;
         },
-        message: 'Password must match to passwordConfirm',
+        message: "Password must match to passwordConfirm",
       },
     },
     passwordChangedAt: Date,
@@ -43,27 +43,27 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['user', 'admin'],
-      default: 'user',
+      enum: ["user", "admin"],
+      default: "user",
     },
     lastEdited: Date,
     photo: {
       type: String,
-      default: 'v.png',
+      default: "v.png",
     },
     bookmarks: {
       type: [
         {
           type: mongoose.Schema.ObjectId,
-          ref: 'Blog',
+          ref: "Blog",
         },
       ],
       validate: {
         validator(val) {
-          return val.length < 200
+          return val.length < 200;
         },
         message:
-          'You can only bookmarks maximum 200 articles.Please remove few bookmarks to add more',
+          "You can only bookmarks maximum 200 articles.Please remove few bookmarks to add more",
       },
     },
   },
@@ -71,48 +71,48 @@ const userSchema = mongoose.Schema(
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
-)
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next()
-  this.password = await bcrypt.hash(this.password, 12)
-  this.passwordConfirm = undefined
-})
-userSchema.pre('save', function (next) {
+);
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = undefined;
+});
+userSchema.pre("save", function (next) {
   if (this.isNew) {
-    this.accountCreatedAt = Date.now()
+    this.accountCreatedAt = Date.now();
   }
-  if (!this.isModified('password') || this.isNew) {
-    return next()
+  if (!this.isModified("password") || this.isNew) {
+    return next();
   }
-  this.passwordChangedAt = Date.now()
-  next()
-})
+  this.passwordChangedAt = Date.now();
+  next();
+});
 userSchema.pre(/^find/, function (next) {
   // TODO: DOUGHT
-  this.find({ active: { $ne: false } })
-  next()
-})
+  this.find({ active: { $ne: false } });
+  next();
+});
 userSchema.pre(/Update$/, function (next) {
-  this.lastEdited = Date.now()
-  next()
-})
+  this.lastEdited = Date.now();
+  next();
+});
 userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
-  return await bcrypt.compare(candidatePassword, userPassword)
-}
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
 userSchema.methods.createResetPasswordToken = function (next) {
-  const resetToken = crypto.randomBytes(32).toString('hex')
+  const resetToken = crypto.randomBytes(32).toString("hex");
   this.passwordResetToken = crypto
-    .createHash('sha256')
+    .createHash("sha256")
     .update(resetToken)
-    .digest('hex')
+    .digest("hex");
   // HACK: token will expire after 10 minutes
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
   // HACK: We store encrypted reset token to our database but sends normal token to user
-  return resetToken
-}
+  return resetToken;
+};
 
-const userModel = mongoose.model('User', userSchema)
-module.exports = userModel
+const userModel = mongoose.model("User", userSchema);
+module.exports = userModel;

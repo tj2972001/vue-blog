@@ -5,7 +5,7 @@
       color="primary"
       fab
       outlined
-      class="ma-2"
+      class="drawerBtn"
       :x-small="$vuetify.breakpoint.xsOnly"
       :small="$vuetify.breakpoint.mdAndUp"
       @click.stop="drawer = !drawer"
@@ -54,7 +54,10 @@
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item>
-          <nuxt-link :key="`${selectedItem}`" :to="`/blog/?sort=${selectedItem}`">
+          <nuxt-link
+            :key="`${selectedItem}`"
+            :to="`/blog/?sort=${selectedItem}`"
+          >
             <v-btn color="primary" class="mt-5"> Apply </v-btn>
           </nuxt-link>
         </v-list-item>
@@ -63,7 +66,7 @@
   </div>
 </template>
 <script>
-import Multiselect from '@/components/Multiselect.vue'
+import Multiselect from "@/components/Multiselect.vue";
 export default {
   components: {
     Multiselect,
@@ -73,22 +76,28 @@ export default {
       drawer: null,
       items: [
         {
-          title: 'Sort By',
-          icon: 'mdi-sort',
+          title: "Sort By",
+          icon: "mdi-sort",
           sortList: [
             {
-              name: 'Date : Newest First',
-              value: '-dateCreated',
+              name: "Date : Newest First",
+              value: "-dateCreated",
             },
             {
-              name: 'Date : Oldest First',
-              value: 'dateCreated',
+              name: "Date : Oldest First",
+              value: "dateCreated",
             },
           ],
         },
       ],
-      selectedItem: this.$route.query.sort || '-dateCreated',
-    }
+      selectedItem: this.$route.query.sort || "-dateCreated",
+    };
   },
-}
+};
 </script>
+<style>
+.drawerBtn {
+  margin-top: 5rem;
+  margin-left: 1rem;
+}
+</style>

@@ -2,10 +2,7 @@
   <section class="home-page">
     <div class="home-page__intro absolute-center">
       <div class="home-page__intro--container">
-        <div class="home-page__intro--container__heading">
-          Hi, my name is Tejas <br />
-          welcome to my blog.
-        </div>
+        <header-heading text="Hi, my name is Tejas welcome to my blog." />
         <div class="home-page__intro--container__about">
           A curious engineer, curator and avid web developer.<br />
           A great fan of Java technologies
@@ -26,60 +23,62 @@
 </template>
 
 <script>
+import HeaderHeading from "../components/HeaderHeading.vue";
 export default {
+  components: { HeaderHeading },
   data() {
     return {
       popularCategories: [
         {
-          label: 'Node.js',
-          icon: 'mdi-nodejs',
-          color: '#308730',
-          category: 'node',
+          label: "Node.js",
+          icon: "mdi-nodejs",
+          color: "#308730",
+          category: "node",
         },
         {
-          label: 'Vue',
-          icon: 'mdi-vuejs',
-          color: '#61dc5a',
-          category: 'vue',
+          label: "Vue",
+          icon: "mdi-vuejs",
+          color: "#61dc5a",
+          category: "vue",
         },
         {
-          label: 'Spring',
-          icon: 'mdi-leaf',
-          color: '#07ff02',
-          category: 'spring',
+          label: "Spring",
+          icon: "mdi-leaf",
+          color: "#07ff02",
+          category: "spring",
         },
         {
-          label: 'Vuetify',
-          icon: 'mdi-vuetify',
-          color: '#34b8e0',
-          category: 'vuetify',
+          label: "Vuetify",
+          icon: "mdi-vuetify",
+          color: "#34b8e0",
+          category: "vuetify",
         },
         {
-          label: 'Football Space (mainly Tottenham)',
-          icon: 'mdi-soccer',
-          color: '#e5ac4f',
-          category: 'football',
+          label: "Football Space (mainly Tottenham)",
+          icon: "mdi-soccer",
+          color: "#e5ac4f",
+          category: "football",
         },
         {
-          label: 'Personal Experiences',
-          icon: 'mdi-cube-outline',
-          category: 'personal',
+          label: "Personal Experiences",
+          icon: "mdi-cube-outline",
+          category: "personal",
         },
       ],
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '/assets/scss/abstracts/_mixins.scss';
-@import '/assets/scss/abstracts/variables';
-@import '/assets/scss/base/utilities';
+@import "/assets/scss/abstracts/_mixins.scss";
+@import "/assets/scss/abstracts/variables";
+@import "/assets/scss/base/utilities";
 
 .home-page {
   &__intro {
     background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.2)),
-      url('~assets/images/home-bg.jpg');
+      url("~assets/images/home-bg.jpg");
     height: 100vh;
     width: 100%;
     background-size: cover;
@@ -88,7 +87,7 @@ export default {
     &--container {
       position: absolute;
       top: 10%;
-      left: 60%;
+      left: 10%;
       max-width: 100%;
       color: $color-grey-light;
       width: 60%;
@@ -96,12 +95,13 @@ export default {
       &__heading {
         line-height: 95%;
         font-size: 2.5rem;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-          Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
       }
       &__about {
         margin-top: 1rem;
         font-size: 1.2rem;
+        font-weight: 700;
         word-wrap: break-word;
       }
     }
@@ -117,10 +117,10 @@ export default {
         font-size: 1.2rem;
         font-weight: 300;
         justify-content: space-between;
-        width: 100%;
+        width: 70%;
         display: flex;
         height: max-content;
-        padding: 1.5rem;
+        padding: 0.5rem;
         background-color: $color-grey-light;
       }
     }

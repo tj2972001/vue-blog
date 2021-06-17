@@ -5,7 +5,7 @@
       <div class="article__card--author">
         <div class="article__card--author__name">
           <fa-icon name="user-circle" scale="2.5"></fa-icon>
-          <span>{{ article.author.name }}</span>
+          <div>{{ article.author.name }}</div>
         </div>
         <div class="article__card--author__date">{{ time }}</div>
       </div>
@@ -23,11 +23,11 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
-TimeAgo.addLocale(en)
-const timeAgo = new TimeAgo('en-US')
+import { mapState } from "vuex";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+TimeAgo.addLocale(en);
+const timeAgo = new TimeAgo("en-US");
 export default {
   watchQuery: true,
   props: {
@@ -37,26 +37,34 @@ export default {
     },
   },
   computed: {
-    ...mapState('auth', ['user']),
+    ...mapState("auth", ["user"]),
     articleLink() {
-      return '/blog/article/' + this.article._id
+      return "/blog/article/" + this.article._id;
     },
     time() {
-      const date = new Date(this.article.dateCreated)
-      return timeAgo.format(date)
+      const date = new Date(this.article.dateCreated);
+      return timeAgo.format(date);
     },
   },
-}
+};
 </script>
 <style lang="scss" scoped>
-@import '/assets/scss/abstracts/variables';
+@import "/assets/scss/abstracts/variables";
 
 .article {
+  overflow-y: hidden;
+  max-width: 60%;
+  margin-top: 4rem;
+  @media only screen and (max-width: $bp-small) {
+    max-width: 90%;
+    padding: 0.6rem;
+  }
   > * :not(hr) {
     padding-left: 1rem;
   }
   &__card {
     position: relative;
+    margin: 1rem 1rem;
     &--title {
       font-weight: 600;
     }
@@ -66,10 +74,25 @@ export default {
       align-items: baseline;
       justify-content: space-between;
       margin-bottom: 1rem;
+      @media only screen and (max-width: $bp-small) {
+        display: block;
+      }
       &__name {
+        &:first-child {
+          svg {
+            @media only screen and (max-width: $bp-small) {
+              display: none;
+            }
+          }
+          @media only screen and (max-width: $bp-small) {
+            transform: translateX(-1rem);
+          }
+        }
       }
       &__date {
-        margin-right: 2rem;
+        margin-right: 0rem;
+        @media only screen and (max-width: $bp-small) {
+        }
       }
       svg {
         transform: translateY(0.5rem);
@@ -86,6 +109,6 @@ export default {
     }
     border: 2px solid $color-grey-light;
   }
-  box-shadow: 0px -15px 30px -15px inset #111;
+  box-shadow: -1px 1px 5px 9px rgba(0, 0, 0, 0.15);
 }
 </style>

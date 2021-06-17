@@ -5,7 +5,7 @@
       outlined
       color="primary"
       fab
-      class="ma-2"
+      class="drawerBtn"
       :x-small="$vuetify.breakpoint.xsOnly"
       :small="$vuetify.breakpoint.mdAndUp"
       to="/blog/create/"
@@ -16,7 +16,6 @@
       v-for="article in allBlogs"
       :key="article._id"
       :article="article"
-      style="overflow-y: hidden; max-width: 50%"
     />
     <div class="text-center">
       <v-container>
@@ -37,9 +36,9 @@
   </v-sheet>
 </template>
 <script>
-import NavigationDrawer from '@/components/NavigationDrawer.vue'
-import ArticleCard from '@/components/ArticleCard'
-import { mapState, mapActions } from 'vuex'
+import NavigationDrawer from "@/components/NavigationDrawer.vue";
+import ArticleCard from "@/components/ArticleCard";
+import { mapState, mapActions } from "vuex";
 
 export default {
   watchQuery: true,
@@ -49,26 +48,26 @@ export default {
   },
   fetch(ctx) {
     try {
-      let categories = []
-      const queryStr = ctx.route.query.category
+      let categories = [];
+      const queryStr = ctx.route.query.category;
       if (queryStr) {
-        if (typeof queryStr === 'string') {
-          categories.push(queryStr)
+        if (typeof queryStr === "string") {
+          categories.push(queryStr);
         } else {
-          categories = [...queryStr]
+          categories = [...queryStr];
         }
       }
-      return ctx.store.dispatch('events/fetchArticles', {
+      return ctx.store.dispatch("events/fetchArticles", {
         page: ctx.route.query.page || 1,
         limit: ctx.route.query.limit || 3,
-        sort: ctx.route.query.sort || '-dateCreated',
+        sort: ctx.route.query.sort || "-dateCreated",
         categories,
-      })
+      });
     } catch (e) {
       ctx.error({
         statusCode: 503,
-        message: 'Unable to fetch articles at this time. Please try again.',
-      })
+        message: "Unable to fetch articles at this time. Please try again.",
+      });
     }
   },
   computed: mapState({
@@ -79,27 +78,27 @@ export default {
     curPage: (state) => state.events.curPage,
     curLim: (state) => state.events.curLim,
     pageCount() {
-      const x = this.allBlogsCountAfterFilter / this.curLim
-      return Math.ceil(x)
+      const x = this.allBlogsCountAfterFilter / this.curLim;
+      return Math.ceil(x);
     },
   }),
   methods: {
-    ...mapActions('events', ['fetchArticles']),
+    ...mapActions("events", ["fetchArticles"]),
     async onPageChange(e) {
-      this.curPage = e
-      const categories = []
+      this.curPage = e;
+      const categories = [];
       if (this.$route.query.category) {
-        categories.push('"' + this.$route.query.category + '"')
+        categories.push('"' + this.$route.query.category + '"');
       }
       await this.fetchArticles({
         page: e,
         limit: this.curLim,
-        sort: this.$route.query.sort || '-dateCreated',
+        sort: this.$route.query.sort || "-dateCreated",
         categories,
-      })
+      });
     },
   },
-}
+};
 </script>
 <style>
 .textGrd {

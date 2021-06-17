@@ -10,6 +10,14 @@
         <div class="article__card--author__date">{{ time }}</div>
       </div>
       <hr />
+      <div class="article__card--categories">
+        <category
+          v-for="cat in article.categories"
+          :key="cat"
+          :category="cat"
+        />
+      </div>
+      <hr />
       <article
         class="paragraph article__card--content"
         v-html="article.content"
@@ -21,8 +29,8 @@
             name="regular/thumbs-up"
             :style="likeColor"
             class="mr-5"
-            scale="1.4"
-            :color="isLiked ? 'red' : '#000'"
+            scale="1.2"
+            :color="isLiked ? 'blue' : '#000'"
             @click="likeArticle"
           ></fa-icon>
           <span
@@ -31,7 +39,7 @@
             >{{ article.claps.length }} likes</span
           >
           <button @click="dialogDelete = !dialogDelete">
-            <fa-icon name="trash" scale="1.4"> </fa-icon>
+            <v-icon>mdi-delete </v-icon>
           </button>
         </div>
 
@@ -43,7 +51,11 @@
             :url="`${url}/blog/${article._id}`"
             :title="`${article.title}`"
           >
-            <v-icon class="ml-2" :color="network.color" large>
+            <v-icon
+              class="ml-2"
+              :color="network.color"
+              :large="$vuetify.breakpoint.mdAndUp"
+            >
               {{ network.icon }}
             </v-icon>
           </ShareNetwork>
@@ -124,14 +136,14 @@
     this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
     */
-      ;(function () {
+      (function () {
         // DON'T EDIT BELOW THIS LINE
         var d = document,
-          s = d.createElement('script')
-        s.src = 'https://https-tejasjadhav2907-xyz.disqus.com/embed.js'
-        s.setAttribute('data-timestamp', +new Date())
-        ;(d.head || d.body).appendChild(s)
-      })()
+          s = d.createElement("script");
+        s.src = "https://https-tejasjadhav2907-xyz.disqus.com/embed.js";
+        s.setAttribute("data-timestamp", +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
     </script>
     <noscript
       >Please enable JavaScript to view the
@@ -142,21 +154,21 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
-TimeAgo.addLocale(en)
-const timeAgo = new TimeAgo('en-US')
+import { mapState, mapActions } from "vuex";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+TimeAgo.addLocale(en);
+const timeAgo = new TimeAgo("en-US");
 export default {
   watchQuery: true,
   async fetch(ctx) {
     try {
-      await ctx.store.dispatch('events/fetchArticle', ctx.params.index)
+      await ctx.store.dispatch("events/fetchArticle", ctx.params.index);
     } catch (e) {
       ctx.error({
         statusCode: 503,
-        message: 'Unable to fetch article at this time. Please try again.',
-      })
+        message: "Unable to fetch article at this time. Please try again.",
+      });
     }
   },
   data() {
@@ -164,106 +176,109 @@ export default {
       url: process.env.mainUrl,
       networks: [
         {
-          network: 'facebook',
-          icon: 'mdi-facebook',
-          color: '#4267B2',
+          network: "facebook",
+          icon: "mdi-facebook",
+          color: "#4267B2",
         },
         {
-          network: 'twitter',
-          icon: 'mdi-twitter',
-          color: '#1da1f2',
+          network: "twitter",
+          icon: "mdi-twitter",
+          color: "#1da1f2",
         },
         {
-          network: 'email',
-          icon: 'mdi-email',
-          color: '#333',
+          network: "email",
+          icon: "mdi-email",
+          color: "#333",
         },
         {
-          network: 'sms',
-          icon: 'mdi-message',
-          color: '#e0dd1f',
+          network: "sms",
+          icon: "mdi-message",
+          color: "#e0dd1f",
         },
       ],
       showLikesBtn: false,
       dialogDelete: false,
-    }
+    };
   },
   computed: mapState({
     time() {
-      const date = new Date(this.article.dateCreated)
-      return timeAgo.format(date)
+      const date = new Date(this.article.dateCreated);
+      return timeAgo.format(date);
     },
     article: (state) => state.events.article,
     likersList: (state) => state.events.likes,
     dateCreated() {
-      return this.article.dateCreated.split('T')[0]
+      return this.article.dateCreated.split("T")[0];
     },
     isLiked() {
       if (!this.$auth.loggedIn) {
-        return false
+        return false;
       } else if (this.article.claps.includes(this.$auth.user._id)) {
-        return true
+        return true;
       }
-      return false
+      return false;
     },
   }),
   methods: {
-    ...mapActions('events', [
-      'clapArticle',
-      'unClapArticle',
-      'fetchLikers',
-      'deletePost',
+    ...mapActions("events", [
+      "clapArticle",
+      "unClapArticle",
+      "fetchLikers",
+      "deletePost",
     ]),
     async likeArticle() {
       try {
         if (!this.$auth.loggedIn) {
-          this.$toast.info('You need to have account to like an article')
+          this.$toast.info("You need to have account to like an article");
         } else if (this.article.claps.includes(this.$auth.user._id)) {
-          await this.unClapArticle(this.article._id)
-          this.$toast.success('You unliked an article')
+          await this.unClapArticle(this.article._id);
+          this.$toast.success("You unliked an article");
         } else {
-          await this.clapArticle(this.article._id)
-          this.$toast.success('You liked an article')
+          await this.clapArticle(this.article._id);
+          this.$toast.success("You liked an article");
         }
       } catch (e) {
         this.$toast.error(
-          'Cannot perform this action . Please try after some time'
-        )
+          "Cannot perform this action . Please try after some time"
+        );
       }
     },
     async fetchLikesOnArticle() {
       try {
-        this.showLikesBtn = true
-        this.$toast.info('Loading likes on article')
-        await this.fetchLikers(this.article._id)
-        this.$toast.success('Likes loaded successfully')
+        this.showLikesBtn = true;
+        this.$toast.info("Loading likes on article");
+        await this.fetchLikers(this.article._id);
+        this.$toast.success("Likes loaded successfully");
       } catch (e) {
-        this.$toast.error(e.message)
+        this.$toast.error(e.message);
       }
     },
     async deleteArticle() {
       try {
-        this.dialogDelete = false
-        this.$toast.info('Deleteing post')
-        await this.deletePost(this.article._id)
-        this.$toast.success('Post deleted successfully')
-        this.$router.push('/blog')
+        this.dialogDelete = false;
+        this.$toast.info("Deleteing post");
+        await this.deletePost(this.article._id);
+        this.$toast.success("Post deleted successfully");
+        this.$router.push("/blog");
       } catch (e) {
-        this.$toast.error(e.response.data.message)
+        this.$toast.error(e.response.data.message);
       }
     },
   },
-}
+};
 // v-if="$auth.user.following.contains(liker._id)"
 </script>
 <style lang="scss" scoped>
-@import '/assets/scss/abstracts/variables';
+@import "/assets/scss/abstracts/variables";
 
 .article {
-  margin-top: 3rem;
+  margin-top: 7rem;
   margin-bottom: 3rem;
   svg {
     margin: 4px;
+  }
+  @media only screen and (max-width: $bp-small) {
+    margin-top: 3rem;
   }
   &__card {
     position: relative;
@@ -275,7 +290,6 @@ export default {
       color: $color-grey-dark;
       display: flex;
       padding-left: 1rem;
-
       align-items: center;
       justify-content: space-between;
       margin-bottom: 1rem;
@@ -287,6 +301,9 @@ export default {
       svg {
         transform: translateY(0.6rem);
       }
+    }
+    &--categories {
+      margin: 1.2rem 1rem;
     }
     &--content {
       padding-left: 1rem;
