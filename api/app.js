@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: /139\.59\.20\.153\./,
+    origin: /tejasjadhav2907\.xyz/,
     credentials: true,
   })
 );
