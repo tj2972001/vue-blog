@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const APIClent = {
-  baseURL: process.env.mainUrl || "http://167.99.48.45:8000/api/v1",
+  baseURL: process.env.mainUrl || "https://139.59.20.153:8000/api/v1",
   withCredentials: true,
   headers: {
     Accept: "application/json",

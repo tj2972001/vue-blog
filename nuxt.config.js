@@ -1,5 +1,3 @@
-import colors from "vuetify/es5/util/colors";
-
 export default {
   /*
    ** Nuxt rendering mode
@@ -102,7 +100,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: "http://167.99.48.45:8000/api/v1",
+    baseURL: "http://139.59.20.153:8000/api/v1",
   },
   /*
    ** vuetify module configuration
@@ -181,7 +179,7 @@ export default {
   },
   server: {
     port: 8000, // default: 3000
-    host: "167.99.48.45", // default: localhostt,
+    host: "139.59.20.153", // default: localhostt,
     timing: false,
   },
 };
