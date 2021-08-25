@@ -2,7 +2,7 @@
 
 ## Build Setup
 
-## live demo : https://tejas-blog.herokuapp.com
+## live demo : https://tejasjadhav2907.xyz
 ```bash
 # install dependencies
 $ npm install
