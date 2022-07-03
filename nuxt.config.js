@@ -100,29 +100,13 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: "http://139.59.20.153:8000/api/v1",
+    baseURL: process.env.BASE_URL,
+    mainURL: process.env.MAIN_URL
   },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
-  vuetify: {
-    theme: {
-      dark: false,
-      themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
-        },
-      },
-    },
-    treeShake: true,
-  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
@@ -136,8 +120,14 @@ export default {
         loader: "url-loader",
       });
     },
+    babel:{
+      plugins: [
+        ["@babel/plugin-proposal-class-properties", { "loose": true }],
+        ["@babel/plugin-proposal-private-methods", { "loose": true }],
+        ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
+      ]
+    }
   },
-  serverMiddleware: ["~/api/app.js"],
   toast: {
     position: "bottom-right",
     theme: "bubble",
@@ -147,29 +137,6 @@ export default {
     ],
   },
 
-  auth: {
-    strategies: {
-      local: {
-        endpoints: {
-          login: {
-            url: "/user/login",
-            method: "post",
-            propertyName: "token",
-          },
-          logout: false,
-          user: {
-            url: "/user/profile/me",
-            method: "get",
-            propertyName: "data.user",
-          },
-        },
-        // tokenRequired: true,
-        // tokenType: 'bearer',
-        // globalToken: true,
-        // autoFetchUser: true
-      },
-    },
-  },
   env: {
     baseUrl: process.env.BASE_URL,
     mainUrl: process.env.MAIN_URL,
@@ -179,7 +146,6 @@ export default {
   },
   server: {
     port: 8000, // default: 3000
-    host: "139.59.20.153", // default: localhostt,
     timing: false,
   },
 };

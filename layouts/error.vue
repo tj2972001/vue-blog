@@ -5,6 +5,7 @@
     </h1>
     <h1 v-else>
       {{ otherError }}
+      {{error.message}}
     </h1>
     <NuxtLink to="/"> Home page </NuxtLink>
   </v-app>
@@ -12,7 +13,7 @@
 
 <script>
 export default {
-  layout: 'empty',
+  layout: "empty",
   props: {
     error: {
       type: Object,
@@ -21,7 +22,7 @@ export default {
   },
   data() {
     return {
-      pageNotFound: '404 Not Found',
+      pageNotFound: "404 Not Found",
       otherError: 'An error occurred',
     }
   },
