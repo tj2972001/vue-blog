@@ -10,7 +10,7 @@
           <input v-model="password" type="password" placeholder="Password" />
         </div>
         <div class="row">
-          <button id="login" class="btn-medium" @click="login">Login</button>
+          <button id="login" class="btn-medium" @click="loginMethod">Login</button>
         </div>
         <div class="row">
           <a href="#">Forget Password</a>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   data: () => ({
     passwordShow: false,
@@ -28,18 +29,20 @@ export default {
     password: '',
   }),
   methods: {
-    async login() {
+    ...mapActions('user', ['login','storeUser']),
+    async loginMethod() {
       const formData = {}
       formData.email = this.email
       formData.password = this.password
       try {
         this.$toast.info('Logging in ')
-        const userResponse = await this.$auth.loginWith('local', {
-          data: formData,
-        })
-        const userStatus = userResponse.data.status
+        const response = await this.login(formData)
+        console.log("Login: ",response)
+        const userStatus = response.data.status
         if (userStatus === 'success') {
           this.$toast.success('Login successfully')
+          this.$toast.info('Saving user to Vuex store')
+          console.log('Response.data is ',response.data)
           this.$router.push({
             name: 'index',
           })
