@@ -95,7 +95,7 @@
           ></span>
         </div>
         <div class="row">
-          <button id="signup" class="btn-medium" @click="signup">Signup</button>
+          <button id="signup" class="btn-medium" @click="signupMethod">Signup</button>
         </div>
       </div>
     </div>
@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     ...mapActions('user', ['signUp']),
-    async signup() {
+    async signupMethod() {
       const formData = {
         name: this.name,
         email: this.email,

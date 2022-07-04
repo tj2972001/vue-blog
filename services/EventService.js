@@ -54,7 +54,7 @@ export default {
   signup(formData) {
     return axios({
       method: "POST",
-      url: `${APIClent.baseURL}/api/v1/user/signup`,
+      url: `${APIClent.baseURL}/user/signup`,
       withCredentials: true,
 
       data: formData,

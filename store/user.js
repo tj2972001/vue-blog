@@ -1,19 +1,39 @@
 import EventService from '@/services/EventService'
+export const state = {
+  isLoggedIn: false,
+  loggedInUser: null
+}
+export const mutations = {
+  SET_USER(state,user){
+    state.isLoggedIn = true
+    state.loggedInUser = user
+  },
+  REMOVE_USER(state){
+    state.isLoggedIn = false
+    state.loggedInUser = null
+  }
+}
 
 export const actions = {
+  async login(ctx,formData){
+    return EventService.login(formData);
+  },
   async signUp(ctx, formData) {
-    await EventService.signup(formData)
+    return EventService.signup(formData);
   },
   async updateUserInfo({ commit }, formData) {
-    const user = await EventService.updateUserInfo(formData)
-    return user
+    return EventService.updateUserInfo(formData);
   },
   async logOutUser() {
-    const user = await EventService.logOut()
-    return user
+    return EventService.logOut();
   },
   async updatePassword(ctx, formData) {
-    const response = await EventService.updatePassword(formData)
-    return response
+    return  EventService.updatePassword(formData)
   },
+  async storeUser(ctx,user){
+    ctx.commit('SET_USER',user)
+  },
+  async removeUser(ctx){
+    ctx.commit('REMOVE_USER')
+  }
 }
