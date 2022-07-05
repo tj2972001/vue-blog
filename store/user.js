@@ -1,8 +1,8 @@
 import EventService from '@/services/EventService'
-export const state = {
+export const state = ()=> ({
   isLoggedIn: false,
   loggedInUser: null
-}
+})
 export const mutations = {
   SET_USER(state,user){
     state.isLoggedIn = true

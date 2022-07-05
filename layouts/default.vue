@@ -9,4 +9,17 @@
 
 <script></script>
 
-<style></style>
+<style lang="scss">
+@import "/assets/scss/abstracts/variables";
+//.v-application a{
+//  color: $color-black-pure !important;
+//}
+a.nuxt-link-active {
+  color: $color-black-pure;
+  text-decoration: none;
+}
+/* exact link will show the primary color for only the exact matching link */
+a.nuxt-link-exact-active {
+  color: $color-black-pure;
+}
+</style>

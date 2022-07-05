@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <v-app-bar v-show="$vuetify.breakpoint.smAndUp" app>
+  <div class="toolbar">
+    <v-app-bar v-show="$vuetify.breakpoint.smAndUp" app class="toolbar__desktop">
       <nuxt-link to="/"
-        ><v-toolbar-title class="text-h5">{{
+        ><h2 class="toolbar__desktop--title">{{
           title
-        }}</v-toolbar-title></nuxt-link
+        }}</h2></nuxt-link
       >
       <v-spacer></v-spacer>
       <v-btn
@@ -15,7 +15,7 @@
         rounded
         >{{ link.label }}</v-btn
       >
-      <template v-if="!$auth.loggedIn">
+      <template v-if="!isLoggedIn">
         <v-btn
           v-for="link in authLinks"
           :key="`${link.label}-header-link`"
@@ -31,10 +31,10 @@
         ></nuxt-link>
       </template>
     </v-app-bar>
-    <v-toolbar v-show="$vuetify.breakpoint.xsOnly">
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Tejas's Blog</v-toolbar-title>
-    </v-toolbar>
+    <v-app-bar v-show="$vuetify.breakpoint.xsOnly" class="toolbar__mobile">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="toolbar__mobile--icon"></v-app-bar-nav-icon>
+      <h2 class="toolbar__mobile--title">{{title}}</h2>
+    </v-app-bar>
     <v-navigation-drawer
       id="drawer"
       v-model="drawer"
@@ -69,7 +69,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <template v-if="!$auth.loggedIn">
+          <template v-if="!isLoggedIn">
             <v-list-item
               v-for="link in authLinks"
               :key="`${link.label}-header-link`"
@@ -101,6 +101,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data: () => ({
     drawer: false,
@@ -141,7 +142,19 @@ export default {
       this.drawer = false
     },
   },
+  computed:{
+    ...mapState({
+      isLoggedIn: (state)=>state.user.isLoggedIn
+    })
+  }
 }
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@import "/assets/scss/abstracts/variables";
+.toolbar{
+  font-weight: bolder;
+  font-size: 2rem;
+}
+
+</style>

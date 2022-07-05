@@ -198,14 +198,16 @@ export default {
     dateCreated() {
       return this.article.dateCreated.split('T')[0]
     },
-    isLiked() {
-      if (!this.$auth.loggedIn) {
+    isLiked(state) {
+      if (!state.user.isLoggedIn) {
         return false
-      } else if (this.article.claps.includes(this.$auth.user._id)) {
+      } else if (this.article.claps.includes(state.user.loggedInUser._id)) {
         return true
       }
       return false
     },
+    user: (state)=>state.user.loggedInUser,
+    isUserLoggedIn : (state)=>state.user.isLoggedIn
   }),
   methods: {
     ...mapActions('events', [
@@ -216,19 +218,20 @@ export default {
     ]),
     async likeArticle() {
       try {
-        if (!this.$auth.loggedIn) {
+        if (!this.isUserLoggedIn) {
           this.$toast.info('You need to have account to like an article')
-        } else if (this.article.claps.includes(this.$auth.user._id)) {
+        } else if (this.article.claps.includes(this.user._id)) {
           await this.unClapArticle(this.article._id)
           this.$toast.success('You unliked an article')
         } else {
           await this.clapArticle(this.article._id)
-          this.$toast.success('You liked an article')
+          this.$toast.success('You liiked an article')
         }
       } catch (e) {
         this.$toast.error(
           'Cannot perform this action . Please try after some time'
         )
+        this.$toast.error(e.message)
       }
     },
     async fetchLikesOnArticle() {

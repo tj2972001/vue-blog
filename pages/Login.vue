@@ -1,8 +1,8 @@
 <template>
   <section class="login-page">
-    <div class="llcontainer">
-      <div class="box">
-        <h1>Sign In</h1>
+    <div class="login llcontainer">
+      <div class="box login__box">
+        <h2>Sign In</h2>
         <div class="row">
           <input v-model="email" type="text" placeholder="email" />
         </div>
@@ -42,6 +42,7 @@ export default {
         if (userStatus === 'success') {
           this.$toast.success('Login successfully')
           this.$toast.info('Saving user to Vuex store')
+          this.$store.dispatch('user/storeUser',response.data.data.user)
           console.log('Response.data is ',response.data)
           this.$router.push({
             name: 'index',
@@ -57,82 +58,83 @@ export default {
 
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
-* {
-  padding: 0;
-  margin: 0;
-  font-family: 'Quicksand', sans-serif;
-}
-body {
-  background: #fff;
-}
-.llcontainer {
+
+.login{
+  font-size: 2rem;
   position: relative;
   width: 100%;
   min-height: 100vh;
   background: url('~assets/images/home-bg.jpg');
   background-size: 100% 100%;
+  @media only screen and (max-width: 600px) {
+    background: url('~assets/images/home-bg-mobile.jpg');
+    background-size: 100% 100%;
+  }
+  &::before{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #262626;
+      width: 100%;
+      height: 100%;
+      mix-blend-mode: hard-light;
+  }
+  ::placeholder {
+    color: #fff;
+    text-transform: uppercase;
+  }
+  &__box{
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    min-height: 20vh;
+    background: transparent;
+    color: #fff;
+    padding: 4rem 2rem;
+    box-sizing: border-box;
+    transition: 0.9s;
+    @media only screen and (max-width: 600px) {
+      width: 90vw;
+    }
+    & .row{
+      & input{
+        border: none;
+        outline: none;
+        width: 100%;
+        padding: 1rem 2rem;
+        border-radius: 2.5rem;
+        box-sizing: border-box;
+        background: rgba(255, 255, 255, 0.4);
+        color: #fff;
+        font-size: 1.2rem;
+      }
+      width: 100%;
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+    & .row button#login{
+      background: #00bcd4;
+      padding: .5rem 0;
+      border-radius: 5rem;
+      width: 100%;
+      font-size: 1.5rem;
+    }
+    & .row a{
+      font-size: 1.2rem;
+      text-decoration: none;
+      color: #fff;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+    & h2{
+      text-transform: uppercase;
+    }
+  }
 }
-.llcontainer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: #262626;
-  width: 100%;
-  height: 100%;
-  mix-blend-mode: hard-light;
-}
-.llcontainer .box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50vw;
-  min-height: 10vh;
-  background: transparent;
-  color: #fff;
-  padding: 50px 20px;
-  box-sizing: border-box;
-  transition: 0.9s;
-}
-.llcontainer .box h1 {
-  font-size: 40px;
-  text-align: center;
-  text-transform: uppercase;
-}
-.llcontainer .box .row {
-  width: 100%;
-  margin: 25px 0;
-  text-align: center;
-}
-.llcontainer .box .row input {
-  border: none;
-  outline: none;
-  width: 100%;
-  padding: 13px 25px;
-  border-radius: 30px;
-  box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.4);
-  color: #fff;
-  font-size: 18px;
-}
-::placeholder {
-  color: #fff;
-  text-transform: uppercase;
-}
-.llcontainer .box .row a {
-  display: inline-block;
-  padding: 10px 0;
-  color: #fff;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 18px;
-}
-.llcontainer .box .row button#login {
-  background: #00bcd4;
-  padding: 15px 0;
-  border-radius: 50px;
-  width: 100%;
-}
+
 </style>

@@ -1,17 +1,30 @@
 <template>
-  <div>
-    <v-btn
-      style="float: left"
-      color="primary"
-      fab
-      outlined
-      class="ma-2"
-      :x-small="$vuetify.breakpoint.xsOnly"
-      :small="$vuetify.breakpoint.mdAndUp"
-      @click.stop="drawer = !drawer"
-    >
-      <v-icon>mdi-filter</v-icon>
-    </v-btn>
+  <v-row class="NavigationDrawer">
+    <div class="NavigationDrawer__buttons">
+      <v-btn
+        style="float: left"
+        color="primary"
+        fab
+        outlined
+        class="ma-2"
+        :x-small="$vuetify.breakpoint.smAndDown"
+        :small="$vuetify.breakpoint.mdAndUp"
+        @click.stop="drawer = !drawer"
+      >
+        <v-icon>mdi-filter</v-icon>
+      </v-btn>
+      <v-btn
+        outlined
+        color="primary"
+        fab
+        class="ma-2"
+        :x-small="$vuetify.breakpoint.smAndDown"
+        :small="$vuetify.breakpoint.mdAndUp"
+        to="/blog/create/"
+      >
+        <v-icon>mdi-grease-pencil</v-icon>
+      </v-btn>
+    </div>
     <v-navigation-drawer
       v-model="drawer"
       width="80vw"
@@ -60,7 +73,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-  </div>
+  </v-row>
 </template>
 <script>
 import Multiselect from '@/components/Multiselect.vue'
@@ -92,3 +105,11 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.NavigationDrawer{
+ margin: 1.5rem;
+  @media only screen and (max-width: 600px) {
+    margin: .5rem;
+  }
+}
+</style>

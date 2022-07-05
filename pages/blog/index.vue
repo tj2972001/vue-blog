@@ -1,24 +1,13 @@
 <template>
-  <v-sheet>
-    <NavigationDrawer />
-    <v-btn
-      outlined
-      color="primary"
-      fab
-      class="ma-2"
-      :x-small="$vuetify.breakpoint.xsOnly"
-      :small="$vuetify.breakpoint.mdAndUp"
-      to="/blog/create/"
-    >
-      <v-icon>mdi-grease-pencil</v-icon>
-    </v-btn>
+  <section class="blog-page">
+    <NavigationDrawer class="blog-page__navigation_drawer"/>
     <ArticleCard
       v-for="article in allBlogs"
       :key="article._id"
       :article="article"
-      style="overflow-y: hidden; max-width: 50%"
+      class="blog-page__articles"
     />
-    <div class="text-center">
+    <div class="text-center blog-page__pagination">
       <v-container>
         <v-row justify="center">
           <v-col cols="8">
@@ -34,7 +23,7 @@
         </v-row>
       </v-container>
     </div>
-  </v-sheet>
+  </section>
 </template>
 <script>
 import NavigationDrawer from '@/components/NavigationDrawer.vue'
@@ -101,11 +90,19 @@ export default {
   },
 }
 </script>
-<style>
-.textGrd {
-  text-align: center;
-  background: -webkit-linear-gradient(135deg, #324dd2, #21f6ce);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+<style lang="scss" scoped>
+
+.blog-page {
+  &__articles{
+    width: 80%;
+    margin: 0 auto;
+
+  }
+
+  @media only screen and (max-width: 600px) {
+    width: 95%
+  }
 }
+
+
 </style>

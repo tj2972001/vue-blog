@@ -1,5 +1,5 @@
 <template>
-  <div class="app-row article">
+  <div class="article">
     <div class="article__card">
       <h2 class="article__card--title">{{ article.title }}</h2>
       <div class="article__card--author">
@@ -56,7 +56,9 @@ export default {
     padding-left: 1rem;
   }
   &__card {
+    overflow-y: hidden;
     position: relative;
+    margin: 2rem 0;
     &--title {
       font-weight: 600;
     }
@@ -87,5 +89,12 @@ export default {
     border: 2px solid $color-grey-light;
   }
   box-shadow: 0px -15px 30px -15px inset #111;
+  @media only screen and (max-width: 600px) {
+    .article{
+      &__card{
+        margin: 1rem;
+      }
+    }
+  }
 }
 </style>

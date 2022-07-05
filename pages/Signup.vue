@@ -44,18 +44,17 @@
     >
   </v-card> -->
   <section class="signup-page">
-    <div class="llcontainer">
-      <div class="box">
-        <h1>Sign Up</h1>
+    <div class="llcontainer signup">
+      <div class="box signup__box">
+        <h2>Sign Up</h2>
         <div class="row">
           <input v-model="name" type="text" placeholder="Enter name" />
-          <span
-            ><fa-icon
+
+            <fa-icon
               class="form-icon"
               scale="1.6"
               name="regular/user-circle"
-            ></fa-icon
-          ></span>
+            ></fa-icon>
         </div>
         <div class="row">
           <input
@@ -64,13 +63,12 @@
             scale="1.6"
             placeholder="Enter email"
           />
-          <span
-            ><fa-icon
+            <fa-icon
               scale="1.6"
               class="form-icon"
               name="regular/envelope-open"
             ></fa-icon
-          ></span>
+          >
         </div>
         <div class="row">
           <input
@@ -78,10 +76,8 @@
             :type="passwordShow ? 'text' : 'password'"
             placeholder="Enter password"
             @click:append="passwordShow = !passwordShow"
-          />
-          <span
-            ><fa-icon scale="1.2" class="form-icon" name="key"></fa-icon
-          ></span>
+          /><fa-icon scale="1.2" class="form-icon" name="key"></fa-icon
+          >
         </div>
         <div class="row">
           <input
@@ -90,9 +86,8 @@
             placeholder="Confirm password"
             @click:append="passwordConfirmShow = !passwordConfirmShow"
           />
-          <span
-            ><fa-icon scale="1.6" class="form-icon" name="regular/eye"></fa-icon
-          ></span>
+          <fa-icon scale="1.6" class="form-icon" name="regular/eye"></fa-icon
+          >
         </div>
         <div class="row">
           <button id="signup" class="btn-medium" @click="signupMethod">Signup</button>
@@ -143,76 +138,87 @@ export default {
 }
 </script>
 
-<style scoped>
-.llcontainer {
+<style lang="scss" scoped>
+.signup{
+  text-align: center;
+  font-size: 2rem;
   position: relative;
   width: 100%;
   min-height: 100vh;
   background: url('~assets/images/home-bg.jpg');
   background-size: 100% 100%;
-}
-.llcontainer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: #262626;
-  width: 100%;
-  height: 100%;
-  mix-blend-mode: hard-light;
-}
-.llcontainer .box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50vw;
-  min-height: 10vh;
-  background: transparent;
-  color: #fff;
-  padding: 50px 20px;
-  box-sizing: border-box;
-  transition: 0.9s;
-}
-.llcontainer .box h1 {
-  font-size: 40px;
-  text-align: center;
-  text-transform: uppercase;
-}
-.llcontainer .box .row {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin: 25px 0;
-}
-.llcontainer .box .row input {
-  border: none;
-  outline: none;
-  width: 95%;
-  padding: 13px 25px;
-  border-radius: 30px;
-  box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.4);
-  color: #fff;
-  font-size: 18px;
-}
-::placeholder {
-  color: #fff;
-  text-transform: uppercase;
-}
-.llcontainer .box .row a {
-  display: inline-block;
-  padding: 10px 0;
-  color: #fff;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 18px;
-}
-.llcontainer .box .row button#signup {
-  background: #00bcd4;
-  padding: 15px 0;
-  border-radius: 50px;
-  width: 95%;
+  @media only screen and (max-width: 600px) {
+    background: url('~assets/images/home-bg-mobile.jpg');
+    background-size: 100% 100%;
+  }
+  &::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #262626;
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: hard-light;
+  }
+  ::placeholder {
+    color: #fff;
+    text-transform: uppercase;
+  }
+  &__box{
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    min-height: 20vh;
+    background: transparent;
+    color: #fff;
+    padding: 4rem 2rem;
+    box-sizing: border-box;
+    transition: 0.9s;
+    @media only screen and (max-width: 600px) {
+      width: 90vw;
+    }
+    & .row{
+      margin: 0 auto;
+      & input{
+        border: none;
+        outline: none;
+        width: 90%;
+        padding: 1rem 2rem;
+        border-radius: 2.5rem;
+        box-sizing: border-box;
+        background: rgba(255, 255, 255, 0.4);
+        color: #fff;
+        font-size: 1.2rem;
+      }
+      & .form-icon{
+        margin: 1rem 0;
+      }
+      width: 100%;
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+    & .row button#signup{
+      background: #00bcd4;
+      padding: .5rem 0;
+      border-radius: 5rem;
+      width: 90%;
+      font-size: 1.5rem;
+    }
+    & .row a{
+      font-size: 1.2rem;
+      text-decoration: none;
+      color: #fff;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+    & h2{
+      text-transform: uppercase;
+    }
+  }
 }
 </style>

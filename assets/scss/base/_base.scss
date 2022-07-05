@@ -6,16 +6,25 @@
   box-sizing: inherit;
 }
 
-:root{
+:root {
   font-size: 100%; // 1rem = 10px
+  @media only screen and (max-width: 600px) {
+    font-size: 70%;
+  }
 }
+  body {
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;;
+  }
 
-body{
-  box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;;
-}
+  ::selection {
+    background-color: $color-teal-medium;
+    color: $color-white-pure;
+  }
 
-::selection{
-  background-color: $color-teal-medium;
-  color:$color-white-pure;
-}
+  @media only screen and (max-width: 600px) {
+    .v-main {
+      padding-top: 0 !important;
+    }
+  }
+

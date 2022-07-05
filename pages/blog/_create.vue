@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions,mapState } from 'vuex'
 export default {
   asyncData() {
     return {
@@ -65,13 +65,15 @@ export default {
       title: '',
       saveAsDraft: false,
       showPreview: false,
-      author: this.$auth.user._id,
     }
   },
   computed: {
     dateCreated() {
       return new Date(Date.now())
     },
+    ...mapState({
+      author: (state)=>state.user.loggedInUser._id,
+    })
   },
   methods: {
     ...mapActions('events', ['createArticle']),
