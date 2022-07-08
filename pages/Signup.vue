@@ -49,12 +49,7 @@
         <h2>Sign Up</h2>
         <div class="row">
           <input v-model="name" type="text" placeholder="Enter name" />
-
-            <fa-icon
-              class="form-icon"
-              scale="1.6"
-              name="regular/user-circle"
-            ></fa-icon>
+          <v-icon color="white" class="ml-2">mdi-account-outline</v-icon>
         </div>
         <div class="row">
           <input
@@ -63,12 +58,7 @@
             scale="1.6"
             placeholder="Enter email"
           />
-            <fa-icon
-              scale="1.6"
-              class="form-icon"
-              name="regular/envelope-open"
-            ></fa-icon
-          >
+          <v-icon class="ml-2" color="white">mdi-email-outline</v-icon>
         </div>
         <div class="row">
           <input
@@ -76,8 +66,8 @@
             :type="passwordShow ? 'text' : 'password'"
             placeholder="Enter password"
             @click:append="passwordShow = !passwordShow"
-          /><fa-icon scale="1.2" class="form-icon" name="key"></fa-icon
-          >
+          />
+          <v-icon class="ml-2" color="white">mdi-key-outline</v-icon>
         </div>
         <div class="row">
           <input
@@ -86,8 +76,7 @@
             placeholder="Confirm password"
             @click:append="passwordConfirmShow = !passwordConfirmShow"
           />
-          <fa-icon scale="1.6" class="form-icon" name="regular/eye"></fa-icon
-          >
+          <v-icon class="ml-2" color="white">mdi-eye-outline</v-icon>
         </div>
         <div class="row">
           <button id="signup" class="btn-medium" @click="signupMethod">Signup</button>
@@ -194,6 +183,9 @@ export default {
         color: #fff;
         font-size: 1.2rem;
       }
+      & .v-icon{
+        transform: translateX(-5rem);
+      }
       & .form-icon{
         margin: 1rem 0;
       }
@@ -204,7 +196,7 @@ export default {
     & .row button#signup{
       background: #00bcd4;
       padding: .5rem 0;
-      border-radius: 5rem;
+      border-radius: 2.5rem;
       width: 90%;
       font-size: 1.5rem;
     }

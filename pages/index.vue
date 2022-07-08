@@ -1,26 +1,45 @@
 <template>
   <section class="home-page">
-    <div class="home-page__intro absolute-center">
+    <div class="home-page__intro">
       <div class="home-page__intro--container">
-        <div class="home-page__intro--container__heading">
-          Hi, my name is Tejas <br />
-          welcome to my blog.
-        </div>
+        <h2 class="home-page__intro--container__heading">
+          Hi, my name is Tejas. Welcome to my blog.
+        </h2>
         <div class="home-page__intro--container__about">
           A curious engineer, curator and avid web developer.<br />
           A great fan of Java technologies
         </div>
       </div>
     </div>
-    <div class="app-row home-page__categories">
-      <h2 class="home-page__categories--heading blueishLinearGrad">
-        Read the articles by topic
-      </h2>
-      <ul class="home-page__categories--list noBullets">
-        <li v-for="cat in popularCategories" :key="cat.label">
-          <span>{{ cat.label }}</span> <v-icon x-large>{{ cat.icon }}</v-icon>
-        </li>
-      </ul>
+    <div class="home-page__recentArticles">
+      <h3 class="home-page__recentArticles--headings">Recent articles</h3>
+      <ol class="home-page__recentArticles--list">
+        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est laudantium magni odit officia reprehenderit repudiandae saepe tempore. Asperiores aut doloremque ducimus eius ipsa ipsum iusto provident quos voluptatem voluptatum. Amet.</li>
+        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad asperiores, assumenda, cumque, delectus dignissimos facilis illo in incidunt molestiae necessitatibus odio pariatur quas quibusdam rem repellat soluta suscipit voluptate voluptatum!</li>
+        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis ducimus expedita facilis hic ipsa, ipsam ipsum maiores, nam nesciunt nihil non nostrum placeat porro provident quaerat quidem tenetur veniam, voluptates?</li>
+        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi deleniti dolor, dolorem doloribus ducimus eum excepturi maxime natus nemo nisi nulla, odio officiis pariatur suscipit voluptas, voluptatum. Molestiae, quos.</li>
+        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci ducimus iure maxime molestiae nam provident quas voluptatum? Accusantium alias doloremque illo ipsum obcaecati, pariatur ratione, reprehenderit repudiandae ullam vero voluptates.</li>
+      </ol>
+    </div>
+    <div class="home-page__popularTags">
+      <h3 class="home-page__popularTags--headings">
+        Most popular tags
+      </h3>
+      <div class="home-page__popularTags--list">
+        <ol>
+          <li>Vuejs</li>
+          <li>Nodejs</li>
+          <li>Football</li>
+          <li>Personal</li>
+          <li>Security</li>
+        </ol>
+      </div>
+    </div>
+    <div class="home-page__skills">
+      <h3>My skills</h3>
+      <div>
+        <Icon name="brands/node" scale="5"></Icon>
+      </div>
     </div>
   </section>
 </template>
@@ -76,54 +95,110 @@ export default {
 @import '/assets/scss/abstracts/variables';
 @import '/assets/scss/base/utilities';
 
+@mixin heading{
+  text-decoration: underline;
+  margin-top: 2rem;
+  font-size: 3rem;
+  color: $color-golden;
+  font-weight: 700;
+}
+@mixin numList{
+  font-size: 1.5rem;
+  font-weight: 500;
+  list-style: decimal;
+}
+@mixin list{
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
 .home-page {
   &__intro {
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.2)),
-      url('~assets/images/home-bg.jpg');
-    height: 100vh;
+    font-weight: 900;
+    filter:brightness(80%);
+    background-attachment: scroll;
+    background: linear-gradient(90deg, rgb(0, 0, 0,.1), rgba(0,0,.2)),url('~assets/images/home-bg.jpg');
+    @media only screen and (max-width: 600px){
+      background: linear-gradient(270deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2)),url('~assets/images/home-bg-mobile.jpg');
+      background-size: 100% 100%;
+    }
+    height: 120vh;
     width: 100%;
     background-size: cover;
     background-position: center;
-    background-color: darken($color: #000000, $amount: 0);
     &--container {
       position: absolute;
       top: 10%;
-      left: 60%;
+      left: 40%;
       max-width: 100%;
       color: $color-grey-light;
       width: 60%;
-
+      @media only screen and (max-width: 600px) {
+        top:5%;
+      }
       &__heading {
-        line-height: 95%;
-        font-size: 2.5rem;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-          Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        color: $color-golden;
+        position: relative;
+        font-size: 3rem;
+        overflow: hidden; /* Ensures the content is not revealed until the animation */
+        border-right: .15em solid orange; /* The typwriter cursor */
+        margin-right:.2rem; /* Gives that scrolling effect as the typing happens */
+        white-space: nowrap;
+        animation:
+          typing 3.5s steps(40, end),
+          blink-caret .75s step-end infinite;
+        @media only screen and (max-width: 600px) {
+          font-size: 4rem;
+          animation: none;
+          white-space: normal;
+        }
       }
       &__about {
         margin-top: 1rem;
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         word-wrap: break-word;
       }
     }
   }
-  &__categories {
-    &--headings {
+  &__recentArticles{
+    & > *{
+      margin-left: 1rem;
     }
-    &--list {
-      li {
-        border-radius: 0.5rem;
-        margin: 1rem;
-        display: flex;
-        font-size: 1.2rem;
-        font-weight: 300;
-        justify-content: space-between;
-        width: 100%;
-        display: flex;
-        height: max-content;
-        padding: 1.5rem;
-        background-color: $color-grey-light;
+    &--headings{
+     @include heading
+    }
+    &--list{
+      @include numList;
+      & li{
+        @include list;
       }
     }
   }
+  &__popularTags{
+    & > *{
+      margin-left: 1rem;
+    }
+    &--headings{
+      @include heading;
+    }
+    &--list{
+      @include numList;
+      & li{
+        @include list;
+      }
+    }
+  }
+  &__skills{
+
+  }
+}
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange; }
 }
 </style>

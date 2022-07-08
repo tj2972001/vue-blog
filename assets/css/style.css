@@ -26,6 +26,9 @@ body {
   .v-main {
     padding-top: 0 !important; } }
 
+.v-list-item__title, .v-list-item__subtitle {
+  white-space: normal !important; }
+
 /*
 font-family: 'Roboto', sans-serif;
 font-family: 'Roboto Slab', serif;
@@ -39,7 +42,6 @@ h1 {
 
 h2 {
   margin: 1rem 0;
-  font-weight: 400;
   font-size: 2rem; }
 
 .paragraph {

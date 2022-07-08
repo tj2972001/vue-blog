@@ -27,8 +27,9 @@
       </template>
       <template v-else>
         <nuxt-link to="/profile"
-          ><fa-icon color="#000" name="cog"></fa-icon
-        ></nuxt-link>
+          >
+          <v-icon>mdi-cog</v-icon>
+        </nuxt-link>
       </template>
     </v-app-bar>
     <v-app-bar v-show="$vuetify.breakpoint.xsOnly" class="toolbar__mobile">
@@ -38,64 +39,30 @@
     <v-navigation-drawer
       id="drawer"
       v-model="drawer"
-      temporary
       absolute
+      class="toolbar__drawer"
       width="70%"
     >
-      <v-list-item>
+      <v-list-item class="toolbar__drawer--header">
         <v-list-item-content>
-          <v-list-item-title class="title"> {{ title }} </v-list-item-title>
-          <v-list-item-subtitle> Navigate to </v-list-item-subtitle>
+          <v-list-item-title class="toolbar__drawer--header--title"> {{ title }} </v-list-item-title>
+          <v-list-item-subtitle class="toolbar__drawer--header--subtitle" style="white-space: break-spaces"> Navigate to </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
       <v-divider></v-divider>
-      <v-list nav dense>
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        >
-          <v-list-item
-            v-for="link in links"
-            :key="`${link.label}-header-link`"
-            :to="link.url"
-          >
-            <v-list-item-icon>
-              <v-icon>{{ link.icon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>{{ link.label }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <template v-if="!isLoggedIn">
-            <v-list-item
-              v-for="link in authLinks"
-              :key="`${link.label}-header-link`"
-              :to="link.url"
-            >
-              <v-list-item-icon>
-                <v-icon>{{ link.icon }}</v-icon>
-              </v-list-item-icon>
-
-              <v-list-item-content>
-                <v-list-item-title>{{ link.label }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </template>
-
-          <v-list-item v-else to="/profile">
-            <v-list-item-icon>
-              <v-icon>mdi-emoticon-outline</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Your profile</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
+      <ul class="toolbar__drawer--list">
+        <li v-for="link in links" :key="`${link.label}-header-link`">
+          <v-icon class="mr-2">{{link.icon}}</v-icon>
+          <nuxt-link :to="link.url">{{link.label}}</nuxt-link>
+        </li>
+        <template v-if="!isLoggedIn">
+          <li v-for="link in authLinks" :key="`${link.label}-header-link`">
+            <v-icon class="mr-2">{{link.icon}}</v-icon>
+            <nuxt-link :to="link.url">{{link.label}}</nuxt-link>
+          </li>
+        </template>
+      </ul>
     </v-navigation-drawer>
   </div>
 </template>
@@ -116,12 +83,12 @@ export default {
       {
         label: 'Blog',
         url: '/blog',
-        icon: 'mdi-blogger',
+        icon: 'mdi-notebook-outline',
       },
       {
         label: 'About Me',
         url: '/about-me',
-        icon: 'mdi-face',
+        icon: 'mdi-badge-account-horizontal-outline',
       },
     ],
     authLinks: [
@@ -133,7 +100,7 @@ export default {
       {
         label: 'Signup',
         url: '/signup',
-        icon: 'mdi-fountain-pen-tip',
+        icon: 'mdi-account',
       },
     ],
   }),
@@ -145,16 +112,39 @@ export default {
   computed:{
     ...mapState({
       isLoggedIn: (state)=>state.user.isLoggedIn
-    })
+    }),
+
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "/assets/scss/abstracts/variables";
+.v-application a{
+  color: $color-grey-dark;
+}
 .toolbar{
-  font-weight: bolder;
-  font-size: 2rem;
+  &__drawer{
+    &--header{
+      &--title{
+        font-size: 2rem;
+        font-weight: bold;
+      }
+      &--subtitle{
+        font-size: 1.5rem;
+      }
+    }
+    &--list {
+        margin-top: 2rem;
+        padding-left: 1rem !important;
+        list-style: none;
+      & li{
+        font-size: 1.5rem;
+        text-decoration: none !important;
+        margin: 1rem 0;
+      }
+    }
+  }
 }
 
 </style>

@@ -27,59 +27,55 @@
     </div>
     <v-navigation-drawer
       v-model="drawer"
-      width="80vw"
+      :width="$vuetify.breakpoint.smAndDown?'80vw':'40vw'"
       app
       right
-      absolute
       temporary
+      class="NavigationDrawer__drawer"
     >
-      <v-list dense nav class="py-0">
-        <v-list-item class="my-5 px-5">
-          <v-list-item-content>
-            <v-list-item-title class="title"> Filter </v-list-item-title>
-            <v-list-item-subtitle>
-              Apply desired filters and then press Search button
-            </v-list-item-subtitle>
+      <v-list dense nav class="NavigationDrawer__drawer__list">
+        <v-list-item-content class="NavigationDrawer__drawer__list--header">
+            <v-list-item-title class="NavigationDrawer__drawer__list--header--title"> Filter </v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
-        <v-divider></v-divider>
-        <v-list-item v-for="item in items" :key="item.title" class="pa-2" link>
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-select
-              v-model="selectedItem"
-              item-text="name"
-              item-value="value"
-              :items="item.sortList"
-              :label="item.title"
-            ></v-select>
-          </v-list-item-content>
-        </v-list-item>
-        <p>{{ selectedItem.value }}</p>
-        <v-divider></v-divider>
-        <v-list-item class="pa-2">
-          <v-list-item-icon>
-            <v-icon>mdi-filter-plus</v-icon>
-          </v-list-item-icon>
-          <Multiselect />
-        </v-list-item>
-        <v-divider></v-divider>
-        <v-list-item>
+        <v-divider class="mb-5"></v-divider>
+          <v-list-item v-for="item in items" :key="item.title" class="NavigationDrawer__drawer__list--items" link>
+              <v-select
+                v-model="selectedItem"
+                :append-icon="item.icon"
+                item-text="name"
+                item-value="value"
+                style="font-size: 1.2rem"
+                :items="item.sortList"
+                :label="item.title"
+              ></v-select>
+          </v-list-item>
+          <v-list-item class="mb-5">
+            <v-icon class="mx-2">mdi-tag-multiple-outline</v-icon>
+            <Multiselect />
+          </v-list-item >
+          <v-list-item class="mb-5">
+          <v-icon class="mx-2">mdi-calendar-range-outline</v-icon>
+          <DatePicker v-model="selectedDate" range lang="en"/>
+        </v-list-item >
+          <v-list-item class="mb-5">
           <nuxt-link :key="`${selectedItem}`" :to="`/blog/?sort=${selectedItem}`">
-            <v-btn color="primary" class="mt-5"> Apply </v-btn>
+            <button class="btn-medium btn-teal" > Apply </button>
           </nuxt-link>
         </v-list-item>
+
       </v-list>
     </v-navigation-drawer>
   </v-row>
 </template>
 <script>
 import Multiselect from '@/components/Multiselect.vue'
+import VueDatePickerUI from "vue-datepicker-ui";
+import 'vue-datepicker-ui/lib/vuedatepickerui.css';
+
 export default {
   components: {
     Multiselect,
+    DatePicker: VueDatePickerUI
   },
   data() {
     return {
@@ -101,6 +97,10 @@ export default {
         },
       ],
       selectedItem: this.$route.query.sort || '-dateCreated',
+      selectedDate: [
+        new Date(),
+        new Date(new Date().getTime() + 9 * 24 * 60 * 60 * 1000)
+      ]
     }
   },
 }
@@ -110,6 +110,25 @@ export default {
  margin: 1.5rem;
   @media only screen and (max-width: 600px) {
     margin: .5rem;
+  }
+  &__drawer{
+    &__list{
+      &--header{
+        &--title{
+          font-size: 2rem;
+          font-weight: bold;
+        }
+        &--subtitle{
+          font-size: 1.2rem;
+        }
+      }
+
+      &--items{
+        & input{
+          font-size: 1rem;
+        }
+      }
+    }
   }
 }
 </style>

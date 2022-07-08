@@ -11,9 +11,9 @@
 
 <style lang="scss">
 @import "/assets/scss/abstracts/variables";
-//.v-application a{
-//  color: $color-black-pure !important;
-//}
+.v-application a{
+ text-decoration: none !important;
+}
 a.nuxt-link-active {
   color: $color-black-pure;
   text-decoration: none;

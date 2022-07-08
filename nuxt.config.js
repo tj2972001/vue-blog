@@ -57,6 +57,10 @@ export default {
         href:
           "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;700&family=Roboto:ital,wght@0,100;0,400;0,500;0,700;1,100;1,400;1,500;1,700&family=Train+One&display=swap",
       },
+      {
+        href:"https://fonts.googleapis.com/icon?family=Material+Icons",
+        rel: "stylesheet"
+      }
     ],
   },
   /*
@@ -70,7 +74,6 @@ export default {
   plugins: [
     { src: "~/plugins/vue2-editor", ssr: false },
     { src: "~/plugins/vue-tags-input", ssr: false },
-    { src: "~plugins/vue-awesome.js", ssr: false },
     { src: "~plugins/pdf.js", ssr: false },
   ],
   /*
@@ -126,7 +129,7 @@ export default {
         ["@babel/plugin-proposal-private-methods", { "loose": true }],
         ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
       ]
-    }
+    },
   },
   toast: {
     position: "bottom-right",

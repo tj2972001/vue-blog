@@ -1,11 +1,13 @@
 <template>
   <div class="create-blog">
-    <v-card-title>Create a new blog </v-card-title>
+    <h2>Create a new blog </h2>
     <v-text-field
       v-model="title"
       class="mx-auto"
       label="Add Title"
       type="text"
+      outlined
+      clearable
     ></v-text-field>
     <no-ssr>
       <vue-tags-input
@@ -42,7 +44,7 @@
       label="save as draft"
       @click="saveAsDraft = !saveAsDraft"
     ></v-checkbox>
-    <v-btn color="primary" @click="postArticle">
+    <v-btn color="primary" @click="postArticle" rounded>
       {{ saveAsDraft ? 'Save as Draft' : 'Post' }}
     </v-btn>
   </div>

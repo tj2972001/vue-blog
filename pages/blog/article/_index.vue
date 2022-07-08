@@ -4,7 +4,7 @@
       <h2 class="article__card--title">{{ article.title }}</h2>
       <div class="article__card--author">
         <div class="article__card--author__name">
-          <fa-icon name="user-circle" scale="1.4"></fa-icon>
+          <v-icon color="#000">mdi-account-circle-outline</v-icon>
           <span>{{ article.author.name }}</span>
         </div>
         <div class="article__card--author__date">{{ time }}</div>
@@ -17,25 +17,24 @@
       <hr />
       <div class="article__card--social">
         <div class="article__card--social__likes">
-          <fa-icon
-            name="regular/thumbs-up"
-            :style="likeColor"
-            class="mr-5"
-            scale="1.4"
-            :color="isLiked ? 'red' : '#000'"
+          <v-icon
             @click="likeArticle"
-          ></fa-icon>
+            class="mr-2"
+            style="margin-left: 0"
+          >{{isLiked?"mdi-thumb-up":"mdi-thumb-up-outline"}}</v-icon>
           <span
             class="article__card--social__likes--count"
             @click="fetchLikesOnArticle"
             >{{ article.claps.length }} likes</span
           >
           <button @click="dialogDelete = !dialogDelete">
-            <fa-icon name="trash" scale="1.4"> </fa-icon>
+            <v-icon>mdi-trash-can</v-icon>
           </button>
         </div>
 
         <div class="article__card--social__share">
+          <span>share on
+          </span>
           <ShareNetwork
             v-for="network in networks"
             :key="network.network"
@@ -43,7 +42,7 @@
             :url="`${url}/blog/${article._id}`"
             :title="`${article.title}`"
           >
-            <v-icon class="ml-2" :color="network.color" large>
+            <v-icon class="ml-2">
               {{ network.icon }}
             </v-icon>
           </ShareNetwork>
@@ -166,22 +165,18 @@ export default {
         {
           network: 'facebook',
           icon: 'mdi-facebook',
-          color: '#4267B2',
         },
         {
           network: 'twitter',
           icon: 'mdi-twitter',
-          color: '#1da1f2',
         },
         {
           network: 'email',
           icon: 'mdi-email',
-          color: '#333',
         },
         {
           network: 'sms',
           icon: 'mdi-message',
-          color: '#e0dd1f',
         },
       ],
       showLikesBtn: false,

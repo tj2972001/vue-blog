@@ -4,7 +4,7 @@
       <h2 class="article__card--title">{{ article.title }}</h2>
       <div class="article__card--author">
         <div class="article__card--author__name">
-          <fa-icon name="user-circle" scale="2.5"></fa-icon>
+          <v-icon color="#000">mdi-account-circle-outline</v-icon>
           <span>{{ article.author.name }}</span>
         </div>
         <div class="article__card--author__date">{{ time }}</div>
@@ -54,6 +54,7 @@ export default {
 .article {
   > * :not(hr) {
     padding-left: 1rem;
+
   }
   &__card {
     overflow-y: hidden;
@@ -87,6 +88,9 @@ export default {
       right: 0;
     }
     border: 2px solid $color-grey-light;
+    @media only screen and (max-width: 600px){
+      border: none;
+    }
   }
   box-shadow: 0px -15px 30px -15px inset #111;
   @media only screen and (max-width: 600px) {
