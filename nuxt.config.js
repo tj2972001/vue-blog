@@ -75,6 +75,10 @@ export default {
     { src: "~/plugins/vue2-editor", ssr: false },
     { src: "~/plugins/vue-tags-input", ssr: false },
     { src: "~plugins/pdf.js", ssr: false },
+    {
+      src: "~plugins/vue-awesome.js",
+      ssr: false
+    }
   ],
   /*
    ** Auto import components
