@@ -14,19 +14,16 @@ export default {
   getArticles(page, limit, sort, categories) {
     const catArr = Array.from(categories);
     const catNeetArr = catArr.map((e) => '"' + e + '"');
+    const url = `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}`
     if (categories.length > 0) {
-      return axios({
-        url: `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}&categories=[${catNeetArr}]`,
-        withCredentials: true
-      });
-    } else {
-      console.log("baseUrl is " + APIClent.baseURL);
-      return axios({
-        method: "GET",
-        url: `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}`,
-        withCredentials: true
-      });
+      url.concat(`&categories=[${catNeetArr}]`)
     }
+    console.log("baseUrl is " + APIClent.baseURL);
+    return axios({
+      method: "GET",
+      url,
+      withCredentials: true
+    })
   },
   getArticle(id) {
     return axios({
