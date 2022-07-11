@@ -134,10 +134,10 @@ export default {
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background: url('~assets/images/home-bg.jpg');
+  background: url('~assets/images/bg/home-bg.jpg');
   background-size: 100% 100%;
   @media only screen and (max-width: 600px) {
-    background: url('~assets/images/home-bg-mobile.jpg');
+    background: url('~assets/images/bg/home-bg-mobile.jpg');
     background-size: 100% 100%;
   }
   &::before{

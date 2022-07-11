@@ -32,7 +32,7 @@
       >
       <v-btn
         color="#4054c4"
-        href="https://www.linkedin.com/in/tejas-jadhav-424a32193/"
+        href="https://www.linkedin.com/in/tejas-jadhav-pccoe/"
         icon
         ><v-icon>mdi-linkedin</v-icon></v-btn
       >

@@ -54,9 +54,13 @@
             <Multiselect />
           </v-list-item >
           <v-list-item class="mb-5">
-          <v-icon class="mx-2">mdi-calendar-range-outline</v-icon>
-          <DatePicker v-model="selectedDate" range lang="en"/>
-        </v-list-item >
+            <v-icon class="mx-2">mdi-calendar-range-outline</v-icon>
+            <DatePicker v-model="selectedDate" range lang="en"/>
+          </v-list-item >
+          <v-list-item>
+            <p>Date from : {{selectedDate[0]}} </p>
+            <p>Date to: {{selectedDate[1]}}    </p>
+          </v-list-item>
           <v-list-item class="mb-5">
           <nuxt-link :key="`${selectedItem}`" :to="`/blog/?sort=${selectedItem}`">
             <button class="btn-medium btn-teal" > Apply </button>
@@ -99,10 +103,13 @@ export default {
       selectedItem: this.$route.query.sort || '-dateCreated',
       selectedDate: [
         new Date(),
-        new Date(new Date().getTime() + 9 * 24 * 60 * 60 * 1000)
-      ]
+        new Date()
+      ],
     }
   },
+  computed:{
+
+  }
 }
 </script>
 <style lang="scss" scoped>
