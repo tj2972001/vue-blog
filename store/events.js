@@ -2,6 +2,8 @@ import EventService from '@/services/EventService'
 export const state = () => ({
   articles: [],
   totalArticlesCount: 0,
+  topLikedArticles:[],
+  totalTopLikedArticles:0,
   totalArticlesCountAfterFilter: 0,
   article: '',
   curPage: 1,
@@ -11,6 +13,12 @@ export const state = () => ({
 export const mutations = {
   SET_ARTICLES(state, articles) {
     state.articles = articles
+  },
+  SET_TOP_LIKED_ARTICLES(state,articles){
+    state.topLikedArticles = articles
+  },
+  SET_TOP_LIKED_ARTICLES_CNT(state,count){
+    state.totalTopLikedArticles = count
   },
   SET_ARTICLE(state, article) {
     state.article = article
@@ -49,6 +57,13 @@ export const actions = {
         ? articles.data.totalBlogs
         : articles.data.totalBlogsCount
     ctx.commit('SET_BLOG_COUNT_AFTER_FILTER', count)
+  },
+  async fetchTopLikedArticles(ctx,{ page, limit, sort, categories }){
+    console.log("Action: fetchTopLikedArticles")
+    const articles = await EventService.getArticles(page,limit,sort,categories);
+    console.log("Top 5 liked articles are: ",articles)
+    ctx.commit('SET_TOP_LIKED_ARTICLES',articles.data.data.blogs)
+    ctx.commit('SET_TOP_LIKED_ARTICLES_CNT',articles.data.totalBlogsCount)
   },
   async fetchArticle(ctx, id) {
     const article = await EventService.getArticle(id)

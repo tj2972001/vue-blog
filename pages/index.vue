@@ -11,14 +11,17 @@
         </div>
       </div>
     </div>
-    <div class="home-page__recentArticles">
-      <h3 class="home-page__recentArticles--headings">Recent articles</h3>
-      <ol class="home-page__recentArticles--list">
-        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est laudantium magni odit officia reprehenderit repudiandae saepe tempore. Asperiores aut doloremque ducimus eius ipsa ipsum iusto provident quos voluptatem voluptatum. Amet.</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad asperiores, assumenda, cumque, delectus dignissimos facilis illo in incidunt molestiae necessitatibus odio pariatur quas quibusdam rem repellat soluta suscipit voluptate voluptatum!</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis ducimus expedita facilis hic ipsa, ipsam ipsum maiores, nam nesciunt nihil non nostrum placeat porro provident quaerat quidem tenetur veniam, voluptates?</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi deleniti dolor, dolorem doloribus ducimus eum excepturi maxime natus nemo nisi nulla, odio officiis pariatur suscipit voluptas, voluptatum. Molestiae, quos.</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci ducimus iure maxime molestiae nam provident quas voluptatum? Accusantium alias doloremque illo ipsum obcaecati, pariatur ratione, reprehenderit repudiandae ullam vero voluptates.</li>
+    <div class="home-page__topLikedArticles">
+      <h3 class="home-page__topLikedArticles--headings">Top liked articles</h3>
+      <ol class="home-page__topLikedArticles--list">
+        <div  v-for="article in topLikedArticles" :key="article._id">
+         <nuxt-link :to="{path:'/blog/article/'+article._id}">
+           <li>
+             <span>{{article.title}}</span>
+           </li>
+         </nuxt-link>
+        </div>
+
       </ol>
     </div>
     <div class="home-page__popularTags">
@@ -36,15 +39,47 @@
       </div>
     </div>
     <div class="home-page__skills">
-      <h3>My skills</h3>
-      <div>
-        <Icon name="brands/node" scale="5"></Icon>
+      <h3 class="home-page__skills--headings">My skills</h3>
+      <div class="home-page__skills--list">
+        <div class="home-page__skills--list--item icon-svg">
+          <span>Node.js</span>
+          <fa-icon name="brands/node" :scale="svgIconSize" color="#052e17" ></fa-icon>
+        </div>
+        <div class="home-page__skills--list--item icon-svg">
+          <span>Vuejs</span>
+          <fa-icon name="brands/vuejs" :scale="svgIconSize" color="#14de54" ></fa-icon>
+        </div>
+        <div class="home-page__skills--list--item icon-svg">
+          <span>Javascript</span>
+          <fa-icon name="brands/js" :scale="svgIconSize" color="yellow"></fa-icon>
+        </div>
+        <div class="home-page__skills--list--item icon-svg">
+          <span>Java</span>
+          <fa-icon name="brands/java" :scale="svgIconSize" color="orange"></fa-icon>
+        </div>
+        <div class="home-page__skills--list--item icon-svg">
+          <span>CSS3</span>
+          <fa-icon name="brands/css3" :scale="svgIconSize" color="pink"></fa-icon>
+        </div>
+        <div class="home-page__skills--list--item icon-image">
+          <span>MongoDB</span>
+          <img src="~assets/images/skills/mongodb.png" alt="MongoDB icon">
+        </div>
+        <div class="home-page__skills--list--item icon-image">
+          <span>C++</span>
+          <img src="~assets/images/skills/cpp.png" alt="C++ icon">
+        </div>
+        <div class="home-page__skills--list--item icon-image">
+          <span>Postgres</span>
+          <img src="~assets/images/skills/pg.png" alt="Postgres icon">
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import {mapState,mapActions} from 'vuex'
 export default {
   data() {
     return {
@@ -87,6 +122,37 @@ export default {
       ],
     }
   },
+  computed:{
+    svgIconSize(){
+      if(this.$vuetify.breakpoint.smAndDown){
+        return 3
+      }else{
+        return 7
+      }
+    },
+    ...mapState({
+      totalTopLikedArticles: (state)=>state.events.totalTopLikedArticles,
+      topLikedArticles: (state)=> state.events.topLikedArticles
+    }),
+  },
+  methods:{
+    ...mapActions('events',['fetchTopLikedArticles']),
+  },
+  fetch(ctx) {
+    try{
+      return ctx.store.dispatch('events/fetchTopLikedArticles', {
+        page: ctx.route.query.page || 1,
+        limit: ctx.route.query.limit || 3,
+        sort: ctx.route.query.sort || 'claps',
+        categories:[],
+      })
+    }catch (e) {
+      ctx.error({
+        statusCode: 503,
+        message: 'Unable to fetch top Liked articles at this time. Please try again.',
+      })
+    }
+  }
 }
 </script>
 
@@ -98,27 +164,30 @@ export default {
 @mixin heading{
   text-decoration: underline;
   margin-top: 2rem;
-  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-size: 2rem;
   color: $color-golden;
   font-weight: 700;
 }
 @mixin numList{
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: 300;
   list-style: decimal;
 }
 @mixin list{
   font-size: 1.5rem;
   margin-top: 1rem;
+  align-items: center;
+
 }
 .home-page {
   &__intro {
     font-weight: 900;
     filter:brightness(80%);
     background-attachment: scroll;
-    background: linear-gradient(90deg, rgb(0, 0, 0,.1), rgba(0,0,.2)),url('~assets/images/home-bg.jpg');
+    background: linear-gradient(90deg, rgb(0, 0, 0,.1), rgba(0,0,.2)),url('~assets/images/bg/home-bg.jpg');
     @media only screen and (max-width: 600px){
-      background: linear-gradient(270deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2)),url('~assets/images/home-bg-mobile.jpg');
+      background: linear-gradient(270deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2)),url('~assets/images/bg/home-bg-mobile.jpg');
       background-size: 100% 100%;
     }
     height: 120vh;
@@ -159,7 +228,8 @@ export default {
       }
     }
   }
-  &__recentArticles{
+  &__topLikedArticles{
+    max-width: 90%;
     & > *{
       margin-left: 1rem;
     }
@@ -168,7 +238,7 @@ export default {
     }
     &--list{
       @include numList;
-      & li{
+      & li {
         @include list;
       }
     }
@@ -188,17 +258,46 @@ export default {
     }
   }
   &__skills{
+    & > *{
+      margin-left: 1rem;
+    }
+    &--headings{
+      @include heading;
+    }
+    &--list{
+      display: flex;
+      justify-content: left;
+      justify-items: center;
+      flex-wrap: wrap;
+      & .icon-image img{
+        @media only screen and (max-width: 600px) {
+          height: 50px;
+          width: auto;
+        }
+      }
+      &--item{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        margin-right: 2rem;
+        & span {
+          font-size: 1rem;
+          font-weight: 500;
+        }
+      }
 
+    }
   }
 }
 @keyframes typing {
   from { width: 0 }
   to { width: 100% }
 }
-
-/* The typewriter cursor effect */
 @keyframes blink-caret {
   from, to { border-color: transparent }
   50% { border-color: orange; }
+}
+.v-application a{
+  color: $color-teal-dark;
 }
 </style>
