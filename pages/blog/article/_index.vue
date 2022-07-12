@@ -9,6 +9,17 @@
         </div>
         <div class="article__card--author__date">{{ time }}</div>
       </div>
+      <div class="article__card--tags">
+        <ul>
+
+            <li v-for="catt in article.categories">
+              <nuxt-link :to="{path:'/blog',query:{category:`${catt}`}}">
+               <v-chip>{{catt}}</v-chip>
+              </nuxt-link>
+            </li>
+
+        </ul>
+      </div>
       <hr />
       <article
         class="paragraph article__card--content"
@@ -284,6 +295,17 @@ export default {
       }
       svg {
         transform: translateY(0.6rem);
+      }
+    }
+    &--tags{
+      & ul{
+        list-style: none;
+        display: flex;
+        margin-bottom: 1rem;
+        padding-left: 1rem;
+        & li{
+          margin-right: 2rem;
+        }
       }
     }
     &--content {
