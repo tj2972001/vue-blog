@@ -39,19 +39,43 @@ export default {
   fetch(ctx) {
     try {
       let categories = []
-      const queryStr = ctx.route.query.category
-      if (queryStr) {
-        if (typeof queryStr === 'string') {
-          categories.push(queryStr)
+      let dateFrom,dateTo;
+      console.log("In blog fetch")
+      console.log(ctx.route.query)
+      const queryStrCategory = ctx.route.query.category
+      const queryStrDateFrom = ctx.route.query.dateFrom
+      const queryStrDateTo = ctx.route.query.dateTo
+      if (queryStrCategory) {
+        console.log("queryStrCategory")
+        if (typeof queryStrCategory === 'string') {
+          categories.push(queryStrCategory)
         } else {
-          categories = [...queryStr]
+          categories = [...queryStrCategory]
         }
       }
+      if(queryStrDateFrom){
+        if (typeof queryStrDateFrom === 'string') {
+          dateFrom = queryStrDateFrom
+        } else {
+          dateFrom = [...queryStrDateFrom]
+        }
+      }
+      if(queryStrDateTo){
+        if (typeof queryStrDateTo === 'string') {
+          dateTo = queryStrDateTo
+        } else {
+          dateTo = [...queryStrDateTo]
+        }
+      }
+      console.log("dateFrom in index.vue")
+      console.log("Categories array is ",categories)
       return ctx.store.dispatch('events/fetchArticles', {
         page: ctx.route.query.page || 1,
         limit: ctx.route.query.limit || 3,
         sort: ctx.route.query.sort || '-dateCreated',
         categories,
+        dateFrom,
+        dateTo
       })
     } catch (e) {
       ctx.error({
@@ -62,13 +86,11 @@ export default {
   },
   computed: mapState({
     allBlogs: (state) => state.events.articles,
-    // allBlogsCount: (state) => state.events.totalArticlesCount,
-    allBlogsCountAfterFilter: (state) =>
-      state.events.totalArticlesCountAfterFilter,
+    allBlogsCount: (state) => state.events.totalArticlesCount,
     curPage: (state) => state.events.curPage,
     curLim: (state) => state.events.curLim,
     pageCount() {
-      const x = this.allBlogsCountAfterFilter / this.curLim
+      const x = this.allBlogsCount / this.curLim
       return Math.ceil(x)
     },
   }),

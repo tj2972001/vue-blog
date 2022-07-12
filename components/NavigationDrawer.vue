@@ -49,24 +49,66 @@
                 :label="item.title"
               ></v-select>
           </v-list-item>
-          <v-list-item class="mb-5">
-            <v-icon class="mx-2">mdi-tag-multiple-outline</v-icon>
-            <Multiselect />
-          </v-list-item >
-          <v-list-item class="mb-5">
-            <v-icon class="mx-2">mdi-calendar-range-outline</v-icon>
-            <DatePicker v-model="selectedDate" range lang="en"/>
-          </v-list-item >
           <v-list-item>
-            <p>Date from : {{selectedDate[0]}} </p>
-            <p>Date to: {{selectedDate[1]}}    </p>
+            <v-autocomplete
+              v-model="selectedCats"
+              :items="cats"
+              small-chips
+              append-icon="mdi-tag-multiple-outline"
+              label="Select categories"
+              multiple
+            ></v-autocomplete>
           </v-list-item>
-          <v-list-item class="mb-5">
-          <nuxt-link :key="`${selectedItem}`" :to="`/blog/?sort=${selectedItem}`">
-            <button class="btn-medium btn-teal" > Apply </button>
+          <v-list-item>
+            <v-menu
+              ref="menu"
+              v-model="menu"
+              :close-on-content-click="false"
+              :return-value.sync="selectedDate"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="selectedDate"
+                  label="Select date range"
+                  append-outer-icon="mdi-calendar"
+                  color="red"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="selectedDate"
+                range
+                no-title
+                scrollable
+              >
+                <v-spacer></v-spacer>
+                <v-btn
+                  text
+                  color="primary"
+                  @click="menu = false"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.menu.save(selectedDate)"
+                >
+                  OK
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
+          </v-list-item>
+          <v-list-item class="NavigationDrawer__drawer__list--applybtn">
+          <nuxt-link :key="`${selectedItem}`" :to="filterRoute">
+            <v-btn color="teal" > Apply </v-btn>
           </nuxt-link>
         </v-list-item>
-
       </v-list>
     </v-navigation-drawer>
   </v-row>
@@ -100,15 +142,31 @@ export default {
           ],
         },
       ],
+      cats:[
+        'Nodejs',
+        'Vuejs',
+        'Express',
+        'Mongodb'
+      ],
+      selectedCats:[],
+      menu: false,
+      modal: false,
       selectedItem: this.$route.query.sort || '-dateCreated',
       selectedDate: [
-        new Date(),
-        new Date()
+        "2020-09-21", // dateCreated of first article in database
+        this.formatDate(new Date())
       ],
     }
   },
   computed:{
-
+    filterRoute(){
+      return `/blog/?sort=${this.selectedItem}&dateFrom=${this.selectedDate[0]}&dateTo=${this.selectedDate[1]}`
+    }
+  },
+  methods:{
+    formatDate(date){
+      return date.toLocaleDateString("en-CA")
+    }
   }
 }
 </script>
@@ -125,14 +183,12 @@ export default {
           font-size: 2rem;
           font-weight: bold;
         }
-        &--subtitle{
-          font-size: 1.2rem;
-        }
       }
-
       &--items{
-        & input{
-          font-size: 1rem;
+      }
+      &--applybtn{
+        button{
+          color:#fff
         }
       }
     }

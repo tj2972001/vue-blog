@@ -4,7 +4,6 @@ export const state = () => ({
   totalArticlesCount: 0,
   topLikedArticles:[],
   totalTopLikedArticles:0,
-  totalArticlesCountAfterFilter: 0,
   article: '',
   curPage: 1,
   curLim: 3,
@@ -32,35 +31,29 @@ export const mutations = {
   SET_CUR_LIM(state, limit) {
     state.curLim = limit
   },
-  SET_BLOG_COUNT_AFTER_FILTER(state, count) {
-    state.totalArticlesCountAfterFilter = count
-  },
   SET_CUR_LIKES(state, usersWhoLiked) {
     state.likes = usersWhoLiked
   },
 }
 export const actions = {
-  async fetchArticles(ctx, { page, limit, sort, categories }) {
+  async fetchArticles(ctx, { page, limit, sort, categories, dateFrom, dateTo }) {
     const articles = await EventService.getArticles(
       page,
       limit,
       sort,
-      categories
+      categories,
+      dateFrom,
+      dateTo
     )
     console.log(articles)
     ctx.commit('SET_ARTICLES', articles.data.data.blogs)
     ctx.commit('SET_BLOG_COUNT', articles.data.totalBlogsCount)
     ctx.commit('SET_CUR_PAGE', parseInt(page))
     ctx.commit('SET_CUR_LIM', parseInt(limit))
-    const count =
-      categories.length > 0
-        ? articles.data.totalBlogs
-        : articles.data.totalBlogsCount
-    ctx.commit('SET_BLOG_COUNT_AFTER_FILTER', count)
   },
-  async fetchTopLikedArticles(ctx,{ page, limit, sort, categories }){
+  async fetchTopLikedArticles(ctx,{ page, limit, sort, categories, dateFrom, dateTo }){
     console.log("Action: fetchTopLikedArticles")
-    const articles = await EventService.getArticles(page,limit,sort,categories);
+    const articles = await EventService.getArticles(page,limit,sort,categories,dateFrom,dateTo);
     console.log("Top 5 liked articles are: ",articles)
     ctx.commit('SET_TOP_LIKED_ARTICLES',articles.data.data.blogs)
     ctx.commit('SET_TOP_LIKED_ARTICLES_CNT',articles.data.totalBlogsCount)

@@ -11,12 +11,21 @@ const APIClent = {
 };
 
 export default {
-  getArticles(page, limit, sort, categories) {
+  getArticles(page, limit, sort, categories,dateFrom, dateTo) {
     const catArr = Array.from(categories);
     const catNeetArr = catArr.map((e) => '"' + e + '"');
-    const url = `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}`
+    let url = `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}`
     if (categories.length > 0) {
-      url.concat(`&categories=[${catNeetArr}]`)
+      url = url.concat(`&categories=[${catNeetArr}]`)
+      console.log("Now url is ",url)
+    }
+    if(dateFrom){
+      console.log("dateFrom ",dateFrom)
+      url =url.concat(`&dateFrom=${dateFrom}`)
+    }
+    if(dateTo){
+      console.log("dateTo ",dateTo)
+      url =url.concat(`&dateTo=${dateTo}`)
     }
     console.log("baseUrl is " + APIClent.baseURL);
     return axios({

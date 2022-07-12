@@ -7,7 +7,11 @@
   </v-app>
 </template>
 
-<script></script>
+<script>
+export default {
+  watchQuery: true,
+}
+</script>
 
 <style lang="scss">
 @import "/assets/scss/abstracts/variables";
