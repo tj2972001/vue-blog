@@ -28,7 +28,7 @@
       <v-btn
         color="indigo lighten-4"
         text
-        rounded
+        outlined
         @click="showPreview = !showPreview"
       >
         {{ showPreview ? 'hide preview' : 'show preview' }} |
@@ -44,7 +44,7 @@
       label="save as draft"
       @click="saveAsDraft = !saveAsDraft"
     ></v-checkbox>
-    <v-btn color="primary" @click="postArticle" rounded>
+    <v-btn color="primary" text outlined @click="postArticle">
       {{ saveAsDraft ? 'Save as Draft' : 'Post' }}
     </v-btn>
   </div>
