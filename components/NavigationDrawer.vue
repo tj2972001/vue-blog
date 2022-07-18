@@ -52,12 +52,19 @@
           <v-list-item>
             <v-autocomplete
               v-model="selectedCats"
-              :items="cats"
+              :items="catsArr()"
               small-chips
               append-icon="mdi-tag-multiple-outline"
               label="Select categories"
               multiple
             ></v-autocomplete>
+          </v-list-item>
+          <v-list-item>
+            <ol>
+              <li v-for="cat in selectedCats">
+                {{cat}}
+              </li>
+            </ol>
           </v-list-item>
           <v-list-item>
             <v-menu
@@ -106,7 +113,7 @@
           </v-list-item>
           <v-list-item class="NavigationDrawer__drawer__list--applybtn">
           <nuxt-link :key="`${selectedItem}`" :to="filterRoute">
-            <v-btn color="teal" > Apply </v-btn>
+            <v-btn color="teal" outlined> Apply </v-btn>
           </nuxt-link>
         </v-list-item>
       </v-list>
@@ -114,14 +121,11 @@
   </v-row>
 </template>
 <script>
-import Multiselect from '@/components/Multiselect.vue'
-import VueDatePickerUI from "vue-datepicker-ui";
-import 'vue-datepicker-ui/lib/vuedatepickerui.css';
-
 export default {
-  components: {
-    Multiselect,
-    DatePicker: VueDatePickerUI
+  props:{
+    cats:{
+      type: Array
+    }
   },
   data() {
     return {
@@ -142,26 +146,31 @@ export default {
           ],
         },
       ],
-      cats:[
-        'Nodejs',
-        'Vuejs',
-        'Express',
-        'Mongodb'
-      ],
       selectedCats:[],
       menu: false,
       modal: false,
       selectedItem: this.$route.query.sort || '-dateCreated',
       selectedDate: [
         "2020-09-21", // dateCreated of first article in database
-        this.formatDate(new Date())
+        this.formatDate(new Date()) // today's date
       ],
+      catsArr(){
+        return this.cats.map(e=>e._id)
+      }
     }
   },
   computed:{
     filterRoute(){
-      return `/blog/?sort=${this.selectedItem}&dateFrom=${this.selectedDate[0]}&dateTo=${this.selectedDate[1]}`
-    }
+      let url = `/blog/?sort=${this.selectedItem}&dateFrom=${this.selectedDate[0]}&dateTo=${this.selectedDate[1]}`
+      console.log("this.selectedCats ",this.selectedCats)
+      if(this.selectedCats.length > 0){
+        for(let selectedCat of this.selectedCats){
+          url = url.concat(`&category=${selectedCat}`)
+        }
+      }
+      console.log("url: ",url)
+      return url
+    },
   },
   methods:{
     formatDate(date){

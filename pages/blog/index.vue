@@ -1,6 +1,6 @@
 <template>
   <section class="blog-page">
-    <NavigationDrawer class="blog-page__navigation_drawer"/>
+    <NavigationDrawer class="blog-page__navigation_drawer" :cats="tags"/>
     <ArticleCard
       v-for="article in allBlogs"
       :key="article._id"
@@ -69,13 +69,17 @@ export default {
       }
       console.log("dateFrom in index.vue")
       console.log("Categories array is ",categories)
-      return ctx.store.dispatch('events/fetchArticles', {
+      ctx.store.dispatch('events/fetchArticles', {
         page: ctx.route.query.page || 1,
         limit: ctx.route.query.limit || 3,
         sort: ctx.route.query.sort || '-dateCreated',
         categories,
         dateFrom,
         dateTo
+      })
+      ctx.store.dispatch('events/fetchTags',{
+        page: 0,
+        limit: 500000,
       })
     } catch (e) {
       ctx.error({
@@ -93,6 +97,7 @@ export default {
       const x = this.allBlogsCount / this.curLim
       return Math.ceil(x)
     },
+    tags:(state)=>state.events.tags
   }),
   methods: {
     ...mapActions('events', ['fetchArticles']),

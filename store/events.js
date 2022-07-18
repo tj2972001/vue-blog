@@ -4,6 +4,7 @@ export const state = () => ({
   totalArticlesCount: 0,
   topLikedArticles:[],
   totalTopLikedArticles:0,
+  tags:[],
   article: '',
   curPage: 1,
   curLim: 3,
@@ -34,6 +35,11 @@ export const mutations = {
   SET_CUR_LIKES(state, usersWhoLiked) {
     state.likes = usersWhoLiked
   },
+  SET_TAGS(state,tags){
+    for(let i=0;i<tags.length;i++){
+      state.tags[i] = tags[i]
+    }
+  }
 }
 export const actions = {
   async fetchArticles(ctx, { page, limit, sort, categories, dateFrom, dateTo }) {
@@ -84,5 +90,12 @@ export const actions = {
     const post = await EventService.deleteArticle(articleId)
     return post
   },
+  async fetchTags(ctx,{sort,skip,limit}){
+    const tags = await EventService.getTags(skip,limit,sort)
+    console.log("TAGS: ",tags)
+    console.log("typeof tags : ",typeof tags)
+    console.log(tags.data.tags)
+    ctx.commit('SET_TAGS',tags.data.data.tags)
+  }
 }
 export const getters = {}

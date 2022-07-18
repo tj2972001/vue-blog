@@ -123,4 +123,12 @@ export default {
 
     });
   },
+  getTags(skip,limit,sort){
+    let url = `${APIClent.baseURL}/blog/tags/?sort=${sort}&skip=${skip}&limit=${limit}`
+    return axios({
+      method:"GET",
+      url,
+      withCredentials:true
+    })
+  }
 };

@@ -17,7 +17,7 @@
         <div  v-for="article in topLikedArticles" :key="article._id">
          <nuxt-link :to="{path:'/blog/article/'+article._id}">
            <li>
-             <span>{{article.title}}</span>
+             <span>{{article.title}} ({{article.claps.length}})</span>
            </li>
          </nuxt-link>
         </div>
@@ -30,11 +30,14 @@
       </h3>
       <div class="home-page__popularTags--list">
         <ol>
-          <li>Vuejs</li>
-          <li>Nodejs</li>
-          <li>Football</li>
-          <li>Personal</li>
-          <li>Security</li>
+          <div v-for="tag in tags" :key="tag._id">
+            <nuxt-link :to="{path:'/blog?category='+tag._id}">
+              <li>
+                <v-chip>{{tag._id}} ({{tag.count}})</v-chip>
+              </li>
+            </nuxt-link>
+          </div>
+
         </ol>
       </div>
     </div>
@@ -132,19 +135,25 @@ export default {
     },
     ...mapState({
       totalTopLikedArticles: (state)=>state.events.totalTopLikedArticles,
-      topLikedArticles: (state)=> state.events.topLikedArticles
+      topLikedArticles: (state)=> state.events.topLikedArticles,
+      tags:(state)=>state.events.tags
     }),
   },
   methods:{
-    ...mapActions('events',['fetchTopLikedArticles']),
+    ...mapActions('events',['fetchTopLikedArticles','fetchTags']),
   },
   fetch(ctx) {
     try{
-      return ctx.store.dispatch('events/fetchTopLikedArticles', {
+      ctx.store.dispatch('events/fetchTopLikedArticles', {
         page: ctx.route.query.page || 1,
         limit: ctx.route.query.limit || 3,
         sort: ctx.route.query.sort || 'claps',
         categories:[],
+      })
+      ctx.store.dispatch('events/fetchTags',{
+        page: 0,
+        limit: 5,
+        sort: '-count',
       })
     }catch (e) {
       ctx.error({
