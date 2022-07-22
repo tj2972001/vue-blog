@@ -74,6 +74,12 @@
             <nuxt-link :to="link.url">{{ link.label }}</nuxt-link>
           </li>
         </template>
+        <template v-else>
+          <li v-for="link in loggedInUserLinks" :key="`${link.label}`">
+            <v-icon class="mr-2">{{ link.icon }}</v-icon>
+            <nuxt-link :to="link.url">{{ link.label }}</nuxt-link>
+          </li>
+        </template>
       </ul>
     </v-navigation-drawer>
   </div>
@@ -87,7 +93,7 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
-    title: "Tejas's Blog",
+    title: "<tejas.codes/>",
     links: [
       {
         label: "Home",
@@ -117,6 +123,13 @@ export default {
         icon: "mdi-account",
       },
     ],
+    loggedInUserLinks: [
+      {
+        label: "Your account",
+        url: "/profile",
+        icon: "mdi-account",
+      },
+    ],
     user: checkAndParseLocalStorageStr(
       loggedInUserProperties.key,
       loggedInUserProperties.val
@@ -143,6 +156,7 @@ export default {
   &__drawer {
     &--header {
       &--title {
+        font-family: "Lora", serif;
         font-size: 2rem;
         font-weight: bold;
       }
@@ -159,6 +173,20 @@ export default {
         text-decoration: none !important;
         margin: 1rem 0;
       }
+    }
+  }
+  &__desktop {
+    &--title {
+      font-size: 2rem;
+      font-family: "Lora", Serif;
+      font-weight: 100;
+    }
+  }
+  &__mobile {
+    &--title {
+      font-size: 1.5rem;
+      font-family: "Lora", Serif;
+      font-weight: 200;
     }
   }
 }

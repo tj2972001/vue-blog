@@ -27,6 +27,8 @@
 
 <script>
 import { mapActions } from "vuex";
+import { loggedInUserProperties } from "assets/js/objects";
+
 export default {
   data: () => ({
     passwordShow: false,
@@ -48,6 +50,14 @@ export default {
           this.$toast.success("Login successfully");
           this.$toast.info("Saving user to Vuex store");
           this.$store.dispatch("user/storeUser", response.data.data.user);
+          this.$toast.info("Storing user to localStorage");
+          const user = { ...loggedInUserProperties.val };
+          user.user = response.data.data.user;
+          user.isLoggedIn = true;
+          window.localStorage.setItem(
+            loggedInUserProperties.key,
+            JSON.stringify(user)
+          );
           console.log("Response.data is ", response.data);
           this.$router.push({
             name: "index",

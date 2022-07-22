@@ -23,7 +23,6 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 TimeAgo.addLocale(en);
@@ -77,6 +76,7 @@ export default {
       }
     }
     &--content {
+      font-family: "Lora", serif;
       margin-top: 1rem;
       max-height: 20rem;
     }

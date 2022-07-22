@@ -48,7 +48,7 @@
             :url="`${url}/blog/${article._id}`"
             :title="`${article.title}`"
           >
-            <v-icon class="ml-2">
+            <v-icon class="ml-2" :small="$vuetify.breakpoint.smAndDown">
               {{ network.icon }}
             </v-icon>
           </ShareNetwork>
@@ -90,7 +90,7 @@
                     ></v-list-item-title
                   ></v-list-item-content>
                   <v-list-item-avatar size="30"
-                    ><v-img :src="`${liker.photo}`"></v-img
+                    ><v-img :src="likerProfileImage(`${liker.photo}`)"></v-img
                   ></v-list-item-avatar>
                 </v-list-item>
               </v-list>
@@ -228,6 +228,13 @@ export default {
       "fetchLikers",
       "deletePost",
     ]),
+    likerProfileImage(photo) {
+      if (photo === "v.png") {
+        return `\\v.png`;
+      } else {
+        return photo;
+      }
+    },
     async likeArticle() {
       try {
         if (!this.isUserLoggedIn) {

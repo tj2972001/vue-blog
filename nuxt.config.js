@@ -43,6 +43,10 @@ export default {
         href: "https://fonts.gstatic.com",
       },
       {
+        rel: "preconnect",
+        href: "https://fonts.googleapis.com",
+      },
+      {
         href:
           "https://fonts.googleapis.com/css2?family=Cormorant:wght@500&display=swap",
         rel: "stylesheet",
@@ -59,6 +63,11 @@ export default {
       },
       {
         href: "https://fonts.googleapis.com/icon?family=Material+Icons",
+        rel: "stylesheet",
+      },
+      {
+        href:
+          "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap",
         rel: "stylesheet",
       },
     ],
@@ -152,6 +161,7 @@ export default {
     color: "#184d52",
   },
   server: {
+    host: process.env.HOST || "localhost",
     port: process.env.PORT || 8080, // default: 3000
     timing: false,
   },

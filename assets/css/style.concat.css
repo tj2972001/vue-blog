@@ -10,14 +10,23 @@
 
 :root {
   font-size: 100%; }
+  @media only screen and (max-width: 600px) {
+    :root {
+      font-size: 70%; } }
 
 body {
-  box-sizing: border-box;
-  font-family: 'Roboto', sans-serif; }
+  box-sizing: border-box; }
 
 ::selection {
   background-color: #009688;
   color: #fff; }
+
+@media only screen and (max-width: 600px) {
+  .v-main {
+    padding-top: 0 !important; } }
+
+.v-list-item__title, .v-list-item__subtitle {
+  white-space: normal !important; }
 
 /*
 font-family: 'Roboto', sans-serif;
@@ -32,7 +41,6 @@ h1 {
 
 h2 {
   margin: 1rem 0;
-  font-weight: 400;
   font-size: 2rem; }
 
 .paragraph {
@@ -84,10 +92,6 @@ h2 {
 
 .form-icon {
   transform: translateX(-4rem); }
-
-.v-application a {
-  text-decoration: none;
-  color: #000; }
 
 .app-row {
   max-width: 71.25rem;

@@ -86,7 +86,11 @@
         </div>
         <div class="home-page__skills--list--item icon-image">
           <span>C++</span>
-          <img src="~assets/images/skills/cpp.png" alt="C++ icon" />
+          <img
+            src="~assets/images/skills/cpp.png"
+            style="height: 100px"
+            alt="C++ icon"
+          />
         </div>
         <div class="home-page__skills--list--item icon-image">
           <span>Postgres</span>
@@ -191,6 +195,8 @@ export default {
   text-decoration: underline;
   margin-top: 2rem;
   margin-bottom: 1rem;
+  font-family: "Roboto Slab", Serif;
+
   font-size: 2rem;
   color: $color-golden;
   font-weight: 700;
@@ -207,7 +213,6 @@ export default {
 }
 .home-page {
   &__intro {
-    font-weight: 900;
     filter: brightness(80%);
     background-attachment: scroll;
     background: linear-gradient(90deg, rgb(0, 0, 0, 0.1), rgba(0, 0, 0.2)),
@@ -232,13 +237,16 @@ export default {
         top: 5%;
       }
       &__heading {
+        font-weight: 700;
         color: $color-golden;
         position: relative;
-        font-size: 3rem;
+        font-size: 2.5rem;
         overflow: hidden; /* Ensures the content is not revealed until the animation */
         border-right: 0.15em solid orange; /* The typwriter cursor */
         margin-right: 0.2rem; /* Gives that scrolling effect as the typing happens */
+        font-family: "Roboto Slab", Serif;
         white-space: nowrap;
+
         animation: typing 3.5s steps(40, end),
           blink-caret 0.75s step-end infinite;
         @media only screen and (max-width: 600px) {
@@ -251,6 +259,8 @@ export default {
         margin-top: 1rem;
         font-size: 1.5rem;
         word-wrap: break-word;
+        font-family: "Lora", serif;
+        font-weight: 100;
       }
     }
   }
@@ -265,6 +275,8 @@ export default {
     &--list {
       @include numList;
       & li {
+        font-weight: 500;
+        font-family: "Ubuntu";
         @include list;
       }
     }
@@ -279,6 +291,8 @@ export default {
     &--list {
       @include numList;
       & li {
+        font-weight: 500;
+        font-family: "Ubuntu";
         @include list;
       }
     }
