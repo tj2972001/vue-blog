@@ -58,9 +58,9 @@ export default {
           "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;700&family=Roboto:ital,wght@0,100;0,400;0,500;0,700;1,100;1,400;1,500;1,700&family=Train+One&display=swap",
       },
       {
-        href:"https://fonts.googleapis.com/icon?family=Material+Icons",
-        rel: "stylesheet"
-      }
+        href: "https://fonts.googleapis.com/icon?family=Material+Icons",
+        rel: "stylesheet",
+      },
     ],
   },
   /*
@@ -77,8 +77,8 @@ export default {
     { src: "~plugins/pdf.js", ssr: false },
     {
       src: "~plugins/vue-awesome.js",
-      ssr: false
-    }
+      ssr: false,
+    },
   ],
   /*
    ** Auto import components
@@ -108,7 +108,7 @@ export default {
    */
   axios: {
     baseURL: process.env.BASE_URL,
-    mainURL: process.env.MAIN_URL
+    mainURL: process.env.MAIN_URL,
   },
   /*
    ** vuetify module configuration
@@ -127,12 +127,12 @@ export default {
         loader: "url-loader",
       });
     },
-    babel:{
+    babel: {
       plugins: [
-        ["@babel/plugin-proposal-class-properties", { "loose": true }],
-        ["@babel/plugin-proposal-private-methods", { "loose": true }],
-        ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
-      ]
+        ["@babel/plugin-proposal-class-properties", { loose: true }],
+        ["@babel/plugin-proposal-private-methods", { loose: true }],
+        ["@babel/plugin-proposal-private-property-in-object", { loose: true }],
+      ],
     },
   },
   toast: {
@@ -152,7 +152,6 @@ export default {
     color: "#184d52",
   },
   server: {
-    host:'0.0.0.0',
     port: process.env.PORT || 8080, // default: 3000
     timing: false,
   },
