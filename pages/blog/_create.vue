@@ -1,6 +1,6 @@
 <template>
   <div class="create-blog">
-    <h2>Create a new blog </h2>
+    <h2>Create a new blog</h2>
     <v-text-field
       v-model="title"
       class="mx-auto"
@@ -20,7 +20,7 @@
       <vue-editor
         v-model="content"
         placeholder="Write Something..."
-        useCustomImageHandler
+        use-custom-image-handler
         @image-added="handleImageAdded"
       ></vue-editor>
     </no-ssr>
@@ -31,9 +31,9 @@
         outlined
         @click="showPreview = !showPreview"
       >
-        {{ showPreview ? 'hide preview' : 'show preview' }} |
+        {{ showPreview ? "hide preview" : "show preview" }} |
         <v-icon>
-          {{ showPreview ? 'mdi-eye' : 'mdi-eye-off' }}
+          {{ showPreview ? "mdi-eye" : "mdi-eye-off" }}
         </v-icon>
       </v-btn>
     </v-card-actions>
@@ -45,42 +45,44 @@
       @click="saveAsDraft = !saveAsDraft"
     ></v-checkbox>
     <v-btn color="primary" text outlined @click="postArticle">
-      {{ saveAsDraft ? 'Save as Draft' : 'Post' }}
+      {{ saveAsDraft ? "Save as Draft" : "Post" }}
     </v-btn>
   </div>
 </template>
 
 <script>
-import { mapActions,mapState } from 'vuex'
+import { mapActions } from "vuex";
+import { loggedInUserProperties } from "assets/js/objects";
+
 export default {
   asyncData() {
     return {
-      content: '',
+      content: "",
       pageIsMounted: false,
       isSSR: !!process.server,
-    }
+    };
   },
   data() {
     return {
-      tag: '',
+      tag: "",
       tags: [],
-      title: '',
+      title: "",
       saveAsDraft: false,
       showPreview: false,
-    }
+      author: JSON.parse(
+        window.localStorage.getItem(loggedInUserProperties.key)
+      ).user,
+    };
   },
   computed: {
     dateCreated() {
-      return new Date(Date.now())
+      return new Date(Date.now());
     },
-    ...mapState({
-      author: (state)=>state.user.loggedInUser._id,
-    })
   },
   methods: {
-    ...mapActions('events', ['createArticle']),
+    ...mapActions("events", ["createArticle"]),
     async postArticle() {
-      const tags = this.tags.map((tag) => tag.text)
+      const tags = this.tags.map((tag) => tag.text);
       const formData = {
         title: this.title,
         categories: tags,
@@ -88,35 +90,35 @@ export default {
         content: this.content,
         dateCreated: this.dateCreated,
         author: this.author,
-      }
+      };
       try {
-        this.$toast.info('Saving article')
-        await this.createArticle(formData)
-        this.$toast.info('Article Posted Successfully')
+        this.$toast.info("Saving article");
+        await this.createArticle(formData);
+        this.$toast.info("Article Posted Successfully");
       } catch (e) {
-        this.$toast.error(e.response.data.message)
+        this.$toast.error(e.response.data.message);
       }
     },
     async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
-      console.log('handleImageAdded')
+      console.log("handleImageAdded");
       try {
-        const formData = new FormData()
-        formData.append('photo', file)
-        this.$toast.info('Uploading photo')
+        const formData = new FormData();
+        formData.append("photo", file);
+        this.$toast.info("Uploading photo");
         const image = await this.$axios({
-          url: '/upload/blog',
-          method: 'POST',
+          url: "/upload/blog",
+          method: "POST",
           data: formData,
-        })
-        Editor.insertEmbed(cursorLocation, 'image', image.data.data.image.url)
-        resetUploader()
-        this.$toast.success('Image uploaded successfully')
+        });
+        Editor.insertEmbed(cursorLocation, "image", image.data.data.image.url);
+        resetUploader();
+        this.$toast.success("Image uploaded successfully");
       } catch (e) {
-        this.$toast.error(e.response.data.message)
+        this.$toast.error(e.response.data.message);
       }
     },
   },
-}
+};
 </script>
 <style scoped>
 .create-blog {

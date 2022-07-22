@@ -10,10 +10,15 @@
           <input v-model="password" type="password" placeholder="Password" />
         </div>
         <div class="row">
-          <button id="login" class="btn-medium" @click="loginMethod">Login</button>
+          <button id="login" class="btn-medium" @click="loginMethod">
+            Login
+          </button>
         </div>
         <div class="row">
           <a href="#">Forget Password</a>
+        </div>
+        <div class="row">
+          <nuxt-link to="signup">New to site? Create account</nuxt-link>
         </div>
       </div>
     </div>
@@ -21,70 +26,70 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 export default {
   data: () => ({
     passwordShow: false,
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   }),
   methods: {
-    ...mapActions('user', ['login','storeUser']),
+    ...mapActions("user", ["login", "storeUser"]),
     async loginMethod() {
-      const formData = {}
-      formData.email = this.email
-      formData.password = this.password
+      const formData = {};
+      formData.email = this.email;
+      formData.password = this.password;
       try {
-        this.$toast.info('Logging in ')
-        const response = await this.login(formData)
-        console.log("Login: ",response)
-        const userStatus = response.data.status
-        if (userStatus === 'success') {
-          this.$toast.success('Login successfully')
-          this.$toast.info('Saving user to Vuex store')
-          this.$store.dispatch('user/storeUser',response.data.data.user)
-          console.log('Response.data is ',response.data)
+        this.$toast.info("Logging in ");
+        const response = await this.login(formData);
+        console.log("Login: ", response);
+        const userStatus = response.data.status;
+        if (userStatus === "success") {
+          this.$toast.success("Login successfully");
+          this.$toast.info("Saving user to Vuex store");
+          this.$store.dispatch("user/storeUser", response.data.data.user);
+          console.log("Response.data is ", response.data);
           this.$router.push({
-            name: 'index',
-          })
+            name: "index",
+          });
         }
       } catch (e) {
-        this.$toast.error(e.response.data.message)
+        this.$toast.error(e.response.data.message);
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap");
 
-.login{
+.login {
   font-size: 2rem;
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background: url('~assets/images/bg/home-bg.jpg');
+  background: url("~assets/images/bg/home-bg.jpg");
   background-size: 100% 100%;
   @media only screen and (max-width: 600px) {
-    background: url('~assets/images/bg/home-bg-mobile.jpg');
+    background: url("~assets/images/bg/home-bg-mobile.jpg");
     background-size: 100% 100%;
   }
-  &::before{
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: #262626;
-      width: 100%;
-      height: 100%;
-      mix-blend-mode: hard-light;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #262626;
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: hard-light;
   }
   ::placeholder {
     color: #fff;
     text-transform: uppercase;
   }
-  &__box{
+  &__box {
     text-align: center;
     position: absolute;
     top: 50%;
@@ -100,8 +105,8 @@ export default {
     @media only screen and (max-width: 600px) {
       width: 90vw;
     }
-    & .row{
-      & input{
+    & .row {
+      & input {
         border: none;
         outline: none;
         width: 100%;
@@ -116,25 +121,24 @@ export default {
       margin: 1.5rem 0;
       text-align: center;
     }
-    & .row button#login{
+    & .row button#login {
       background: #00bcd4;
-      padding: .5rem 0;
+      padding: 0.5rem 0;
       border-radius: 5rem;
       width: 100%;
       font-size: 1.5rem;
     }
-    & .row a{
+    & .row a {
       font-size: 1.2rem;
       text-decoration: none;
       color: #fff;
-      &:hover{
+      &:hover {
         text-decoration: underline;
       }
     }
-    & h2{
+    & h2 {
       text-transform: uppercase;
     }
   }
 }
-
 </style>

@@ -11,13 +11,11 @@
       </div>
       <div class="article__card--tags">
         <ul>
-
-            <li v-for="catt in article.categories">
-              <nuxt-link :to="{path:'/blog',query:{category:`${catt}`}}">
-               <v-chip>{{catt}}</v-chip>
-              </nuxt-link>
-            </li>
-
+          <li v-for="catt in article.categories" :key="catt">
+            <nuxt-link :to="{ path: '/blog', query: { category: `${catt}` } }">
+              <v-chip :small="$vuetify.breakpoint.smAndDown">{{ catt }}</v-chip>
+            </nuxt-link>
+          </li>
         </ul>
       </div>
       <hr />
@@ -28,11 +26,9 @@
       <hr />
       <div class="article__card--social">
         <div class="article__card--social__likes">
-          <v-icon
-            @click="likeArticle"
-            class="mr-2"
-            style="margin-left: 0"
-          >{{isLiked?"mdi-thumb-up":"mdi-thumb-up-outline"}}</v-icon>
+          <v-icon class="mr-2" style="margin-left: 0" @click="likeArticle">{{
+            isLiked ? "mdi-thumb-up" : "mdi-thumb-up-outline"
+          }}</v-icon>
           <span
             class="article__card--social__likes--count"
             @click="fetchLikesOnArticle"
@@ -44,8 +40,7 @@
         </div>
 
         <div class="article__card--social__share">
-          <span>share on
-          </span>
+          <span>share on </span>
           <ShareNetwork
             v-for="network in networks"
             :key="network.network"
@@ -134,14 +129,14 @@
     this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
     */
-      ;(function () {
+      (function () {
         // DON'T EDIT BELOW THIS LINE
         var d = document,
-          s = d.createElement('script')
-        s.src = 'https://https-tejasjadhav2907-xyz.disqus.com/embed.js'
-        s.setAttribute('data-timestamp', +new Date())
-        ;(d.head || d.body).appendChild(s)
-      })()
+          s = d.createElement("script");
+        s.src = "https://https-tejasjadhav2907-xyz.disqus.com/embed.js";
+        s.setAttribute("data-timestamp", +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
     </script>
     <noscript
       >Please enable JavaScript to view the
@@ -152,21 +147,24 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
-TimeAgo.addLocale(en)
-const timeAgo = new TimeAgo('en-US')
+import { mapState, mapActions } from "vuex";
+import { loggedInUserProperties } from "assets/js/objects";
+import { checkAndParseLocalStorageStr } from "assets/js/helper";
+
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+TimeAgo.addLocale(en);
+const timeAgo = new TimeAgo("en-US");
 export default {
   watchQuery: true,
   async fetch(ctx) {
     try {
-      await ctx.store.dispatch('events/fetchArticle', ctx.params.index)
+      await ctx.store.dispatch("events/fetchArticle", ctx.params.index);
     } catch (e) {
       ctx.error({
         statusCode: 503,
-        message: 'Unable to fetch article at this time. Please try again.',
-      })
+        message: "Unable to fetch article at this time. Please try again.",
+      });
     }
   },
   data() {
@@ -174,99 +172,107 @@ export default {
       url: process.env.mainUrl,
       networks: [
         {
-          network: 'facebook',
-          icon: 'mdi-facebook',
+          network: "facebook",
+          icon: "mdi-facebook",
         },
         {
-          network: 'twitter',
-          icon: 'mdi-twitter',
+          network: "twitter",
+          icon: "mdi-twitter",
         },
         {
-          network: 'email',
-          icon: 'mdi-email',
+          network: "email",
+          icon: "mdi-email",
         },
         {
-          network: 'sms',
-          icon: 'mdi-message',
+          network: "sms",
+          icon: "mdi-message",
         },
       ],
       showLikesBtn: false,
       dialogDelete: false,
-    }
+      user: checkAndParseLocalStorageStr(
+        loggedInUserProperties.key,
+        loggedInUserProperties.val
+      ).user,
+      isUserLoggedIn: checkAndParseLocalStorageStr(
+        loggedInUserProperties.key,
+        loggedInUserProperties.val
+      ).isLoggedIn,
+    };
   },
-  computed: mapState({
-    time() {
-      const date = new Date(this.article.dateCreated)
-      return timeAgo.format(date)
-    },
-    article: (state) => state.events.article,
-    likersList: (state) => state.events.likes,
+  computed: {
+    ...mapState({
+      article: (state) => state.events.article,
+      likersList: (state) => state.events.likes,
+    }),
     dateCreated() {
-      return this.article.dateCreated.split('T')[0]
+      return this.article.dateCreated.split("T")[0];
     },
-    isLiked(state) {
-      if (!state.user.isLoggedIn) {
-        return false
-      } else if (this.article.claps.includes(state.user.loggedInUser._id)) {
-        return true
+    time() {
+      const date = new Date(this.article.dateCreated);
+      return timeAgo.format(date);
+    },
+    isLiked() {
+      if (!this.isUserLoggedIn) {
+        return false;
+      } else if (this.article.claps.includes(this.user._id)) {
+        return true;
       }
-      return false
+      return false;
     },
-    user: (state)=>state.user.loggedInUser,
-    isUserLoggedIn : (state)=>state.user.isLoggedIn
-  }),
+  },
   methods: {
-    ...mapActions('events', [
-      'clapArticle',
-      'unClapArticle',
-      'fetchLikers',
-      'deletePost',
+    ...mapActions("events", [
+      "clapArticle",
+      "unClapArticle",
+      "fetchLikers",
+      "deletePost",
     ]),
     async likeArticle() {
       try {
         if (!this.isUserLoggedIn) {
-          this.$toast.info('You need to have account to like an article')
+          this.$toast.info("You need to have account to like an article");
         } else if (this.article.claps.includes(this.user._id)) {
-          await this.unClapArticle(this.article._id)
-          this.$toast.success('You unliked an article')
+          await this.unClapArticle(this.article._id);
+          this.$toast.success("You unliked an article");
         } else {
-          await this.clapArticle(this.article._id)
-          this.$toast.success('You liiked an article')
+          await this.clapArticle(this.article._id);
+          this.$toast.success("You liiked an article");
         }
       } catch (e) {
         this.$toast.error(
-          'Cannot perform this action . Please try after some time'
-        )
-        this.$toast.error(e.message)
+          "Cannot perform this action . Please try after some time"
+        );
+        this.$toast.error(e.message);
       }
     },
     async fetchLikesOnArticle() {
       try {
-        this.showLikesBtn = true
-        this.$toast.info('Loading likes on article')
-        await this.fetchLikers(this.article._id)
-        this.$toast.success('Likes loaded successfully')
+        this.showLikesBtn = true;
+        this.$toast.info("Loading likes on article");
+        await this.fetchLikers(this.article._id);
+        this.$toast.success("Likes loaded successfully");
       } catch (e) {
-        this.$toast.error(e.message)
+        this.$toast.error(e.message);
       }
     },
     async deleteArticle() {
       try {
-        this.dialogDelete = false
-        this.$toast.info('Deleteing post')
-        await this.deletePost(this.article._id)
-        this.$toast.success('Post deleted successfully')
-        this.$router.push('/blog')
+        this.dialogDelete = false;
+        this.$toast.info("Deleteing post");
+        await this.deletePost(this.article._id);
+        this.$toast.success("Post deleted successfully");
+        this.$router.push("/blog");
       } catch (e) {
-        this.$toast.error(e.response.data.message)
+        this.$toast.error(e.response.data.message);
       }
     },
   },
-}
+};
 // v-if="$auth.user.following.contains(liker._id)"
 </script>
 <style lang="scss" scoped>
-@import '/assets/scss/abstracts/variables';
+@import "/assets/scss/abstracts/variables";
 
 .article {
   margin-top: 3rem;
@@ -297,13 +303,13 @@ export default {
         transform: translateY(0.6rem);
       }
     }
-    &--tags{
-      & ul{
+    &--tags {
+      & ul {
         list-style: none;
         display: flex;
         margin-bottom: 1rem;
         padding-left: 1rem;
-        & li{
+        & li {
           margin-right: 2rem;
         }
       }

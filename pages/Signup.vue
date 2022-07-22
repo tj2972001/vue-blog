@@ -46,7 +46,9 @@
   <section class="signup-page">
     <div class="llcontainer signup">
       <div class="box signup__box">
-        <h2>Sign Up</h2>
+        <h2>
+          <nuxt-link to="/signup">Sign Up </nuxt-link>
+        </h2>
         <div class="row">
           <input v-model="name" type="text" placeholder="Enter name" />
           <v-icon color="white" class="ml-2">mdi-account-outline</v-icon>
@@ -79,7 +81,12 @@
           <v-icon class="ml-2" color="white">mdi-eye-outline</v-icon>
         </div>
         <div class="row">
-          <button id="signup" class="btn-medium" @click="signupMethod">Signup</button>
+          <button id="signup" class="btn-medium" @click="signupMethod">
+            Signup
+          </button>
+        </div>
+        <div class="row">
+          <nuxt-link to="/login">login instead</nuxt-link>
         </div>
       </div>
     </div>
@@ -87,61 +94,65 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 export default {
   data: () => ({
     passwordShow: false,
     passwordConfirmShow: false,
-    email: '',
-    password: '',
-    name: '',
-    passwordConfirm: '',
+    email: "",
+    password: "",
+    name: "",
+    passwordConfirm: "",
   }),
   computed: {
     checkLight() {
-      return !this.$vuetify.theme.dark
+      return !this.$vuetify.theme.dark;
     },
   },
   methods: {
-    ...mapActions('user', ['signUp']),
+    ...mapActions("user", ["signUp"]),
     async signupMethod() {
       const formData = {
         name: this.name,
         email: this.email,
         password: this.password,
         passwordConfirm: this.passwordConfirm,
-      }
+      };
       try {
-        this.$toast.info('Hold on ! Signing you up')
-        await this.signUp(formData)
-        this.$toast.success('Successfully Created account ')
-        this.$toast.info('Now you can Login', {
+        this.$toast.info("Hold on ! Signing you up");
+        await this.signUp(formData);
+        this.$toast.success("Successfully Created account ");
+        this.$toast.info("Now you can Login", {
           duration: 10000,
-        })
-        await this.$router.push({ name: 'Login' })
+        });
+        await this.$router.push({ name: "Login" });
       } catch (e) {
-        this.$toast.error(e.response.data.message)
+        this.$toast.error(e.response.data.message);
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-.signup{
+.nuxt-link-exact-active,
+.nuxt-link-active {
+  color: #fff;
+}
+.signup {
   text-align: center;
   font-size: 2rem;
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background: url('~assets/images/bg/home-bg.jpg');
+  background: url("~assets/images/bg/home-bg.jpg");
   background-size: 100% 100%;
   @media only screen and (max-width: 600px) {
-    background: url('~assets/images/bg/home-bg-mobile.jpg');
+    background: url("~assets/images/bg/home-bg-mobile.jpg");
     background-size: 100% 100%;
   }
-  &::before{
-    content: '';
+  &::before {
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -154,7 +165,7 @@ export default {
     color: #fff;
     text-transform: uppercase;
   }
-  &__box{
+  &__box {
     text-align: center;
     position: absolute;
     top: 50%;
@@ -168,11 +179,11 @@ export default {
     box-sizing: border-box;
     transition: 0.9s;
     @media only screen and (max-width: 600px) {
-      width: 90vw;
+      width: 100%;
     }
-    & .row{
+    & .row {
       margin: 0 auto;
-      & input{
+      & input {
         border: none;
         outline: none;
         width: 90%;
@@ -183,32 +194,32 @@ export default {
         color: #fff;
         font-size: 1.2rem;
       }
-      & .v-icon{
+      & .v-icon {
         transform: translateX(-5rem);
       }
-      & .form-icon{
+      & .form-icon {
         margin: 1rem 0;
       }
       width: 100%;
       margin: 1.5rem 0;
       text-align: center;
     }
-    & .row button#signup{
+    & .row button#signup {
       background: #00bcd4;
-      padding: .5rem 0;
+      padding: 0.5rem 0;
       border-radius: 2.5rem;
       width: 90%;
       font-size: 1.5rem;
     }
-    & .row a{
+    & .row a {
       font-size: 1.2rem;
       text-decoration: none;
       color: #fff;
-      &:hover{
+      &:hover {
         text-decoration: underline;
       }
     }
-    & h2{
+    & h2 {
       text-transform: uppercase;
     }
   }

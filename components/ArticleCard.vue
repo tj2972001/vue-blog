@@ -23,11 +23,11 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
-TimeAgo.addLocale(en)
-const timeAgo = new TimeAgo('en-US')
+import { mapState } from "vuex";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+TimeAgo.addLocale(en);
+const timeAgo = new TimeAgo("en-US");
 export default {
   watchQuery: true,
   props: {
@@ -37,24 +37,22 @@ export default {
     },
   },
   computed: {
-    ...mapState('auth', ['user']),
     articleLink() {
-      return '/blog/article/' + this.article._id
+      return "/blog/article/" + this.article._id;
     },
     time() {
-      const date = new Date(this.article.dateCreated)
-      return timeAgo.format(date)
+      const date = new Date(this.article.dateCreated);
+      return timeAgo.format(date);
     },
   },
-}
+};
 </script>
 <style lang="scss" scoped>
-@import '/assets/scss/abstracts/variables';
+@import "/assets/scss/abstracts/variables";
 
 .article {
   > * :not(hr) {
     padding-left: 1rem;
-
   }
   &__card {
     overflow-y: hidden;
@@ -88,14 +86,14 @@ export default {
       right: 0;
     }
     border: 2px solid $color-grey-light;
-    @media only screen and (max-width: 600px){
+    @media only screen and (max-width: 600px) {
       border: none;
     }
   }
   box-shadow: 0px -15px 30px -15px inset #111;
   @media only screen and (max-width: 600px) {
-    .article{
-      &__card{
+    .article {
+      &__card {
         margin: 1rem;
       }
     }
