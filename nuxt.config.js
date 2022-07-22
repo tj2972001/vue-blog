@@ -152,7 +152,8 @@ export default {
     color: "#184d52",
   },
   server: {
-    port: process.env.PORT || 8000, // default: 3000
+    host:'0.0.0.0',
+    port: process.env.PORT || 8080, // default: 3000
     timing: false,
   },
 };
