@@ -9,23 +9,38 @@
         ><h2 class="toolbar__desktop--title">{{ title }}</h2></nuxt-link
       >
       <v-spacer></v-spacer>
-      <v-btn
+      <nuxt-link
         v-for="link in links"
         :key="`${link.label}-header-link`"
-        text
         :to="link.url"
-        rounded
-        >{{ link.label }}</v-btn
       >
+        <span class="toolbar__desktop--navButtons">{{ link.label }}</span>
+      </nuxt-link>
+      <v-menu bottom :close-on-click="closeOnClick">
+        <template v-slot:activator="{ on, attrs }">
+          <span class="toolbar__desktop--navButtons" v-bind="attrs" v-on="on">
+            Tools
+          </span>
+        </template>
+
+        <v-list>
+          <v-list-item v-for="tool in toolLinks" :key="tool.label">
+            <nuxt-link :to="tool.url">
+              <span class="toolbar__desktop--navButtons"
+                >{{ tool.label }} <v-icon class="ml-2">{{ tool.icon }}</v-icon>
+              </span>
+            </nuxt-link>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <template v-if="!isLoggedIn">
-        <v-btn
+        <nuxt-link
           v-for="link in authLinks"
           :key="`${link.label}-header-link`"
-          text
           :to="link.url"
-          rounded
-          >{{ link.label }}</v-btn
         >
+          <span class="toolbar__desktop--navButtons">{{ link.label }}</span>
+        </nuxt-link>
       </template>
       <template v-else>
         <nuxt-link to="/profile">
@@ -63,24 +78,44 @@
 
       <v-divider></v-divider>
       isLoggedIn: {{ isLoggedIn }}
-      <ul class="toolbar__drawer--list">
-        <li v-for="link in links" :key="`${link.label}-header-link`">
+      <v-list class="toolbar__drawer--list">
+        <v-list-item
+          v-for="link in links"
+          :key="`${link.label}-header-link`"
+          class="toolbar__drawer--list--item"
+        >
           <v-icon class="mr-2">{{ link.icon }}</v-icon>
           <nuxt-link :to="link.url">{{ link.label }}</nuxt-link>
-        </li>
+        </v-list-item>
+        <v-list-item
+          v-for="tool in toolLinks"
+          :key="tool.label"
+          class="toolbar__drawer--list--item"
+        >
+          <v-icon class="mr-2"> {{ tool.icon }}</v-icon>
+          <nuxt-link :to="tool.url">{{ tool.label }}</nuxt-link>
+        </v-list-item>
         <template v-if="!isLoggedIn">
-          <li v-for="link in authLinks" :key="`${link.label}-header-link`">
+          <v-list-item
+            v-for="link in authLinks"
+            :key="`${link.label}-header-link`"
+            class="toolbar__drawer--list--item"
+          >
             <v-icon class="mr-2">{{ link.icon }}</v-icon>
             <nuxt-link :to="link.url">{{ link.label }}</nuxt-link>
-          </li>
+          </v-list-item>
         </template>
         <template v-else>
-          <li v-for="link in loggedInUserLinks" :key="`${link.label}`">
+          <v-list-item
+            v-for="link in loggedInUserLinks"
+            :key="`${link.label}`"
+            class="toolbar__drawer--list--item"
+          >
             <v-icon class="mr-2">{{ link.icon }}</v-icon>
             <nuxt-link :to="link.url">{{ link.label }}</nuxt-link>
-          </li>
+          </v-list-item>
         </template>
-      </ul>
+      </v-list>
     </v-navigation-drawer>
   </div>
 </template>
@@ -130,6 +165,13 @@ export default {
         icon: "mdi-account",
       },
     ],
+    toolLinks: [
+      {
+        label: "Jobs for freshers",
+        url: "/job",
+        icon: "mdi-briefcase",
+      },
+    ],
     user: checkAndParseLocalStorageStr(
       loggedInUserProperties.key,
       loggedInUserProperties.val
@@ -155,6 +197,7 @@ export default {
 .toolbar {
   &__drawer {
     &--header {
+      margin-left: 1rem;
       &--title {
         font-family: "Lora", serif;
         font-size: 2rem;
@@ -166,12 +209,14 @@ export default {
     }
     &--list {
       margin-top: 2rem;
-      padding-left: 1rem !important;
+      padding-left: 1rem;
       list-style: none;
-      & li {
+      &--item {
+        padding: 0;
         font-size: 1.5rem;
-        text-decoration: none !important;
-        margin: 1rem 0;
+        margin-top: 1rem;
+        min-height: 0;
+        text-decoration: none;
       }
     }
   }
@@ -181,6 +226,9 @@ export default {
       font-family: "Lora", Serif;
       font-weight: 100;
     }
+    &--navButtons {
+      margin-left: 1rem;
+    }
   }
   &__mobile {
     &--title {
@@ -189,5 +237,13 @@ export default {
       font-weight: 200;
     }
   }
+}
+.toolbar__desktop--navButtons {
+  font-weight: 300;
+}
+.nuxt-link-exact-active span {
+  color: $color-teal-dark;
+  font-weight: 500;
+  text-decoration: underline;
 }
 </style>

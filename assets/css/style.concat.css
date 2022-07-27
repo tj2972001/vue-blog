@@ -106,7 +106,7 @@ h2 {
       max-width: 50rem;
       padding: 0 3rem; } }
   .app-row::after {
-    content: '';
+    content: "";
     display: table;
     clear: both; }
   .app-row [class^="app-col-"] {

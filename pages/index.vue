@@ -13,6 +13,14 @@
     </div>
     <div class="home-page__topLikedArticles">
       <h3 class="home-page__topLikedArticles--headings">Top liked articles</h3>
+      <div v-if="topLikedArticles.length == 0">
+        <v-skeleton-loader
+          v-for="i in 5"
+          :key="i"
+          v-bind="attrs"
+          type="heading"
+        ></v-skeleton-loader>
+      </div>
       <ol class="home-page__topLikedArticles--list">
         <div v-for="article in topLikedArticles" :key="article._id">
           <nuxt-link :to="{ path: '/blog/article/' + article._id }">
@@ -25,6 +33,15 @@
     </div>
     <div class="home-page__popularTags">
       <h3 class="home-page__popularTags--headings">Most popular tags</h3>
+      <div v-if="tags.length == 0">
+        <v-skeleton-loader
+          v-for="i in 15"
+          :key="i"
+          class="my-2"
+          v-bind="attrs"
+          type="chip"
+        ></v-skeleton-loader>
+      </div>
       <div class="home-page__popularTags--list">
         <ol>
           <div v-for="tag in tags" :key="tag._id">

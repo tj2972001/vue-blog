@@ -1,6 +1,24 @@
 <template>
   <section class="blog-page">
-    <NavigationDrawer class="blog-page__navigation_drawer" :cats="tags"/>
+    <NavigationDrawer class="blog-page__navigation_drawer" :cats="tags" />
+    <div v-if="allBlogs.length == 0" class="blog-page__skeleton-container">
+      <v-alert
+        width="90%"
+        max-width="600px"
+        type="info"
+        class="blog-page__skeleton-container--alert"
+        >Loading articles</v-alert
+      >
+      <v-skeleton-loader
+        v-for="i in 2"
+        :key="i"
+        class="blog-page__skeleton-container--skeleton"
+        width="90%"
+        max-width="600px"
+        v-bind="attrs"
+        type="card-avatar, article, actions"
+      ></v-skeleton-loader>
+    </div>
     <ArticleCard
       v-for="article in allBlogs"
       :key="article._id"
@@ -10,82 +28,57 @@
     <div class="text-center blog-page__pagination">
       <v-container>
         <v-row justify="center">
-          <v-col cols="8">
-            <v-container class="max-width">
-              <v-pagination
-                v-model="curPage"
-                class="my-4"
-                :length="pageCount"
-                @input="onPageChange"
-              ></v-pagination>
-            </v-container>
-          </v-col>
+          <v-pagination
+            v-model="curPage"
+            class="my-4"
+            :length="pageCount"
+            @input="onPageChange"
+          ></v-pagination>
         </v-row>
       </v-container>
     </div>
   </section>
 </template>
 <script>
-import NavigationDrawer from '@/components/NavigationDrawer.vue'
-import ArticleCard from '@/components/ArticleCard'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from "vuex";
 
 export default {
   watchQuery: true,
-  components: {
-    NavigationDrawer,
-    ArticleCard,
-  },
   fetch(ctx) {
     try {
-      let categories = []
-      let dateFrom,dateTo;
-      console.log("In blog fetch")
-      console.log(ctx.route.query)
-      const queryStrCategory = ctx.route.query.category
-      const queryStrDateFrom = ctx.route.query.dateFrom
-      const queryStrDateTo = ctx.route.query.dateTo
+      let categories = [];
+      console.log("In blog fetch");
+      const queryStrCategory = ctx.route.query.category;
+      const queryStrDateFrom = ctx.route.query.dateFrom;
+      const queryStrDateTo = ctx.route.query.dateTo;
+      const queryStrPage = ctx.route.query.page || 1;
+      const queryStrLimit = ctx.route.query.limit || 10;
+      const queryStrSort = ctx.route.query.sort || "-dateCreated";
       if (queryStrCategory) {
-        console.log("queryStrCategory")
-        if (typeof queryStrCategory === 'string') {
-          categories.push(queryStrCategory)
+        console.log("queryStrCategory", typeof queryStrCategory);
+        if (typeof queryStrCategory === "string") {
+          categories.push(queryStrCategory);
         } else {
-          categories = [...queryStrCategory]
+          categories = [...queryStrCategory];
         }
       }
-      if(queryStrDateFrom){
-        if (typeof queryStrDateFrom === 'string') {
-          dateFrom = queryStrDateFrom
-        } else {
-          dateFrom = [...queryStrDateFrom]
-        }
-      }
-      if(queryStrDateTo){
-        if (typeof queryStrDateTo === 'string') {
-          dateTo = queryStrDateTo
-        } else {
-          dateTo = [...queryStrDateTo]
-        }
-      }
-      console.log("dateFrom in index.vue")
-      console.log("Categories array is ",categories)
-      ctx.store.dispatch('events/fetchArticles', {
-        page: ctx.route.query.page || 1,
-        limit: ctx.route.query.limit || 3,
-        sort: ctx.route.query.sort || '-dateCreated',
+      ctx.store.dispatch("events/fetchArticles", {
+        page: queryStrPage,
+        limit: queryStrLimit,
+        sort: queryStrSort,
         categories,
-        dateFrom,
-        dateTo
-      })
-      ctx.store.dispatch('events/fetchTags',{
+        dateFrom: queryStrDateFrom,
+        dateTo: queryStrDateTo,
+      });
+      ctx.store.dispatch("events/fetchTags", {
         page: 0,
         limit: 500000,
-      })
+      });
     } catch (e) {
       ctx.error({
         statusCode: 503,
-        message: 'Unable to fetch articles at this time. Please try again.',
-      })
+        message: "Unable to fetch articles at this time. Please try again.",
+      });
     }
   },
   computed: mapState({
@@ -94,42 +87,46 @@ export default {
     curPage: (state) => state.events.curPage,
     curLim: (state) => state.events.curLim,
     pageCount() {
-      const x = this.allBlogsCount / this.curLim
-      return Math.ceil(x)
+      const x = this.allBlogsCount / this.curLim;
+      return Math.ceil(x);
     },
-    tags:(state)=>state.events.tags
+    tags: (state) => state.events.tags,
   }),
   methods: {
-    ...mapActions('events', ['fetchArticles']),
+    ...mapActions("events", ["fetchArticles"]),
     async onPageChange(e) {
-      this.curPage = e
-      const categories = []
+      this.curPage = e;
+      const categories = [];
       if (this.$route.query.category) {
-        categories.push('"' + this.$route.query.category + '"')
+        categories.push('"' + this.$route.query.category + '"');
       }
       await this.fetchArticles({
         page: e,
         limit: this.curLim,
-        sort: this.$route.query.sort || '-dateCreated',
+        sort: this.$route.query.sort || "-dateCreated",
         categories,
-      })
+      });
     },
   },
-}
+};
 </script>
 <style lang="scss" scoped>
-
 .blog-page {
-  &__articles{
+  &__articles {
     width: 80%;
     margin: 0 auto;
-
+  }
+  &__skeleton-container {
+    &--skeleton {
+      margin: 0 auto;
+    }
+    &--alert {
+      margin: 2rem auto;
+    }
   }
 
   @media only screen and (max-width: 600px) {
-    width: 95%
+    width: 95%;
   }
 }
-
-
 </style>

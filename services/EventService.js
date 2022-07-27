@@ -11,34 +11,34 @@ const APIClent = {
 };
 
 export default {
-  getArticles(page, limit, sort, categories,dateFrom, dateTo) {
+  getArticles(page, limit, sort, categories, dateFrom, dateTo) {
     const catArr = Array.from(categories);
     const catNeetArr = catArr.map((e) => '"' + e + '"');
-    let url = `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}`
+    let url = `${APIClent.baseURL}/blog/?page=${page}&limit=${limit}&sort=${sort}`;
     if (categories.length > 0) {
-      url = url.concat(`&categories=[${catNeetArr}]`)
-      console.log("Now url is ",url)
+      url = url.concat(`&categories=[${catNeetArr}]`);
+      console.log("Now url is ", url);
     }
-    if(dateFrom){
-      console.log("dateFrom ",dateFrom)
-      url =url.concat(`&dateFrom=${dateFrom}`)
+    if (dateFrom) {
+      console.log("dateFrom ", dateFrom);
+      url = url.concat(`&dateFrom=${dateFrom}`);
     }
-    if(dateTo){
-      console.log("dateTo ",dateTo)
-      url =url.concat(`&dateTo=${dateTo}`)
+    if (dateTo) {
+      console.log("dateTo ", dateTo);
+      url = url.concat(`&dateTo=${dateTo}`);
     }
     console.log("baseUrl is " + APIClent.baseURL);
     return axios({
       method: "GET",
       url,
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   },
   getArticle(id) {
     return axios({
       method: "GET",
       url: `${APIClent.baseURL}/blog/${id}`,
-      withCredentials: true
+      withCredentials: true,
     });
   },
   login(formData) {
@@ -48,15 +48,14 @@ export default {
       method: "POST",
       url: `${APIClent.baseURL}/user/login`,
       data: formData,
-      withCredentials: true
+      withCredentials: true,
     });
   },
   logOut() {
     return axios({
       method: "GET",
       url: `${APIClent.baseURL}/user/logout`,
-      withCredentials: true
-
+      withCredentials: true,
     });
   },
   signup(formData) {
@@ -64,8 +63,7 @@ export default {
       method: "POST",
       url: `${APIClent.baseURL}/user/signup`,
       data: formData,
-      withCredentials: true
-
+      withCredentials: true,
     });
   },
   postArticle(formData) {
@@ -73,8 +71,7 @@ export default {
       method: "POST",
       url: `${APIClent.baseURL}/blog`,
       data: formData,
-      withCredentials: true
-
+      withCredentials: true,
     });
   },
   updateUserInfo(formData) {
@@ -82,7 +79,7 @@ export default {
       method: "PATCH",
       url: `${APIClent.baseURL}/user/profile/update`,
       data: formData,
-      withCredentials: true
+      withCredentials: true,
     });
   },
   updatePassword(formData) {
@@ -90,45 +87,112 @@ export default {
       method: "PATCH",
       url: `${APIClent.baseURL}/user/updatePassword`,
       data: formData,
-      withCredentials: true
+      withCredentials: true,
     });
   },
   clap(articleId) {
     return axios({
       method: "PATCH",
       url: `${APIClent.baseURL}/blog/article/${articleId}/clap`,
-      withCredentials: true
+      withCredentials: true,
     });
   },
   unclap(articleId) {
     return axios({
       method: "PATCH",
       url: `${APIClent.baseURL}/blog/article/${articleId}/unClap`,
-      withCredentials: true
+      withCredentials: true,
     });
   },
   fetchLikesOnPost(articleId) {
     return axios({
       method: "GET",
       url: `${APIClent.baseURL}/blog/article/${articleId}/likes`,
-      withCredentials: true
-
+      withCredentials: true,
     });
   },
   deleteArticle(articleId) {
     return axios({
       method: "DELETE",
       url: `${APIClent.baseURL}/blog/${articleId}`,
-      withCredentials: true
-
+      withCredentials: true,
     });
   },
-  getTags(skip,limit,sort){
-    let url = `${APIClent.baseURL}/blog/tags/?sort=${sort}&skip=${skip}&limit=${limit}`
+  getTags(skip, limit, sort) {
+    const url = `${APIClent.baseURL}/blog/tags/?sort=${sort}&skip=${skip}&limit=${limit}`;
     return axios({
-      method:"GET",
+      method: "GET",
       url,
-      withCredentials:true
-    })
-  }
+      withCredentials: true,
+    });
+  },
+  getJobs(
+    page,
+    limit,
+    sort,
+    categories,
+    dateFrom,
+    dateTo,
+    jobTypes,
+    eligibleBatches
+  ) {
+    const catArr = Array.from(categories);
+    const catNeetArr = catArr.map((e) => '"' + e + '"');
+    const eligibleBatchesArr = Array.from(eligibleBatches);
+    const eligibleBatchesNeetArr = eligibleBatchesArr.map((e) => '"' + e + '"');
+    const jobTypeArr = Array.from(jobTypes);
+    const jobTypeNeetArr = jobTypeArr.map((e) => '"' + e + '"');
+    let url = `${APIClent.baseURL}/job/?page=${page}&limit=${limit}&sort=${sort}`;
+    if (categories.length > 0) {
+      url = url.concat(`&categories=[${catNeetArr}]`);
+      console.log("Now url is ", url);
+    }
+    if (dateFrom) {
+      console.log("dateFrom ", dateFrom);
+      url = url.concat(`&dateFrom=${dateFrom}`);
+    }
+    if (dateTo) {
+      console.log("dateTo ", dateTo);
+      url = url.concat(`&dateTo=${dateTo}`);
+    }
+    if (jobTypes.length > 0) {
+      console.log("jobTypes: ", jobTypes);
+      url = url.concat(`&jobType=[${jobTypeNeetArr}]`);
+    }
+    if (eligibleBatches.length > 0) {
+      url = url.concat(`&showByEligibleBatches=[${eligibleBatchesNeetArr}]`);
+    }
+    console.log("baseUrl is " + APIClent.baseURL);
+    console.log("Sending getAllJobs req, baseURL is: ", url);
+    console.log(
+      page,
+      limit,
+      sort,
+      categories,
+      dateFrom,
+      dateTo,
+      jobTypes,
+      eligibleBatches
+    );
+    return axios({
+      method: "GET",
+      url,
+      withCredentials: true,
+    });
+  },
+  getJob(id) {
+    return axios({
+      method: "GET",
+      url: `${APIClent.baseURL}/job/${id}`,
+      withCredentials: true,
+    });
+  },
+  getJobTags(skip, limit, sort) {
+    const url = `${APIClent.baseURL}/job/tags/?sort=${sort}&skip=${skip}&limit=${limit}`;
+    return axios({
+      method: "GET",
+      url,
+      withCredentials: true,
+    });
+  },
 };
