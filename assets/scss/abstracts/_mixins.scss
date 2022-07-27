@@ -1,7 +1,6 @@
-
 @mixin clearfix {
   &::after {
-    content: '';
+    content: "";
     display: table;
     clear: both;
   }
@@ -34,4 +33,10 @@
       @content;
     } //1800
   }
+}
+@mixin createNew {
+  width: 80vw;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }

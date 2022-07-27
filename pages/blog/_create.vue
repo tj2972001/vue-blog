@@ -120,11 +120,11 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import "/assets/scss/abstracts/mixins";
+
 .create-blog {
-  width: 80vw;
-  margin-left: auto;
-  margin-right: auto;
+  @include createNew;
 }
 .create-blog > * {
   margin-top: 25px;
