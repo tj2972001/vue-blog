@@ -71,20 +71,26 @@
 export default {
   data() {
     return {
+      pageTitle: "About me",
       page: 1,
       pageCount: 1,
-    }
+    };
   },
   watch: {
     page() {
       if (this.page > this.pageCount) {
-        this.page = 1
+        this.page = 1;
       } else if (this.page < 1) {
-        this.page = 1
+        this.page = 1;
       }
     },
   },
-}
+  head() {
+    return {
+      title: this.pageTitle,
+    };
+  },
+};
 </script>
 <style scoped lang="scss">
 .about-page {

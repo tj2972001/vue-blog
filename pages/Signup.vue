@@ -85,6 +85,9 @@
             Signup
           </button>
         </div>
+        <div class="row justify-center">OR</div>
+        <google-auth-btn></google-auth-btn>
+        <microsoft-auth-btn></microsoft-auth-btn>
         <div class="row">
           <nuxt-link to="/login">login instead</nuxt-link>
         </div>
@@ -97,6 +100,7 @@
 import { mapActions } from "vuex";
 export default {
   data: () => ({
+    pageTitle: "Signup",
     passwordShow: false,
     passwordConfirmShow: false,
     email: "",
@@ -108,6 +112,11 @@ export default {
     checkLight() {
       return !this.$vuetify.theme.dark;
     },
+  },
+  head() {
+    return {
+      title: this.pageTitle,
+    };
   },
   methods: {
     ...mapActions("user", ["signUp"]),

@@ -14,8 +14,11 @@
             Login
           </button>
         </div>
+        <div class="row justify-center">OR</div>
+        <google-auth-btn></google-auth-btn>
+        <microsoft-auth-btn></microsoft-auth-btn>
         <div class="row">
-          <a href="#">Forget Password</a>
+          <a href="#" @click="forgotPasswordMethod">Forget Password</a>
         </div>
         <div class="row">
           <nuxt-link to="signup">New to site? Create account</nuxt-link>
@@ -31,12 +34,18 @@ import { loggedInUserProperties } from "assets/js/objects";
 
 export default {
   data: () => ({
+    pageTitle: "Login",
     passwordShow: false,
     email: "",
     password: "",
   }),
+  head() {
+    return {
+      title: this.pageTitle,
+    };
+  },
   methods: {
-    ...mapActions("user", ["login", "storeUser"]),
+    ...mapActions("user", ["login", "storeUser", "forgotPassword"]),
     async loginMethod() {
       const formData = {};
       formData.email = this.email;
@@ -59,12 +68,29 @@ export default {
             JSON.stringify(user)
           );
           console.log("Response.data is ", response.data);
+          this.$nuxt.refresh();
           this.$router.push({
             name: "index",
           });
         }
       } catch (e) {
         this.$toast.error(e.response.data.message);
+      }
+    },
+    async forgotPasswordMethod() {
+      try {
+        const email = prompt("Please enter email");
+        const formData = {};
+        formData.email = email;
+        const result = await this.forgotPassword(formData);
+        if (result.data.status === "success") {
+          await this.$toast.info(result.data.message);
+          this.$router.push({ name: "forgotPasswordReset" });
+        }
+        console.log("RES: ", result);
+        await this.$toast.info(result.data.message);
+      } catch (err) {
+        await this.$toast.info(err.response.data.message);
       }
     },
   },

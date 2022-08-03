@@ -35,6 +35,9 @@
             @input="onPageChange"
           ></v-pagination>
         </v-row>
+        <v-row justify="center"
+          >page: {{ curPage }} out of {{ pageCount }}</v-row
+        >
       </v-container>
     </div>
   </section>
@@ -80,6 +83,16 @@ export default {
         message: "Unable to fetch articles at this time. Please try again.",
       });
     }
+  },
+  data() {
+    return {
+      pageTitle: "All articles",
+    };
+  },
+  head() {
+    return {
+      title: this.pageTitle,
+    };
   },
   computed: mapState({
     allBlogs: (state) => state.events.articles,

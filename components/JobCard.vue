@@ -9,7 +9,7 @@
       </v-chip>
     </v-card-text>
     <v-card-text v-if="job.dateCreated" class="jobcard-card__datePosted"
-      >Posted on: {{ job.dateCreated }}</v-card-text
+      >Posted on: {{ jobCreatedDate() }}</v-card-text
     >
     <v-card-subtitle
       v-if="job.salary > 0"
@@ -43,10 +43,18 @@ export default {
       required: true,
     },
   },
+  methods: {
+    jobCreatedDate() {
+      if (this.job.dateCreated) {
+        return new Date(this.job.dateCreated).toLocaleString();
+      }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
 .jobcard-card {
+  margin-bottom: 2rem;
   &__title {
     margin-top: 1rem;
     font-weight: 700;

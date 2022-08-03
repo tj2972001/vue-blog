@@ -1,8 +1,8 @@
 <template>
   <div class="create-job">
     <h2>Post a new job</h2>
-    <v-card elevation="20" class="create-job__card">
-      <v-form class="create-job__form" @submit.prevent>
+    <v-card outlined class="create-job__card">
+      <v-form class="create-job__form" @submit.prevent="postJobMethod">
         <v-text-field
           v-model="jobForm.title.value"
           :label="jobForm.title.label"
@@ -31,9 +31,10 @@
             jobForm.jobtype.value === 'INTERN' ||
             jobForm.jobtype.value === 'FTE_new_grad'
           "
+          v-model="jobForm.eligibleBatches.value"
           multiple
           :label="jobForm.eligibleBatches.label"
-          :items="jobForm.eligibleBatches.value"
+          :items="jobForm.eligibleBatches.values"
         ></v-select>
         <v-text-field
           v-model="jobForm.salary.value"
@@ -44,9 +45,9 @@
           hide-details
         ></v-text-field>
         <v-text-field
-          v-model="jobForm.joblink.value"
-          :label="jobForm.joblink.label"
-          :rules="jobForm.joblink.rules"
+          v-model="jobForm.jobLink.value"
+          :label="jobForm.jobLink.label"
+          :rules="jobForm.jobLink.rules"
         ></v-text-field>
         <v-card-actions class="justify-center">
           <v-btn type="submit" outlined :block="true" color="teal"> Post</v-btn>
@@ -56,9 +57,16 @@
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
+import { loggedInUserProperties } from "assets/js/objects";
+
 export default {
   data() {
     return {
+      pageTitle: "Create new job",
+      author: JSON.parse(
+        window.localStorage.getItem(loggedInUserProperties.key)
+      ).user,
       jobForm: {
         title: {
           value: "",
@@ -88,15 +96,17 @@ export default {
         },
         eligibleBatches: {
           label: "Select all eligible branches",
-          value: this.getEligibleBatches(),
+          values: this.getEligibleBatches(),
+          value: [],
         },
         salary: {
+          value: 0,
           label: "Enter salary for this job (in LPA)",
           rules: [
             (e) => (!!e && !Number.isNaN(e)) || "Please enter valid number",
           ],
         },
-        joblink: {
+        jobLink: {
           label: "Post a link to this job",
           value: "",
           rules: [
@@ -113,7 +123,13 @@ export default {
       },
     };
   },
+  head() {
+    return {
+      title: this.pageTitle,
+    };
+  },
   methods: {
+    ...mapActions("events", ["createJob"]),
     getEligibleBatches() {
       const currYear = Number(new Date().getFullYear());
       const eligibleBatches = [];
@@ -121,6 +137,26 @@ export default {
         eligibleBatches.push((currYear + i).toString());
       }
       return eligibleBatches;
+    },
+    async postJobMethod() {
+      try {
+        const formData = {
+          author: this.author,
+          title: this.jobForm.title.value,
+          jobtype: this.jobForm.jobtype.value,
+          eligibleBatches: this.jobForm.eligibleBatches.value,
+          salary: this.jobForm.salary.value,
+          dateCreated: new Date(),
+          categories: this.jobForm.categories.value,
+          jobLink: this.jobForm.jobLink.value,
+          description: this.jobForm.description.value,
+        };
+        await this.createJob(formData);
+        this.$toast.info("Job posted successfully");
+        this.$router.push({ name: "job" });
+      } catch (err) {
+        this.$toast.info(err.response.data.message);
+      }
     },
   },
 };

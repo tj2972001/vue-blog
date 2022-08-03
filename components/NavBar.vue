@@ -227,7 +227,11 @@ export default {
       font-weight: 100;
     }
     &--navButtons {
-      margin-left: 1rem;
+      margin-right: 1rem;
+      &:hover {
+        color: $color-teal-dark;
+        font-weight: 500;
+      }
     }
   }
   &__mobile {

@@ -64,6 +64,7 @@ export default {
   },
   data() {
     return {
+      pageTitle: "Post article",
       tag: "",
       tags: [],
       title: "",
@@ -78,6 +79,11 @@ export default {
     dateCreated() {
       return new Date(Date.now());
     },
+  },
+  head() {
+    return {
+      title: this.pageTitle,
+    };
   },
   methods: {
     ...mapActions("events", ["createArticle"]),

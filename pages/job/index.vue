@@ -6,13 +6,13 @@
     </v-alert>
     <div v-if="allJobs.length == 0" class="job-page__skeleton-container">
       <v-skeleton-loader
-        v-for="i in 2"
+        v-for="i in 10"
         :key="i"
         class="job-page__skeleton-container--skeleton"
         width="90%"
         max-width="600px"
         v-bind="attrs"
-        type="card,article,actions"
+        type="card"
       ></v-skeleton-loader>
     </div>
     <job-card
@@ -49,7 +49,7 @@ export default {
       let jobTypes = [];
       let eligibleBatches = [];
       const queryStrPage = ctx.route.query.page || 1;
-      const queryStrLimit = ctx.route.query.limit || 10;
+      const queryStrLimit = ctx.route.query.limit || 3;
       const queryStrSort = ctx.route.query.sort || "-dateCreated";
       const jobType = ctx.route.query.jobType;
       const eligibleBatch = ctx.route.query.showByEligibleBatches;
@@ -109,7 +109,13 @@ export default {
   },
   data() {
     return {
+      pageTitle: "All jobs",
       drawer: null,
+    };
+  },
+  head() {
+    return {
+      title: this.pageTitle,
     };
   },
   computed: {

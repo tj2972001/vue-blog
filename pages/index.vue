@@ -103,11 +103,7 @@
         </div>
         <div class="home-page__skills--list--item icon-image">
           <span>C++</span>
-          <img
-            src="~assets/images/skills/cpp.png"
-            style="height: 100px"
-            alt="C++ icon"
-          />
+          <img src="~assets/images/skills/cpp.png" alt="C++ icon" />
         </div>
         <div class="home-page__skills--list--item icon-image">
           <span>Postgres</span>
@@ -229,6 +225,9 @@ export default {
   align-items: center;
 }
 .home-page {
+  & > * {
+    margin-bottom: 4rem;
+  }
   &__intro {
     filter: brightness(80%);
     background-attachment: scroll;
@@ -326,10 +325,12 @@ export default {
       justify-content: left;
       justify-items: center;
       flex-wrap: wrap;
-      & .icon-image img {
+      &--item img {
+        max-height: 100px;
+        max-width: 100px;
         @media only screen and (max-width: 600px) {
-          height: 50px;
-          width: auto;
+          max-width: 50px;
+          max-height: 50px;
         }
       }
       &--item {

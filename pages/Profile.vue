@@ -29,6 +29,16 @@
                 required
                 type="email"
               ></v-text-field>
+              <span v-if="user.isEmailVerified">Email is verified</span>
+              <v-btn
+                v-else
+                text
+                small
+                outlined
+                color="green"
+                @click="verifyEmailMethod"
+                >Click here to verify mail</v-btn
+              >
               <v-file-input
                 id="photo"
                 accept="image/*"
@@ -129,6 +139,7 @@ import { checkAndParseLocalStorageStr } from "assets/js/helper";
 export default {
   data() {
     return {
+      pageTitle: "Your profile",
       user: checkAndParseLocalStorageStr(
         loggedInUserProperties.key,
         loggedInUserProperties.val
@@ -147,8 +158,18 @@ export default {
       },
     };
   },
+  head() {
+    return {
+      title: this.pageTitle,
+    };
+  },
   methods: {
-    ...mapActions("user", ["updateUserInfo", "logOutUser", "updatePassword"]),
+    ...mapActions("user", [
+      "updateUserInfo",
+      "logOutUser",
+      "updatePassword",
+      "verifyEmail",
+    ]),
     async updateInfo() {
       try {
         const formData = new FormData();
@@ -209,6 +230,22 @@ export default {
           // Remove from localstorage
           await this.logOut();
         }
+      } catch (e) {
+        this.$toast.error(e.response.data.message);
+      }
+    },
+    async verifyEmailMethod() {
+      try {
+        console.log("In emailm verify");
+        const result = await this.verifyEmail();
+        if (result.data.status === "success") {
+          this.$toast.info(
+            "Mail sent successfully for verification. Please verify mail and Login again"
+          );
+          this.$toast.info("Logging you out");
+          this.logOut();
+        }
+        console.log("result ", result);
       } catch (e) {
         this.$toast.error(e.response.data.message);
       }

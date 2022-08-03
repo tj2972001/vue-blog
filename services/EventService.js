@@ -195,4 +195,50 @@ export default {
       withCredentials: true,
     });
   },
+  postJob(formData) {
+    return axios({
+      method: "POST",
+      data: formData,
+      withCredentials: true,
+      url: `${APIClent.baseURL}/job`,
+    });
+  },
+  loginWithGoogle() {
+    return axios({
+      method: "GET",
+      url: `${APIClent.baseURL}/auth/login/federated/google`,
+      withCredentials: true,
+    });
+  },
+  loginWithMicrosoft() {
+    return axios({
+      method: "GET",
+      url: `${APIClent.baseURL}/auth/login/federated/microsoft`,
+      withCredentials: true,
+    });
+  },
+  verifyUserEmail() {
+    return axios({
+      method: "GET",
+      url: `${APIClent.baseURL}/user/sendVerifyEmail`,
+      withCredentials: true,
+    });
+  },
+  forgotPassword(formData) {
+    return axios({
+      method: "POST",
+      url: `${APIClent.baseURL}/user/forgot-password`,
+      withCredentials: true,
+      data: formData,
+    });
+  },
+  forgotPasswordReset(formData) {
+    console.log("In forgotPasswordReset ", formData.token);
+    return axios({
+      method: "POST",
+      url: `${APIClent.baseURL}/user/resetPassword/${formData.token}`,
+      data: formData,
+      withCredentials: true,
+    });
+  },
 };

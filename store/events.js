@@ -8,13 +8,13 @@ export const state = () => ({
   tags: [],
   article: "",
   curPage: 1,
-  curLim: 3,
+  curLim: 1,
   likes: [],
   /** Job states */
   jobs: [],
   totalJobsCount: 0,
   curJobPage: 1,
-  curJobLimit: 10,
+  curJobLimit: 1,
   jobTags: [],
 });
 export const mutations = {
@@ -81,7 +81,7 @@ export const actions = {
     );
     console.log(articles);
     ctx.commit("SET_ARTICLES", articles.data.data.blogs);
-    ctx.commit("SET_JOB_COUNT", articles.data.totalBlogsCount);
+    ctx.commit("SET_BLOG_COUNT", articles.data.totalBlogsCount);
     ctx.commit("SET_CUR_PAGE", parseInt(page));
     ctx.commit("SET_CUR_LIM", parseInt(limit));
   },
@@ -171,6 +171,9 @@ export const actions = {
     console.log("typeof tags : ", typeof tags);
     console.log(tags.data.tags);
     ctx.commit("SET_JOB_TAGS", tags.data.data.tags);
+  },
+  async createJob(ctx, formData) {
+    await EventService.postJob(formData);
   },
 };
 export const getters = {};
