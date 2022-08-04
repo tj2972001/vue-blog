@@ -43,18 +43,20 @@ export default {
 
   &__login-with-microsoft-btn {
     transition: background-color 0.3s, box-shadow 0.3s;
-
-    padding: 0.3rem;
+    padding: 1rem;
+    padding-left: 1rem;
     border: none;
-    border-radius: 3px;
+    border-radius: 50px;
+
     box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
 
     color: #757575;
     font-size: 1rem;
-    font-weight: 500;
+
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     background-color: white;
+    background-position: 0.5rem 1rem;
 
     background-repeat: no-repeat;
 

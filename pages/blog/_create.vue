@@ -52,9 +52,9 @@
 
 <script>
 import { mapActions } from "vuex";
-import { loggedInUserProperties } from "assets/js/objects";
-
+import { syncUser } from "assets/js/mixins";
 export default {
+  mixins: [syncUser],
   asyncData() {
     return {
       content: "",
@@ -70,9 +70,6 @@ export default {
       title: "",
       saveAsDraft: false,
       showPreview: false,
-      author: JSON.parse(
-        window.localStorage.getItem(loggedInUserProperties.key)
-      ).user,
     };
   },
   computed: {
@@ -95,7 +92,7 @@ export default {
         saveAsDraft: this.saveAsDraft,
         content: this.content,
         dateCreated: this.dateCreated,
-        author: this.author,
+        author: this.userDetails,
       };
       try {
         this.$toast.info("Saving article");

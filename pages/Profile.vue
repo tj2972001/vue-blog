@@ -4,7 +4,7 @@
       <v-row class="mt-5">
         <v-col align="center" cols="12" sm="6">
           <img
-            :src="user.photo"
+            :src="userDetails.photo"
             max-width="70%"
             width="200"
             height="200"
@@ -17,19 +17,19 @@
 
             <v-form @submit.prevent="updateInfo">
               <v-text-field
-                v-model="user.name"
+                v-model="userDetails.name"
                 prepend-icon="mdi-account-circle"
                 label="Name"
                 required
               ></v-text-field>
               <v-text-field
-                v-model="user.email"
+                v-model="userDetails.email"
                 prepend-icon="mdi-email"
                 label="Email"
                 required
                 type="email"
               ></v-text-field>
-              <span v-if="user.isEmailVerified">Email is verified</span>
+              <span v-if="userDetails.isEmailVerified">Email is verified</span>
               <v-btn
                 v-else
                 text
@@ -123,7 +123,8 @@
         icon-color="primary"
         class="mt-10 mx-auto"
       >
-        Please Login to view user: {{ user }} isLoggedIn: {{ isLoggedIn }}
+        Please Login to view user: {{ userDetails }} isLoggedIn:
+        {{ isLoggedIn }}
         <template v-slot:actions>
           <v-btn text color="primary" to="/login"> Login </v-btn>
         </template>
@@ -133,21 +134,12 @@
 </template>
 <script>
 import { mapActions } from "vuex";
-import { loggedInUserProperties } from "assets/js/objects";
-import { checkAndParseLocalStorageStr } from "assets/js/helper";
-
+import { syncUser } from "assets/js/mixins";
 export default {
+  mixins: [syncUser],
   data() {
     return {
       pageTitle: "Your profile",
-      user: checkAndParseLocalStorageStr(
-        loggedInUserProperties.key,
-        loggedInUserProperties.val
-      ).user,
-      isLoggedIn: checkAndParseLocalStorageStr(
-        loggedInUserProperties.key,
-        loggedInUserProperties.val
-      ).isLoggedIn,
       passwordShowCurPassword: false,
       passwordShowNewPassword: false,
       passwordShowConfirmNewPassword: false,
@@ -158,10 +150,12 @@ export default {
       },
     };
   },
-  head() {
-    return {
-      title: this.pageTitle,
-    };
+  computed: {
+    // userInfo: {
+    //   name: this.userDetails.name,
+    //   email: this.userDetails.email,
+    //   isEmailVerified: this.userDetails.isEmailVerified,
+    // },
   },
   methods: {
     ...mapActions("user", [
@@ -173,33 +167,14 @@ export default {
     async updateInfo() {
       try {
         const formData = new FormData();
-        formData.append("name", this.user.name);
-        formData.append("email", this.user.email);
+        formData.append("name", this.userDetails.name);
+        formData.append("email", this.userDetails.email);
         formData.append("photo", document.getElementById("photo").files[0]);
         this.$toast.info("Updating Info");
         const user = await this.updateUserInfo(formData);
-
-        if (user.data.status) {
-          // await this.$auth.setUser(user.data.data.user)
+        if (user.data.status === "success") {
           console.log("user.data.status ", user.data.status);
           this.$toast.success("Info Updated Successfully in vuex store");
-          this.$toast.info(
-            "Old user was ",
-            JSON.parse(window.localStorage.getItem(loggedInUserProperties.key))
-          );
-          this.$toast.info("Updating user in localstorage");
-          const tempUser = { ...loggedInUserProperties };
-          tempUser.val.user = user.data.data.user;
-          tempUser.val.isLoggedIn = true;
-          window.localStorage.setItem(
-            loggedInUserProperties.key,
-            JSON.stringify(tempUser)
-          );
-          this.$toast.info("Updated user in localstorage");
-          this.$toast.info(
-            "New user is ",
-            JSON.parse(window.localStorage.getItem(loggedInUserProperties.key))
-          );
         }
       } catch (e) {
         this.$toast.error(e.response.data.message);
@@ -210,11 +185,8 @@ export default {
         this.$toast.info("Logging you out");
         const response = await this.logOutUser();
         if (response.data.status === "success") {
-          // await this.$auth.logout()
-          this.$toast.info("Removing user from localStorage");
-          window.localStorage.removeItem(loggedInUserProperties.key);
           this.$toast.success("Successfully logged you out");
-          await this.$router.push("/");
+          this.$router.push({ name: "index" });
         }
       } catch (e) {
         this.$toast.error(e.response.data.message);
@@ -227,8 +199,9 @@ export default {
         const response = await this.updatePassword(formData);
         if (response.data.status === "success") {
           this.$toast.info("Successfully updated password");
-          // Remove from localstorage
           await this.logOut();
+        } else {
+          this.$toast.error(response.data);
         }
       } catch (e) {
         this.$toast.error(e.response.data.message);
@@ -250,6 +223,11 @@ export default {
         this.$toast.error(e.response.data.message);
       }
     },
+  },
+  head() {
+    return {
+      title: this.pageTitle,
+    };
   },
 };
 </script>

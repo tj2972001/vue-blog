@@ -17,7 +17,6 @@
         <v-skeleton-loader
           v-for="i in 5"
           :key="i"
-          v-bind="attrs"
           type="heading"
         ></v-skeleton-loader>
       </div>
@@ -38,7 +37,6 @@
           v-for="i in 15"
           :key="i"
           class="my-2"
-          v-bind="attrs"
           type="chip"
         ></v-skeleton-loader>
       </div>

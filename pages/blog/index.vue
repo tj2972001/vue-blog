@@ -15,7 +15,6 @@
         class="blog-page__skeleton-container--skeleton"
         width="90%"
         max-width="600px"
-        v-bind="attrs"
         type="card-avatar, article, actions"
       ></v-skeleton-loader>
     </div>

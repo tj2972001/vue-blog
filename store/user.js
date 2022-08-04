@@ -1,29 +1,75 @@
 import EventService from "@/services/EventService";
+import { setLocalStorage } from "@/assets/js/helper";
+
+export const state = () => ({
+  /** Blog states */
+  isLoggedIn: false,
+  userDetails: null,
+});
+
+export const mutations = {
+  SET_USER(state, user) {
+    state.userDetails = user;
+    console.log("SETTING LOCAL STORAGE WITH KEY USER");
+    setLocalStorage("user", user);
+  },
+  SET_IS_LOGGED_IN(state, isLoggedIn) {
+    state.isLoggedIn = isLoggedIn;
+    setLocalStorage("isLoggedIn", isLoggedIn);
+  },
+};
 
 export const actions = {
-  login(ctx, formData) {
-    return EventService.login(formData);
+  async login(ctx, formData) {
+    // store user -> format is createSendTOken
+    const response = await EventService.login(formData);
+    const user = response.data.data.user;
+    ctx.commit("SET_USER", user);
+    ctx.commit("SET_IS_LOGGED_IN", true);
+    return response;
   },
-  loginWithGoogle(ctx) {
-    return EventService.loginWithGoogle();
+  async loginWithGoogle(ctx) {
+    // store user -> format is createSendTOken
+    const response = await EventService.loginWithGoogle();
+    const user = response.data.data.user;
+    await ctx.commit("SET_USER", user);
+    await ctx.commit("SET_IS_LOGGED_IN", true);
+    return response;
   },
-  loginWithMicrosoft(ctx) {
-    return EventService.loginWithMicrosoft();
+  async loginWithMicrosoft(ctx) {
+    // store user -> format is createSendTOken
+    const response = await EventService.loginWithMicrosoft();
+    const user = response.data.data.user;
+    await ctx.commit("SET_USER", user);
+    await ctx.commit("SET_IS_LOGGED_IN", true);
+    return response;
   },
   signUp(ctx, formData) {
     return EventService.signup(formData);
   },
-  updateUserInfo({ commit }, formData) {
-    return EventService.updateUserInfo(formData);
+  async updateUserInfo(ctx, formData) {
+    // store user -> format is data:{user}
+    const response = await EventService.updateUserInfo(formData);
+    const user = response.data.data.user;
+    await ctx.commit("SET_USER", user);
+    return response;
   },
-  logOutUser() {
-    return EventService.logOut();
+  async logOutUser(ctx) {
+    // clear user from localStorage
+    const response = await EventService.logOut();
+    await ctx.commit("SET_USER", null);
+    await ctx.commit("SET_IS_LOGGED_IN", false);
+    return response;
   },
   updatePassword(ctx, formData) {
     return EventService.updatePassword(formData);
   },
-  verifyEmail(ctx, formData) {
-    return EventService.verifyUserEmail();
+  async verifyEmail(ctx, formData) {
+    // store user -> format is data:{user}
+    const response = await EventService.verifyUserEmail();
+    const user = response.data.data.user;
+    await ctx.commit("SET_USER", user);
+    return response;
   },
   forgotPassword(ctx, formData) {
     return EventService.forgotPassword(formData);
@@ -31,4 +77,12 @@ export const actions = {
   forgotPasswordReset(ctx, formData) {
     return EventService.forgotPasswordReset(formData);
   },
+  storeUser(ctx, user) {
+    ctx.commit("SET_USER", user);
+  },
+  async storeIsLoggedIn(ctx, isLoggedIn) {
+    await ctx.commit("SET_IS_LOGGED_IN", isLoggedIn);
+  },
 };
+
+export const getters = {};

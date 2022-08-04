@@ -58,15 +58,13 @@
 </template>
 <script>
 import { mapActions } from "vuex";
-import { loggedInUserProperties } from "assets/js/objects";
+import { syncUser } from "assets/js/mixins";
 
 export default {
+  mixins: [syncUser],
   data() {
     return {
       pageTitle: "Create new job",
-      author: JSON.parse(
-        window.localStorage.getItem(loggedInUserProperties.key)
-      ).user,
       jobForm: {
         title: {
           value: "",
@@ -141,7 +139,7 @@ export default {
     async postJobMethod() {
       try {
         const formData = {
-          author: this.author,
+          author: this.userDetails,
           title: this.jobForm.title.value,
           jobtype: this.jobForm.jobtype.value,
           eligibleBatches: this.jobForm.eligibleBatches.value,

@@ -148,14 +148,14 @@
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
-import { loggedInUserProperties } from "assets/js/objects";
-import { checkAndParseLocalStorageStr } from "assets/js/helper";
+import { syncUser } from "assets/js/mixins";
 
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
 export default {
+  mixins: [syncUser],
   watchQuery: true,
   async fetch(ctx) {
     try {
@@ -190,14 +190,6 @@ export default {
       ],
       showLikesBtn: false,
       dialogDelete: false,
-      user: checkAndParseLocalStorageStr(
-        loggedInUserProperties.key,
-        loggedInUserProperties.val
-      ).user,
-      isUserLoggedIn: checkAndParseLocalStorageStr(
-        loggedInUserProperties.key,
-        loggedInUserProperties.val
-      ).isLoggedIn,
     };
   },
   computed: {
@@ -213,9 +205,9 @@ export default {
       return timeAgo.format(date);
     },
     isLiked() {
-      if (!this.isUserLoggedIn) {
+      if (!this.isLoggedIn) {
         return false;
-      } else if (this.article.claps.includes(this.user._id)) {
+      } else if (this.article.claps.includes(this.userDetails._id)) {
         return true;
       }
       return false;
@@ -237,9 +229,9 @@ export default {
     },
     async likeArticle() {
       try {
-        if (!this.isUserLoggedIn) {
+        if (!this.isLoggedIn) {
           this.$toast.info("You need to have account to like an article");
-        } else if (this.article.claps.includes(this.user._id)) {
+        } else if (this.article.claps.includes(this.userDetails._id)) {
           await this.unClapArticle(this.article._id);
           this.$toast.success("You unliked an article");
         } else {
@@ -276,7 +268,6 @@ export default {
     },
   },
 };
-// v-if="$auth.user.following.contains(liker._id)"
 </script>
 <style lang="scss" scoped>
 @import "/assets/scss/abstracts/variables";

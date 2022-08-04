@@ -30,8 +30,6 @@
 
 <script>
 import { mapActions } from "vuex";
-import { loggedInUserProperties } from "assets/js/objects";
-
 export default {
   data: () => ({
     pageTitle: "Login",
@@ -45,7 +43,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("user", ["login", "storeUser", "forgotPassword"]),
+    ...mapActions("user", ["login", "forgotPassword"]),
     async loginMethod() {
       const formData = {};
       formData.email = this.email;
@@ -57,21 +55,7 @@ export default {
         const userStatus = response.data.status;
         if (userStatus === "success") {
           this.$toast.success("Login successfully");
-          this.$toast.info("Saving user to Vuex store");
-          this.$store.dispatch("user/storeUser", response.data.data.user);
-          this.$toast.info("Storing user to localStorage");
-          const user = { ...loggedInUserProperties.val };
-          user.user = response.data.data.user;
-          user.isLoggedIn = true;
-          window.localStorage.setItem(
-            loggedInUserProperties.key,
-            JSON.stringify(user)
-          );
-          console.log("Response.data is ", response.data);
-          this.$nuxt.refresh();
-          this.$router.push({
-            name: "index",
-          });
+          this.$router.push({ name: "index" });
         }
       } catch (e) {
         this.$toast.error(e.response.data.message);

@@ -297,7 +297,7 @@ export default {
 .NavigationDrawer {
   margin: 1.5rem;
   @media only screen and (max-width: 600px) {
-    margin: 0.5rem;
+    margin: 1rem;
   }
   &__drawer {
     &__list {

@@ -16,7 +16,7 @@
       >
         <span class="toolbar__desktop--navButtons">{{ link.label }}</span>
       </nuxt-link>
-      <v-menu bottom :close-on-click="closeOnClick">
+      <v-menu bottom>
         <template v-slot:activator="{ on, attrs }">
           <span class="toolbar__desktop--navButtons" v-bind="attrs" v-on="on">
             Tools
@@ -121,10 +121,10 @@
 </template>
 
 <script>
-import { loggedInUserProperties } from "assets/js/objects";
-import { checkAndParseLocalStorageStr } from "assets/js/helper";
-
+// eslint-disable-next-line import/no-absolute-path
+import { syncUser } from "assets/js/mixins";
 export default {
+  mixins: [syncUser],
   data: () => ({
     drawer: false,
     group: null,
@@ -172,18 +172,18 @@ export default {
         icon: "mdi-briefcase",
       },
     ],
-    user: checkAndParseLocalStorageStr(
-      loggedInUserProperties.key,
-      loggedInUserProperties.val
-    ).user,
-    isLoggedIn: checkAndParseLocalStorageStr(
-      loggedInUserProperties.key,
-      loggedInUserProperties.val
-    ).isLoggedIn,
   }),
   watch: {
     group() {
       this.drawer = false;
+    },
+  },
+  methods: {
+    getUserrrEmail() {
+      if (!this.userDetails) {
+        return null;
+      }
+      return this.userDetails.name;
     },
   },
 };

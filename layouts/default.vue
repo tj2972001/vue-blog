@@ -1,6 +1,6 @@
 <template>
   <v-app style="overflow-x: hidden">
-    <NavBar />
+    <NavBar :key="$route.fullPath" />
     <v-main>
       <nuxt :key="$route.fullPath" />
     </v-main>
@@ -10,18 +10,18 @@
 <script>
 export default {
   watchQuery: true,
-}
+};
 </script>
 
 <style lang="scss">
 @import "/assets/scss/abstracts/variables";
-.v-application a{
- text-decoration: none !important;
+.v-application a {
+  text-decoration: none !important;
 }
 a.nuxt-link-active {
   color: $color-black-pure;
   text-decoration: none;
-  margin-top:0;
+  margin-top: 0;
 }
 /* exact link will show the primary color for only the exact matching link */
 a.nuxt-link-exact-active {

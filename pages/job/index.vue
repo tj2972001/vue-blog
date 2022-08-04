@@ -167,6 +167,9 @@ export default {
 </script>
 <style scoped lang="scss">
 .job-page {
+  &__NavigationDrawer {
+    margin-top: 10rem;
+  }
   &__jobs {
     width: 80%;
     margin: 0 auto;
