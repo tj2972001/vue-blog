@@ -1,114 +1,103 @@
 <template>
   <section class="home-page">
-    <div class="home-page__intro">
-      <div class="home-page__intro--container">
-        <h2 class="home-page__intro--container__heading">
-          Hi, my name is Tejas. Welcome to my blog.
-        </h2>
-        <div class="home-page__intro--container__about">
-          A curious engineer, curator and avid web developer.<br />
-          A great fan of Java technologies
-        </div>
+    <div class="home-page__hero">
+      <div class="home-page__hero-overlay"></div>
+      <div class="home-page__hero-content">
+        <h1 class="home-page__hero-title">
+          Hi, I'm Tejas. Welcome to my blog.
+        </h1>
+        <p class="home-page__hero-subtitle">
+          A curious engineer, curator and avid web developer. A great fan of Java technologies.
+        </p>
       </div>
     </div>
-    <div class="home-page__topLikedArticles">
-      <h3 class="home-page__topLikedArticles--headings">Top liked articles</h3>
-      <div v-if="topLikedArticles.length == 0">
-        <v-skeleton-loader
-          v-for="i in 5"
-          :key="i"
-          type="heading"
-        ></v-skeleton-loader>
-      </div>
-      <ol class="home-page__topLikedArticles--list">
-        <div v-for="article in topLikedArticles" :key="article._id">
-          <nuxt-link :to="{ path: '/blog/article/' + article._id }">
-            <li>
-              <span>{{ article.title }} ({{ article.claps.length }})</span>
-            </li>
-          </nuxt-link>
-        </div>
-      </ol>
-    </div>
-    <div class="home-page__popularTags">
-      <h3 class="home-page__popularTags--headings">Most popular tags</h3>
-      <div v-if="tags.length == 0">
-        <v-skeleton-loader
-          v-for="i in 15"
-          :key="i"
-          class="my-2"
-          type="chip"
-        ></v-skeleton-loader>
-      </div>
-      <div class="home-page__popularTags--list">
-        <ol>
-          <div v-for="tag in tags" :key="tag._id">
-            <nuxt-link :to="{ path: '/blog?category=' + tag._id }">
-              <li>
-                <v-chip>{{ tag._id }} ({{ tag.count }})</v-chip>
-              </li>
-            </nuxt-link>
+
+    <v-container class="home-page__container">
+      <v-row>
+        <v-col cols="12" md="6">
+          <v-card flat class="home-page__card" elevation="0">
+            <v-card-title class="home-page__card-title">Top liked articles</v-card-title>
+            <v-card-text>
+              <v-skeleton-loader v-if="topLikedArticles.length === 0" type="list-item@3"></v-skeleton-loader>
+              <v-list v-else dense>
+                <v-list-item
+                  v-for="article in topLikedArticles"
+                  :key="article._id"
+                  :to="'/blog/article/' + article._id"
+                  nuxt
+                  class="px-0"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title class="home-page__list-title">
+                      {{ article.title }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      <v-icon x-small>mdi-hand-back-right</v-icon>
+                      {{ (article.claps || []).length }} likes
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-icon>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </v-list-item-icon>
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-card flat class="home-page__card" elevation="0">
+            <v-card-title class="home-page__card-title">Popular tags</v-card-title>
+            <v-card-text>
+              <v-skeleton-loader v-if="tags.length === 0" type="chip"></v-skeleton-loader>
+              <div v-else class="home-page__tags">
+                <nuxt-link
+                  v-for="tag in tags"
+                  :key="tagName(tag)"
+                  :to="{ path: '/blog', query: { category: tagName(tag) } }"
+                  class="home-page__tag-link"
+                >
+                  <v-chip
+                    outlined
+                    small
+                    class="ma-1"
+                  >
+                    {{ tagName(tag) }}
+                    <span class="ml-1 grey--text text--darken-1">({{ tag.count }})</span>
+                  </v-chip>
+                </nuxt-link>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="12">
+          <h2 class="home-page__skills-title">Skills & Technologies</h2>
+          <div class="home-page__skills">
+            <v-tooltip v-for="skill in skills" :key="skill.name" bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-card
+                  v-bind="attrs"
+                  v-on="on"
+                  outlined
+                  class="home-page__skill-card"
+                  elevation="0"
+                >
+                  <v-card-text class="text-center py-4">
+                    <v-icon :color="skill.color" size="40" class="d-block mb-2">
+                      {{ skill.icon }}
+                    </v-icon>
+                    <span class="home-page__skill-name">{{ skill.name }}</span>
+                  </v-card-text>
+                </v-card>
+              </template>
+              <span>{{ skill.name }}</span>
+            </v-tooltip>
           </div>
-        </ol>
-      </div>
-    </div>
-    <div class="home-page__skills">
-      <h3 class="home-page__skills--headings">My skills</h3>
-      <div class="home-page__skills--list">
-        <div class="home-page__skills--list--item icon-svg">
-          <span>Node.js</span>
-          <fa-icon
-            name="brands/node"
-            :scale="svgIconSize"
-            color="#052e17"
-          ></fa-icon>
-        </div>
-        <div class="home-page__skills--list--item icon-svg">
-          <span>Vuejs</span>
-          <fa-icon
-            name="brands/vuejs"
-            :scale="svgIconSize"
-            color="#14de54"
-          ></fa-icon>
-        </div>
-        <div class="home-page__skills--list--item icon-svg">
-          <span>Javascript</span>
-          <fa-icon
-            name="brands/js"
-            :scale="svgIconSize"
-            color="yellow"
-          ></fa-icon>
-        </div>
-        <div class="home-page__skills--list--item icon-svg">
-          <span>Java</span>
-          <fa-icon
-            name="brands/java"
-            :scale="svgIconSize"
-            color="orange"
-          ></fa-icon>
-        </div>
-        <div class="home-page__skills--list--item icon-svg">
-          <span>CSS3</span>
-          <fa-icon
-            name="brands/css3"
-            :scale="svgIconSize"
-            color="pink"
-          ></fa-icon>
-        </div>
-        <div class="home-page__skills--list--item icon-image">
-          <span>MongoDB</span>
-          <img src="~assets/images/skills/mongodb.png" alt="MongoDB icon" />
-        </div>
-        <div class="home-page__skills--list--item icon-image">
-          <span>C++</span>
-          <img src="~assets/images/skills/cpp.png" alt="C++ icon" />
-        </div>
-        <div class="home-page__skills--list--item icon-image">
-          <span>Postgres</span>
-          <img src="~assets/images/skills/pg.png" alt="Postgres icon" />
-        </div>
-      </div>
-    </div>
+        </v-col>
+      </v-row>
+    </v-container>
   </section>
 </template>
 
@@ -117,53 +106,19 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
-      popularCategories: [
-        {
-          label: "Node.js",
-          icon: "mdi-nodejs",
-          color: "#308730",
-          category: "node",
-        },
-        {
-          label: "Vue",
-          icon: "mdi-vuejs",
-          color: "#61dc5a",
-          category: "vue",
-        },
-        {
-          label: "Spring",
-          icon: "mdi-leaf",
-          color: "#07ff02",
-          category: "spring",
-        },
-        {
-          label: "Vuetify",
-          icon: "mdi-vuetify",
-          color: "#34b8e0",
-          category: "vuetify",
-        },
-        {
-          label: "Football Space (mainly Tottenham)",
-          icon: "mdi-soccer",
-          color: "#e5ac4f",
-          category: "football",
-        },
-        {
-          label: "Personal Experiences",
-          icon: "mdi-cube-outline",
-          category: "personal",
-        },
+      skills: [
+        { name: "Node.js", icon: "mdi-nodejs", color: "#339933" },
+        { name: "Vue.js", icon: "mdi-vuejs", color: "#42b883" },
+        { name: "JavaScript", icon: "mdi-language-javascript", color: "#f7df1e" },
+        { name: "Java", icon: "mdi-language-java", color: "#ed8b00" },
+        { name: "CSS", icon: "mdi-language-css3", color: "#264de4" },
+        { name: "MongoDB", icon: "mdi-database", color: "#47a248" },
+        { name: "C++", icon: "mdi-language-cpp", color: "#00599c" },
+        { name: "PostgreSQL", icon: "mdi-elephant", color: "#336791" },
       ],
     };
   },
   computed: {
-    svgIconSize() {
-      if (this.$vuetify.breakpoint.smAndDown) {
-        return 3;
-      } else {
-        return 7;
-      }
-    },
     ...mapState({
       totalTopLikedArticles: (state) => state.events.totalTopLikedArticles,
       topLikedArticles: (state) => state.events.topLikedArticles,
@@ -172,196 +127,138 @@ export default {
   },
   methods: {
     ...mapActions("events", ["fetchTopLikedArticles", "fetchTags"]),
+    tagName(tag) {
+      return tag.tag || tag._id || "";
+    },
   },
   fetch(ctx) {
     try {
       ctx.store.dispatch("events/fetchTopLikedArticles", {
         page: ctx.route.query.page || 1,
-        limit: ctx.route.query.limit || 3,
-        sort: ctx.route.query.sort || "claps",
+        limit: ctx.route.query.limit || 5,
+        sort: ctx.route.query.sort || "-claps",
         categories: [],
       });
       ctx.store.dispatch("events/fetchTags", {
         page: 0,
-        limit: 5,
+        limit: 10,
         sort: "-count",
       });
     } catch (e) {
       ctx.error({
         statusCode: 503,
-        message:
-          "Unable to fetch top Liked articles at this time. Please try again.",
+        message: "Unable to fetch content. Please try again.",
       });
     }
   },
 };
 </script>
 
-<style lang="scss" scoped>
-@import "/assets/scss/abstracts/_mixins.scss";
-@import "/assets/scss/abstracts/variables";
-@import "/assets/scss/base/utilities";
-
-@mixin heading {
-  text-decoration: underline;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  font-family: "Roboto Slab", Serif;
-
-  font-size: 2rem;
-  color: $color-golden;
-  font-weight: 700;
-}
-@mixin numList {
-  font-size: 1.5rem;
-  font-weight: 300;
-  list-style: decimal;
-}
-@mixin list {
-  font-size: 1.5rem;
-  margin-top: 1rem;
-  align-items: center;
-}
+<style scoped lang="scss">
 .home-page {
-  & > * {
-    margin-bottom: 4rem;
-  }
-  &__intro {
-    filter: brightness(80%);
-    background-attachment: scroll;
-    background: linear-gradient(90deg, rgb(0, 0, 0, 0.1), rgba(0, 0, 0.2)),
-      url("~assets/images/bg/home-bg.jpg");
-    @media only screen and (max-width: 600px) {
-      background: linear-gradient(270deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2)),
-        url("~assets/images/bg/home-bg-mobile.jpg");
-      background-size: 100% 100%;
-    }
-    height: 120vh;
-    width: 100%;
-    background-size: cover;
-    background-position: center;
-    &--container {
-      position: absolute;
-      top: 10%;
-      left: 40%;
-      max-width: 100%;
-      color: $color-grey-light;
-      width: 60%;
-      @media only screen and (max-width: 600px) {
-        top: 5%;
-      }
-      &__heading {
-        font-weight: 700;
-        color: $color-golden;
-        position: relative;
-        font-size: 2.5rem;
-        overflow: hidden; /* Ensures the content is not revealed until the animation */
-        border-right: 0.15em solid orange; /* The typwriter cursor */
-        margin-right: 0.2rem; /* Gives that scrolling effect as the typing happens */
-        font-family: "Roboto Slab", Serif;
-        white-space: nowrap;
+  padding-bottom: 4rem;
+}
+.home-page__hero {
+  position: relative;
+  background: url("~assets/images/bg/home-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 6rem 2rem;
+  text-align: center;
+  color: white;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.home-page__hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #262626;
+  mix-blend-mode: hard-light;
+}
+.home-page__hero-title {
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+.home-page__hero-subtitle {
+  font-size: 1.125rem;
+  opacity: 0.95;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+.home-page__hero-content {
+  position: relative;
+  z-index: 1;
+}
+.home-page__container {
+  margin-top: -2rem;
+  max-width: 1100px;
+}
+.home-page__card {
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+.home-page__card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a237e;
+  padding-bottom: 0;
+}
+.home-page__list-title {
+  font-weight: 500;
+}
+.home-page__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.home-page__tag-link {
+  text-decoration: none;
+}
+.home-page__skills-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a237e;
+  margin: 3rem 0 1.5rem;
+}
+.home-page__skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+.home-page__skill-card {
+  border-radius: 12px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.home-page__skill-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+.home-page__skill-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #424242;
+}
 
-        animation: typing 3.5s steps(40, end),
-          blink-caret 0.75s step-end infinite;
-        @media only screen and (max-width: 600px) {
-          font-size: 4rem;
-          animation: none;
-          white-space: normal;
-        }
-      }
-      &__about {
-        margin-top: 1rem;
-        font-size: 1.5rem;
-        word-wrap: break-word;
-        font-family: "Lora", serif;
-        font-weight: 100;
-      }
-    }
+@media (max-width: 600px) {
+  .home-page__hero {
+    background-image: url("~assets/images/bg/home-bg-mobile.jpg");
+    background-size: cover;
+    padding: 4rem 1rem;
   }
-  &__topLikedArticles {
-    max-width: 90%;
-    & > * {
-      margin-left: 1rem;
-    }
-    &--headings {
-      @include heading;
-    }
-    &--list {
-      @include numList;
-      & li {
-        font-weight: 500;
-        font-family: "Ubuntu";
-        @include list;
-      }
-    }
+  .home-page__hero-title {
+    font-size: 1.5rem;
   }
-  &__popularTags {
-    & > * {
-      margin-left: 1rem;
-    }
-    &--headings {
-      @include heading;
-    }
-    &--list {
-      @include numList;
-      & li {
-        font-weight: 500;
-        font-family: "Ubuntu";
-        @include list;
-      }
-    }
+  .home-page__skills {
+    grid-template-columns: repeat(2, 1fr);
   }
-  &__skills {
-    & > * {
-      margin-left: 1rem;
-    }
-    &--headings {
-      @include heading;
-    }
-    &--list {
-      display: flex;
-      justify-content: left;
-      justify-items: center;
-      flex-wrap: wrap;
-      &--item img {
-        max-height: 100px;
-        max-width: 100px;
-        @media only screen and (max-width: 600px) {
-          max-width: 50px;
-          max-height: 50px;
-        }
-      }
-      &--item {
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        margin-right: 2rem;
-        & span {
-          font-size: 1rem;
-          font-weight: 500;
-        }
-      }
-    }
-  }
-}
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-@keyframes blink-caret {
-  from,
-  to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: orange;
-  }
-}
-.v-application a {
-  color: $color-teal-dark;
 }
 </style>

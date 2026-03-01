@@ -128,8 +128,9 @@ export const actions = {
     const post = await EventService.deleteArticle(articleId);
     return post;
   },
-  async fetchTags(ctx, { sort, skip, limit }) {
-    const tags = await EventService.getTags(skip, limit, sort);
+  async fetchTags(ctx, { sort, skip, limit, page }) {
+    const s = skip ?? (page !== undefined ? page * (limit || 10) : 0);
+    const tags = await EventService.getTags(s, limit, sort);
     console.log("TAGS: ", tags);
     console.log("typeof tags : ", typeof tags);
     console.log(tags.data.tags);

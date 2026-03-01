@@ -49,7 +49,6 @@ export default {
   fetch(ctx) {
     try {
       let categories = [];
-      console.log("In blog fetch");
       const queryStrCategory = ctx.route.query.category;
       const queryStrDateFrom = ctx.route.query.dateFrom;
       const queryStrDateTo = ctx.route.query.dateTo;
@@ -57,12 +56,9 @@ export default {
       const queryStrLimit = ctx.route.query.limit || 10;
       const queryStrSort = ctx.route.query.sort || "-dateCreated";
       if (queryStrCategory) {
-        console.log("queryStrCategory", typeof queryStrCategory);
-        if (typeof queryStrCategory === "string") {
-          categories.push(queryStrCategory);
-        } else {
-          categories = [...queryStrCategory];
-        }
+        categories = Array.isArray(queryStrCategory)
+          ? [...queryStrCategory]
+          : [queryStrCategory];
       }
       ctx.store.dispatch("events/fetchArticles", {
         page: queryStrPage,
@@ -108,9 +104,10 @@ export default {
     ...mapActions("events", ["fetchArticles"]),
     async onPageChange(e) {
       this.curPage = e;
-      const categories = [];
-      if (this.$route.query.category) {
-        categories.push('"' + this.$route.query.category + '"');
+      let categories = [];
+      const cat = this.$route.query.category;
+      if (cat) {
+        categories = Array.isArray(cat) ? [...cat] : [cat];
       }
       await this.fetchArticles({
         page: e,

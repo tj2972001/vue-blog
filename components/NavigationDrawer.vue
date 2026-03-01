@@ -14,6 +14,7 @@
         <v-icon>mdi-filter</v-icon>
       </v-btn>
       <v-btn
+        v-if="isAdmin"
         outlined
         color="primary"
         fab
@@ -60,7 +61,7 @@
         <v-list-item>
           <v-autocomplete
             v-model="urlParams.selectedCats"
-            :items="catsArr()"
+            :items="catsArr"
             small-chips
             append-icon="mdi-tag-multiple-outline"
             label="Select categories"
@@ -123,7 +124,9 @@
   </v-row>
 </template>
 <script>
+import { syncUser } from "assets/js/mixins";
 export default {
+  mixins: [syncUser],
   props: {
     cats: {
       type: Array,
@@ -150,35 +153,57 @@ export default {
       ],
       urlParams: {
         selectedCats: [],
-        selectedSortBy: this.$route.query.sort || "-dateCreated",
+        selectedSortBy: "-dateCreated",
         selectedDate: [
-          "2020-09-21", // dateCreated of first article in database
-          this.formatDate(new Date()), // today's date
+          "2020-09-21",
+          this.formatDate(new Date()),
         ],
         selectedJobType: "",
       },
       menu: false,
       modal: false,
-
-      catsArr() {
-        return this.cats.map((e) => e._id);
-      },
     };
   },
   computed: {
+    catsArr() {
+      const cats = this.cats || [];
+      return cats.map((e) => e.tag || e._id).filter(Boolean);
+    },
+    isAdmin() {
+      const user = this.userDetails || (typeof window !== "undefined" && JSON.parse(localStorage.getItem("user") || "null"));
+      return user && user.role === "admin";
+    },
     filterRoute() {
       let url = `/blog/?sort=${this.urlParams.selectedSortBy}&dateFrom=${this.urlParams.selectedDate[0]}&dateTo=${this.urlParams.selectedDate[1]}`;
-      console.log("this.urlParams.selectedCats ", this.urlParams.selectedCats);
-      if (this.urlParams.selectedCats.length > 0) {
+      if (this.urlParams.selectedCats && this.urlParams.selectedCats.length > 0) {
         for (const selectedCat of this.urlParams.selectedCats) {
-          url = url.concat(`&category=${selectedCat}`);
+          url = url.concat(`&category=${encodeURIComponent(selectedCat)}`);
         }
       }
-      console.log("url: ", url);
       return url;
     },
   },
+  mounted() {
+    this.syncParamsFromRoute();
+  },
+  watch: {
+    "$route.query"() {
+      this.syncParamsFromRoute();
+    },
+    drawer(val) {
+      if (val) {
+        this.syncParamsFromRoute();
+      }
+    },
+  },
   methods: {
+    syncParamsFromRoute() {
+      this.urlParams.selectedSortBy = this.$route.query.sort || "-dateCreated";
+      const cat = this.$route.query.category;
+      this.urlParams.selectedCats = cat
+        ? (Array.isArray(cat) ? [...cat] : [cat])
+        : [];
+    },
     formatDate(date) {
       return date.toLocaleDateString("en-CA");
     },

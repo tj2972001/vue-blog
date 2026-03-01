@@ -1,5 +1,8 @@
 <template>
   <div class="create-blog">
+    <v-alert v-if="!isAdmin && userDetails" type="warning" dismissible class="mb-4">
+      Only admins can post articles. Contact the site owner for access.
+    </v-alert>
     <h2>Create a new blog</h2>
     <v-text-field
       v-model="title"
@@ -44,7 +47,7 @@
       label="save as draft"
       @click="saveAsDraft = !saveAsDraft"
     ></v-checkbox>
-    <v-btn color="primary" text outlined @click="postArticle">
+    <v-btn color="primary" text outlined :disabled="!isAdmin" @click="postArticle">
       {{ saveAsDraft ? "Save as Draft" : "Post" }}
     </v-btn>
   </div>
@@ -55,6 +58,11 @@ import { mapActions } from "vuex";
 import { syncUser } from "assets/js/mixins";
 export default {
   mixins: [syncUser],
+  computed: {
+    isAdmin() {
+      return this.userDetails && this.userDetails.role === "admin";
+    },
+  },
   asyncData() {
     return {
       content: "",

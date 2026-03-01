@@ -203,19 +203,11 @@ export default {
       url: `${APIClent.baseURL}/job`,
     });
   },
-  loginWithGoogle() {
-    return axios({
-      method: "GET",
-      url: `${APIClent.baseURL}/auth/login/federated/google`,
-      withCredentials: true,
-    });
+  getGoogleOAuthUrl() {
+    return `${APIClent.baseURL}/auth/login/federated/google`;
   },
-  loginWithMicrosoft() {
-    return axios({
-      method: "GET",
-      url: `${APIClent.baseURL}/auth/login/federated/microsoft`,
-      withCredentials: true,
-    });
+  getMicrosoftOAuthUrl() {
+    return `${APIClent.baseURL}/auth/login/federated/microsoft`;
   },
   verifyUserEmail() {
     return axios({

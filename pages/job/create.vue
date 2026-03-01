@@ -145,7 +145,7 @@ export default {
           eligibleBatches: this.jobForm.eligibleBatches.value,
           salary: this.jobForm.salary.value,
           dateCreated: new Date(),
-          categories: this.jobForm.categories.value,
+          categories: (this.jobForm.categories.values || []).map((t) => t.text || t),
           jobLink: this.jobForm.jobLink.value,
           description: this.jobForm.description.value,
         };

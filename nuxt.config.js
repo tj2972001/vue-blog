@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -14,7 +16,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: process.env.SITE_TITLE + " - %s",
+    titleTemplate: (process.env.SITE_TITLE || "Blog") + " - %s",
     title: " <tejas.codes/>",
     script: [
       {
@@ -81,13 +83,9 @@ export default {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
+    "~/plugins/axios-auth",
     { src: "~/plugins/vue2-editor", ssr: false },
     { src: "~/plugins/vue-tags-input", ssr: false },
-    { src: "~plugins/pdf.js", ssr: false },
-    {
-      src: "~plugins/vue-awesome.js",
-      ssr: false,
-    },
   ],
   /*
    ** Auto import components
@@ -119,10 +117,18 @@ export default {
     baseURL: process.env.BASE_URL,
     mainURL: process.env.MAIN_URL,
   },
-  /*
-   ** vuetify module configuration
-   ** https://github.com/nuxt-community/vuetify-module
-   */
+  vuetify: {
+    customVariables: ["~/assets/scss/vuetify-overrides.scss"],
+    theme: {
+      themes: {
+        light: {
+          primary: "#1a237e",
+          secondary: "#283593",
+          accent: "#3949ab",
+        },
+      },
+    },
+  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
@@ -164,5 +170,17 @@ export default {
     host: process.env.HOST || "localhost",
     port: process.env.PORT || 8080, // default: 3000
     timing: false,
+  },
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        path: "/job",
+        redirect: "/",
+      });
+      routes.push({
+        path: "/job/*",
+        redirect: "/",
+      });
+    },
   },
 };

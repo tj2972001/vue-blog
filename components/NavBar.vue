@@ -16,23 +16,6 @@
       >
         <span class="toolbar__desktop--navButtons">{{ link.label }}</span>
       </nuxt-link>
-      <v-menu bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <span class="toolbar__desktop--navButtons" v-bind="attrs" v-on="on">
-            Tools
-          </span>
-        </template>
-
-        <v-list>
-          <v-list-item v-for="tool in toolLinks" :key="tool.label">
-            <nuxt-link :to="tool.url">
-              <span class="toolbar__desktop--navButtons"
-                >{{ tool.label }} <v-icon class="ml-2">{{ tool.icon }}</v-icon>
-              </span>
-            </nuxt-link>
-          </v-list-item>
-        </v-list>
-      </v-menu>
       <template v-if="!isLoggedIn">
         <nuxt-link
           v-for="link in authLinks"
@@ -77,7 +60,6 @@
       </v-list-item>
 
       <v-divider></v-divider>
-      isLoggedIn: {{ isLoggedIn }}
       <v-list class="toolbar__drawer--list">
         <v-list-item
           v-for="link in links"
@@ -86,14 +68,6 @@
         >
           <v-icon class="mr-2">{{ link.icon }}</v-icon>
           <nuxt-link :to="link.url">{{ link.label }}</nuxt-link>
-        </v-list-item>
-        <v-list-item
-          v-for="tool in toolLinks"
-          :key="tool.label"
-          class="toolbar__drawer--list--item"
-        >
-          <v-icon class="mr-2"> {{ tool.icon }}</v-icon>
-          <nuxt-link :to="tool.url">{{ tool.label }}</nuxt-link>
         </v-list-item>
         <template v-if="!isLoggedIn">
           <v-list-item
@@ -163,13 +137,6 @@ export default {
         label: "Your account",
         url: "/profile",
         icon: "mdi-account",
-      },
-    ],
-    toolLinks: [
-      {
-        label: "Jobs for freshers",
-        url: "/job",
-        icon: "mdi-briefcase",
       },
     ],
   }),

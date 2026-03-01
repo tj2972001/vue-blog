@@ -28,21 +28,11 @@ export const actions = {
     ctx.commit("SET_IS_LOGGED_IN", true);
     return response;
   },
-  async loginWithGoogle(ctx) {
-    // store user -> format is createSendTOken
-    const response = await EventService.loginWithGoogle();
-    const user = response.data.data.user;
-    await ctx.commit("SET_USER", user);
-    await ctx.commit("SET_IS_LOGGED_IN", true);
-    return response;
+  loginWithGoogle(ctx) {
+    window.location.href = EventService.getGoogleOAuthUrl();
   },
-  async loginWithMicrosoft(ctx) {
-    // store user -> format is createSendTOken
-    const response = await EventService.loginWithMicrosoft();
-    const user = response.data.data.user;
-    await ctx.commit("SET_USER", user);
-    await ctx.commit("SET_IS_LOGGED_IN", true);
-    return response;
+  loginWithMicrosoft(ctx) {
+    window.location.href = EventService.getMicrosoftOAuthUrl();
   },
   signUp(ctx, formData) {
     return EventService.signup(formData);
@@ -55,10 +45,10 @@ export const actions = {
     return response;
   },
   async logOutUser(ctx) {
-    // clear user from localStorage
+    if (process.client) localStorage.removeItem("auth_token");
     const response = await EventService.logOut();
-    await ctx.commit("SET_USER", null);
-    await ctx.commit("SET_IS_LOGGED_IN", false);
+    ctx.commit("SET_USER", null);
+    ctx.commit("SET_IS_LOGGED_IN", false);
     return response;
   },
   updatePassword(ctx, formData) {
