@@ -1,50 +1,166 @@
 <template>
-  <v-sheet height="100vh" class="overflow-hidden" style="position: relative">
-    <NavigationDrawer />
-    <v-btn
-      outlined
-      color="primary"
-      fab
-      class="ma-2"
-      :x-small="$vuetify.breakpoint.xsOnly"
-      :small="$vuetify.breakpoint.mdAndUp"
-      :large="$vuetify.breakpoint.lgAndUp"
-      to="/blog/create/"
-    >
-      <v-icon>mdi-grease-pencil</v-icon>
-    </v-btn>
-    <h2>Welcome to my blog</h2>
+  <section class="blog-page">
+    <NavigationDrawer class="blog-page__navigation_drawer" :cats="tags" />
+    <div v-if="allBlogs.length == 0" class="blog-page__skeleton-container">
+      <v-alert
+        width="90%"
+        max-width="600px"
+        type="info"
+        class="blog-page__skeleton-container--alert"
+        >Loading articles</v-alert
+      >
+      <v-skeleton-loader
+        v-for="i in 2"
+        :key="i"
+        class="blog-page__skeleton-container--skeleton"
+        width="90%"
+        max-width="600px"
+        type="card-avatar, article, actions"
+      ></v-skeleton-loader>
+    </div>
     <ArticleCard
       v-for="article in allBlogs"
       :key="article._id"
       :article="article"
+      class="blog-page__articles"
     />
-  </v-sheet>
+    <div class="text-center blog-page__pagination">
+      <v-container>
+        <v-row justify="center">
+          <v-pagination
+            v-model="curPage"
+            class="my-4"
+            :length="pageCount"
+            @input="onPageChange"
+          ></v-pagination>
+        </v-row>
+        <v-row justify="center"
+          >page: {{ curPage }} out of {{ pageCount }}</v-row
+        >
+      </v-container>
+    </div>
+  </section>
 </template>
 <script>
-import NavigationDrawer from '@/components/NavigationDrawer.vue'
-import ArticleCard from '@/components/ArticleCard'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from "vuex";
+
 export default {
-  components: {
-    NavigationDrawer,
-    ArticleCard,
-  },
   fetch(ctx) {
     try {
-      return ctx.store.dispatch('events/fetchArticles', {
-        page: 1,
-        limit: 10,
-      })
+      let categories = [];
+      const queryStrCategory = ctx.route.query.category;
+      const queryStrDateFrom = ctx.route.query.dateFrom;
+      const queryStrDateTo = ctx.route.query.dateTo;
+      const queryStrPage = ctx.route.query.page || 1;
+      const queryStrLimit = ctx.route.query.limit || 10;
+      const queryStrSort = ctx.route.query.sort || "-dateCreated";
+      if (queryStrCategory) {
+        categories = Array.isArray(queryStrCategory)
+          ? [...queryStrCategory]
+          : [queryStrCategory];
+      }
+      ctx.store.dispatch("events/fetchArticles", {
+        page: queryStrPage,
+        limit: queryStrLimit,
+        sort: queryStrSort,
+        categories,
+        dateFrom: queryStrDateFrom,
+        dateTo: queryStrDateTo,
+      });
+      ctx.store.dispatch("events/fetchTags", {
+        page: 0,
+        limit: 500000,
+      });
     } catch (e) {
       ctx.error({
         statusCode: 503,
-        message: 'Unable to fetch articles at this time. Please try again.',
-      })
+        message: "Unable to fetch articles at this time. Please try again.",
+      });
     }
+  },
+  data() {
+    return {
+      pageTitle: "All articles",
+    };
+  },
+  head() {
+    return {
+      title: this.pageTitle,
+    };
   },
   computed: mapState({
     allBlogs: (state) => state.events.articles,
+    allBlogsCount: (state) => state.events.totalArticlesCount,
+    curPage: (state) => state.events.curPage,
+    curLim: (state) => state.events.curLim,
+    pageCount() {
+      const x = this.allBlogsCount / this.curLim;
+      return Math.ceil(x);
+    },
+    tags: (state) => state.events.tags,
   }),
-}
+  watch: {
+    "$route.query": {
+      handler() {
+        this.loadFromRoute();
+      },
+      deep: true,
+    },
+  },
+  methods: {
+    ...mapActions("events", ["fetchArticles", "fetchTags"]),
+    loadFromRoute() {
+      let categories = [];
+      const cat = this.$route.query.category;
+      if (cat) {
+        categories = Array.isArray(cat) ? [...cat] : [cat];
+      }
+      this.fetchArticles({
+        page: this.$route.query.page || 1,
+        limit: this.$route.query.limit || 10,
+        sort: this.$route.query.sort || "-dateCreated",
+        categories,
+        dateFrom: this.$route.query.dateFrom,
+        dateTo: this.$route.query.dateTo,
+      });
+      this.fetchTags({ page: 0, limit: 500000 });
+    },
+    async onPageChange(e) {
+      this.curPage = e;
+      let categories = [];
+      const cat = this.$route.query.category;
+      if (cat) {
+        categories = Array.isArray(cat) ? [...cat] : [cat];
+      }
+      await this.fetchArticles({
+        page: e,
+        limit: this.curLim,
+        sort: this.$route.query.sort || "-dateCreated",
+        categories,
+        dateFrom: this.$route.query.dateFrom,
+        dateTo: this.$route.query.dateTo,
+      });
+    },
+  },
+};
 </script>
+<style lang="scss" scoped>
+.blog-page {
+  &__articles {
+    width: 80%;
+    margin: 0 auto;
+  }
+  &__skeleton-container {
+    &--skeleton {
+      margin: 0 auto;
+    }
+    &--alert {
+      margin: 2rem auto;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    width: 95%;
+  }
+}
+</style>

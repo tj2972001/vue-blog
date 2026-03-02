@@ -1,0 +1,32 @@
+*,
+*::after,
+*::before{
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+:root {
+  font-size: 100%; // 1rem = 10px
+  @media only screen and (max-width: 600px) {
+    font-size: 70%;
+  }
+}
+  body {
+    box-sizing: border-box;
+  }
+
+  ::selection {
+    background-color: $color-teal-medium;
+    color: $color-white-pure;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .v-main {
+      padding-top: 0 !important;
+    }
+  }
+.v-list-item__title,.v-list-item__subtitle{
+  white-space: normal !important;
+}
+

@@ -1,38 +1,34 @@
 <template>
-  <v-card width="85%" max-width="700" class="mx-auto mt-5">
-    <v-list-item>
-      <v-list-item-avatar color="grey">
-        <v-img src="/tejas.jpg"></v-img>
-      </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title class="headline">{{
-          article.title
-        }}</v-list-item-title>
-        <v-list-item-subtitle
-          >by Tejas Jadhav On {{ dateCreated }}</v-list-item-subtitle
-        >
-      </v-list-item-content>
-    </v-list-item>
-
-    <v-card-text v-html="article.content"> </v-card-text>
-
-    <v-card-actions>
-      <v-btn text color="deep-purple accent-4" :to="`/blog/${article._id}`">
-        Read
-      </v-btn>
-      <v-btn text color="deep-purple accent-4"> Bookmark </v-btn>
-      <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-share-variant</v-icon>
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+  <div class="article">
+    <div class="article__card">
+      <h2 class="article__card--title">{{ article.title }}</h2>
+      <div class="article__card--author">
+        <div class="article__card--author__name">
+          <v-icon color="#000">mdi-account-circle-outline</v-icon>
+          <span>{{ article.author.name }}</span>
+        </div>
+        <div class="article__card--author__date">{{ time }}</div>
+      </div>
+      <hr />
+      <article
+        class="paragraph article__card--content"
+        v-html="article.content"
+      ></article>
+      <nuxt-link :to="articleLink">
+        <button class="article__card--read btn-medium btn-teal">
+          Read full article
+        </button></nuxt-link
+      >
+    </div>
+  </div>
 </template>
 <script>
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+TimeAgo.addLocale(en);
+const timeAgo = new TimeAgo("en-US");
 export default {
+  watchQuery: true,
   props: {
     article: {
       type: Object,
@@ -40,9 +36,67 @@ export default {
     },
   },
   computed: {
-    dateCreated() {
-      return this.article.dateCreated.split('T')[0]
+    articleLink() {
+      return "/blog/article/" + this.article._id;
+    },
+    time() {
+      const date = new Date(this.article.dateCreated);
+      return timeAgo.format(date);
     },
   },
-}
+};
 </script>
+<style lang="scss" scoped>
+@import "/assets/scss/abstracts/variables";
+
+.article {
+  > * :not(hr) {
+    padding-left: 1rem;
+  }
+  &__card {
+    overflow-y: hidden;
+    position: relative;
+    margin: 2rem 0;
+    &--title {
+      font-weight: 600;
+    }
+    &--author {
+      color: $color-grey-dark;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      &__name {
+      }
+      &__date {
+        margin-right: 2rem;
+      }
+      svg {
+        transform: translateY(0.5rem);
+      }
+    }
+    &--content {
+      font-family: "Lora", serif;
+      margin-top: 1rem;
+      max-height: 20rem;
+    }
+    &--read {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+    border: 2px solid $color-grey-light;
+    @media only screen and (max-width: 600px) {
+      border: none;
+    }
+  }
+  box-shadow: 0px -15px 30px -15px inset #111;
+  @media only screen and (max-width: 600px) {
+    .article {
+      &__card {
+        margin: 1rem;
+      }
+    }
+  }
+}
+</style>

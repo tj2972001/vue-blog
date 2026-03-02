@@ -90,3 +90,6 @@ sw.*
 *.swp
 
 .env
+
+#uploads
+uploads

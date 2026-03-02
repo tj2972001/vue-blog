@@ -1,3 +1,7 @@
 <template>
-  <div>id is {{ $route.params.slug }}</div>
+  <v-container>
+    <v-row justify="center" class="text-h3 text-md-h4">
+      Introduction to Programming
+    </v-row>
+  </v-container>
 </template>

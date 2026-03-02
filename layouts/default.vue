@@ -1,24 +1,30 @@
 <template>
-  <v-app>
-    <NavBar />
-    <v-content>
-      <nuxt :key="$route.fullPath" />
-    </v-content>
+  <v-app style="overflow-x: hidden">
+    <NavBar :key="$route.path" />
+    <v-main>
+      <nuxt />
+    </v-main>
   </v-app>
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue'
 export default {
-  components: {
-    NavBar,
-  },
-}
+  watchQuery: true,
+};
 </script>
 
-<style>
-h2 {
-  text-align: center;
-  margin: 10px 0;
+<style lang="scss">
+@import "/assets/scss/abstracts/variables";
+.v-application a {
+  text-decoration: none !important;
+}
+a.nuxt-link-active {
+  color: $color-black-pure;
+  text-decoration: none;
+  margin-top: 0;
+}
+/* exact link will show the primary color for only the exact matching link */
+a.nuxt-link-exact-active {
+  color: $color-black-pure;
 }
 </style>

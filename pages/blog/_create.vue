@@ -1,11 +1,16 @@
 <template>
   <div class="create-blog">
-    <v-card-title>Create a new blog</v-card-title>
+    <v-alert v-if="!isAdmin && userDetails" type="warning" dismissible class="mb-4">
+      Only admins can post articles. Contact the site owner for access.
+    </v-alert>
+    <h2>Create a new blog</h2>
     <v-text-field
       v-model="title"
       class="mx-auto"
       label="Add Title"
       type="text"
+      outlined
+      clearable
     ></v-text-field>
     <no-ssr>
       <vue-tags-input
@@ -14,18 +19,26 @@
         @tags-changed="(newTags) => (tags = newTags)"
       />
     </no-ssr>
-
     <no-ssr placeholder="Loading Your Editor...">
-      <vue-editor
-        v-model="content"
-        placeholder="Write Something..."
-      ></vue-editor>
+      <client-only>
+        <vue-editor
+          v-model="content"
+          placeholder="Write Something..."
+          use-custom-image-handler
+          @image-added="handleImageAdded"
+        />
+      </client-only>
     </no-ssr>
     <v-card-actions>
-      <v-btn color="indigo lighten-4" @click="showPreview = !showPreview">
-        {{ showPreview ? 'hide preview' : 'show preview' }} |
+      <v-btn
+        color="indigo lighten-4"
+        text
+        outlined
+        @click="showPreview = !showPreview"
+      >
+        {{ showPreview ? "hide preview" : "show preview" }} |
         <v-icon>
-          {{ showPreview ? 'mdi-eye' : 'mdi-eye-off' }}
+          {{ showPreview ? "mdi-eye" : "mdi-eye-off" }}
         </v-icon>
       </v-btn>
     </v-card-actions>
@@ -36,63 +49,94 @@
       label="save as draft"
       @click="saveAsDraft = !saveAsDraft"
     ></v-checkbox>
-    <v-btn color="primary" @click="postArticle">
-      {{ saveAsDraft ? 'Save as Draft' : 'Post' }}
+    <v-btn color="primary" text outlined :disabled="!isAdmin" @click="postArticle">
+      {{ saveAsDraft ? "Save as Draft" : "Post" }}
     </v-btn>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
+import { syncUser } from "assets/js/mixins";
 export default {
+  mixins: [syncUser],
   asyncData() {
     return {
-      content: '',
+      content: "",
       pageIsMounted: false,
       isSSR: !!process.server,
-    }
+    };
   },
   data() {
     return {
-      tag: '',
+      pageTitle: "Post article",
+      tag: "",
       tags: [],
-      title: '',
+      title: "",
       saveAsDraft: false,
       showPreview: false,
-    }
+    };
   },
   computed: {
+    isAdmin() {
+      return this.userDetails && this.userDetails.role === "admin";
+    },
     dateCreated() {
-      return new Date(Date.now())
+      return new Date(Date.now());
     },
   },
+  head() {
+    return {
+      title: this.pageTitle,
+    };
+  },
   methods: {
-    ...mapActions('events', ['createArticle']),
+    ...mapActions("events", ["createArticle"]),
     async postArticle() {
-      const tags = this.tags.map((tag) => tag.text)
+      const tags = this.tags.map((tag) => tag.text);
       const formData = {
         title: this.title,
         categories: tags,
         saveAsDraft: this.saveAsDraft,
         content: this.content,
         dateCreated: this.dateCreated,
-      }
+        author: this.userDetails,
+      };
       try {
-        this.$toast.info('Saving article')
-        await this.createArticle(formData)
-        this.$toast.info('Article Posted Successfully')
+        this.$toast.info("Saving article");
+        await this.createArticle(formData);
+        this.$toast.info("Article Posted Successfully");
       } catch (e) {
-        this.$toast.error(e.response.data.message)
+        this.$toast.error(e.response.data.message);
+      }
+    },
+    async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+      const formData = new FormData();
+      formData.append("photo", file);
+      this.$toast.info("Uploading photo");
+      try {
+        const token = process.client ? localStorage.getItem("auth_token") : null;
+        const config = { withCredentials: true };
+        if (token) config.headers = { Authorization: `Bearer ${token}` };
+        const res = await this.$axios.post("/upload/blog", formData, config);
+        const url = res.data.data.image.url;
+        Editor.insertEmbed(cursorLocation, "image", url);
+        resetUploader();
+        this.$toast.success("Image uploaded successfully");
+      } catch (e) {
+        const msg = e.response?.data?.message || e.message || "Upload failed";
+        this.$toast.error(msg);
+        resetUploader();
       }
     },
   },
-}
+};
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import "/assets/scss/abstracts/mixins";
+
 .create-blog {
-  width: 80vw;
-  margin-left: auto;
-  margin-right: auto;
+  @include createNew;
 }
 .create-blog > * {
   margin-top: 25px;
