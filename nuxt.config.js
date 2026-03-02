@@ -84,7 +84,6 @@ export default {
    */
   plugins: [
     "~/plugins/axios-auth",
-    { src: "~/plugins/vue2-editor", ssr: false },
     { src: "~/plugins/vue-tags-input", ssr: false },
   ],
   /*
@@ -108,6 +107,7 @@ export default {
     "@nuxtjs/toast",
     "vue-social-sharing/nuxt",
     "@nuxtjs/auth",
+    "vue2-editor/nuxt",
   ],
   /*
    ** Axios module configuration

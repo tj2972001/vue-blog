@@ -115,9 +115,9 @@
           </v-menu>
         </v-list-item>
         <v-list-item class="NavigationDrawer__drawer__list--applybtn">
-          <nuxt-link :key="`${urlParams.selectedSortBy}`" :to="filterRoute">
-            <v-btn color="teal" outlined> Apply </v-btn>
-          </nuxt-link>
+          <v-btn color="teal" outlined @click="onApply">
+            Apply
+          </v-btn>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -174,13 +174,15 @@ export default {
       return user && user.role === "admin";
     },
     filterRoute() {
-      let url = `/blog/?sort=${this.urlParams.selectedSortBy}&dateFrom=${this.urlParams.selectedDate[0]}&dateTo=${this.urlParams.selectedDate[1]}`;
-      if (this.urlParams.selectedCats && this.urlParams.selectedCats.length > 0) {
-        for (const selectedCat of this.urlParams.selectedCats) {
-          url = url.concat(`&category=${encodeURIComponent(selectedCat)}`);
-        }
+      const query = {
+        sort: this.urlParams.selectedSortBy,
+        dateFrom: this.urlParams.selectedDate?.[0],
+        dateTo: this.urlParams.selectedDate?.[1],
+      };
+      if (this.urlParams.selectedCats?.length) {
+        query.category = this.urlParams.selectedCats;
       }
-      return url;
+      return { path: "/blog/", query };
     },
   },
   mounted() {
@@ -197,12 +199,21 @@ export default {
     },
   },
   methods: {
+    onApply() {
+      this.drawer = false;
+      this.$router.push(this.filterRoute).catch(() => {});
+    },
     syncParamsFromRoute() {
       this.urlParams.selectedSortBy = this.$route.query.sort || "-dateCreated";
       const cat = this.$route.query.category;
       this.urlParams.selectedCats = cat
         ? (Array.isArray(cat) ? [...cat] : [cat])
         : [];
+      const dateFrom = this.$route.query.dateFrom;
+      const dateTo = this.$route.query.dateTo;
+      if (dateFrom && dateTo) {
+        this.urlParams.selectedDate = [dateFrom, dateTo];
+      }
     },
     formatDate(date) {
       return date.toLocaleDateString("en-CA");

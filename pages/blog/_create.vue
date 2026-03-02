@@ -20,12 +20,14 @@
       />
     </no-ssr>
     <no-ssr placeholder="Loading Your Editor...">
-      <vue-editor
-        v-model="content"
-        placeholder="Write Something..."
-        use-custom-image-handler
-        @image-added="handleImageAdded"
-      ></vue-editor>
+      <client-only>
+        <vue-editor
+          v-model="content"
+          placeholder="Write Something..."
+          use-custom-image-handler
+          @image-added="handleImageAdded"
+        />
+      </client-only>
     </no-ssr>
     <v-card-actions>
       <v-btn
@@ -58,11 +60,6 @@ import { mapActions } from "vuex";
 import { syncUser } from "assets/js/mixins";
 export default {
   mixins: [syncUser],
-  computed: {
-    isAdmin() {
-      return this.userDetails && this.userDetails.role === "admin";
-    },
-  },
   asyncData() {
     return {
       content: "",
@@ -81,6 +78,9 @@ export default {
     };
   },
   computed: {
+    isAdmin() {
+      return this.userDetails && this.userDetails.role === "admin";
+    },
     dateCreated() {
       return new Date(Date.now());
     },
@@ -111,21 +111,22 @@ export default {
       }
     },
     async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
-      console.log("handleImageAdded");
+      const formData = new FormData();
+      formData.append("photo", file);
+      this.$toast.info("Uploading photo");
       try {
-        const formData = new FormData();
-        formData.append("photo", file);
-        this.$toast.info("Uploading photo");
-        const image = await this.$axios({
-          url: "/upload/blog",
-          method: "POST",
-          data: formData,
-        });
-        Editor.insertEmbed(cursorLocation, "image", image.data.data.image.url);
+        const token = process.client ? localStorage.getItem("auth_token") : null;
+        const config = { withCredentials: true };
+        if (token) config.headers = { Authorization: `Bearer ${token}` };
+        const res = await this.$axios.post("/upload/blog", formData, config);
+        const url = res.data.data.image.url;
+        Editor.insertEmbed(cursorLocation, "image", url);
         resetUploader();
         this.$toast.success("Image uploaded successfully");
       } catch (e) {
-        this.$toast.error(e.response.data.message);
+        const msg = e.response?.data?.message || e.message || "Upload failed";
+        this.$toast.error(msg);
+        resetUploader();
       }
     },
   },

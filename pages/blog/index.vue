@@ -45,7 +45,6 @@
 import { mapState, mapActions } from "vuex";
 
 export default {
-  watchQuery: true,
   fetch(ctx) {
     try {
       let categories = [];
@@ -100,8 +99,32 @@ export default {
     },
     tags: (state) => state.events.tags,
   }),
+  watch: {
+    "$route.query": {
+      handler() {
+        this.loadFromRoute();
+      },
+      deep: true,
+    },
+  },
   methods: {
-    ...mapActions("events", ["fetchArticles"]),
+    ...mapActions("events", ["fetchArticles", "fetchTags"]),
+    loadFromRoute() {
+      let categories = [];
+      const cat = this.$route.query.category;
+      if (cat) {
+        categories = Array.isArray(cat) ? [...cat] : [cat];
+      }
+      this.fetchArticles({
+        page: this.$route.query.page || 1,
+        limit: this.$route.query.limit || 10,
+        sort: this.$route.query.sort || "-dateCreated",
+        categories,
+        dateFrom: this.$route.query.dateFrom,
+        dateTo: this.$route.query.dateTo,
+      });
+      this.fetchTags({ page: 0, limit: 500000 });
+    },
     async onPageChange(e) {
       this.curPage = e;
       let categories = [];
@@ -114,6 +137,8 @@ export default {
         limit: this.curLim,
         sort: this.$route.query.sort || "-dateCreated",
         categories,
+        dateFrom: this.$route.query.dateFrom,
+        dateTo: this.$route.query.dateTo,
       });
     },
   },

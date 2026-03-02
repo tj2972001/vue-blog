@@ -1,8 +1,8 @@
 <template>
   <v-app style="overflow-x: hidden">
-    <NavBar :key="$route.fullPath" />
+    <NavBar :key="$route.path" />
     <v-main>
-      <nuxt :key="$route.fullPath" />
+      <nuxt />
     </v-main>
   </v-app>
 </template>

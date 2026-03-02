@@ -7,7 +7,7 @@
           Hi, I'm Tejas. Welcome to my blog.
         </h1>
         <p class="home-page__hero-subtitle">
-          A curious engineer, curator and avid web developer. A great fan of Java technologies.
+          A curious engineer, curator and avid web developer
         </p>
       </div>
     </div>

@@ -6,7 +6,7 @@
           <v-img src="/tejas.jpg" alt="Tejas" cover></v-img>
         </v-avatar>
         <h1 class="about-page__title">Tejas Jadhav</h1>
-        <p class="about-page__subtitle">Software Engineer</p>
+        <p class="about-page__subtitle">Aspiring software Engineer</p>
       </div>
     </div>
     <v-container class="about-page__content">
@@ -26,9 +26,6 @@
         </v-col>
       </v-row>
       <v-row justify="center" class="about-page__social">
-        <v-btn icon href="https://twitter.com/tejas_2001" target="_blank" rel="noopener" color="#1DA1F2" class="mx-2">
-          <v-icon>mdi-twitter</v-icon>
-        </v-btn>
         <v-btn icon href="https://github.com/tj2972001" target="_blank" rel="noopener" color="#333" class="mx-2">
           <v-icon>mdi-github</v-icon>
         </v-btn>
@@ -37,6 +34,9 @@
         </v-btn>
         <v-btn icon href="https://www.facebook.com/profile.php?id=100022308631631" target="_blank" rel="noopener" color="#1877F2" class="mx-2">
           <v-icon>mdi-facebook</v-icon>
+        </v-btn>
+        <v-btn icon href="https://instagram.com/tejas.ttid" target="_blank" rel="noopener" color="#1DA1F2" class="mx-2">
+          <v-icon>mdi-instagram</v-icon>
         </v-btn>
       </v-row>
       <v-row justify="center" class="about-page__resume-section">
